@@ -12,10 +12,10 @@ import java.util.Date;
 @Entity
 @Getter
 @Setter
-@Table(schema = "public",name = "products")
+@Table(schema = "public", name = "products")
 public class Product {
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long productid;
 

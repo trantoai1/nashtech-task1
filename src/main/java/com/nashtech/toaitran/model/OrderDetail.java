@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.util.Collection;
 
 @Entity
-@Table(schema = "public",name = "orderdetails")
+@Table(schema = "public", name = "orderdetails")
 @Getter
 @Setter
 public class OrderDetail {

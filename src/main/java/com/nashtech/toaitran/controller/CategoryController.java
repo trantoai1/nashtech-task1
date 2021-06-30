@@ -12,17 +12,17 @@ import java.util.List;
 public class CategoryController {
     @Resource
     CategoryService service;
+
     @GetMapping("/")
-    public List<Category> getAll()
-    {
-        return service.getAll();
+    public List<Category> getAll() {
+        return service.findAll();
     }
+
     @PostMapping("/")
-    public boolean insert()
-    {
+    public void insert() {
         Category cate = new Category();
         cate.setCateName(String.valueOf(Math.random()));
         cate.setDescription("");
-        return service.save(cate);
+        service.save(cate);
     }
 }

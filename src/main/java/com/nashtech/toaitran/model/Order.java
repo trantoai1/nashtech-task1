@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.Date;
 
 @Entity
-@Table(schema = "public",name = "orders")
+@Table(schema = "public", name = "orders")
 @Getter
 @Setter
 public class Order {

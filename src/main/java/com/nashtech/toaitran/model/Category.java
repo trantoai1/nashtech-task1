@@ -9,7 +9,7 @@ import java.util.Collection;
 @Entity
 @Getter
 @Setter
-@Table(schema = "public",name = "categories")
+@Table(schema = "public", name = "categories")
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

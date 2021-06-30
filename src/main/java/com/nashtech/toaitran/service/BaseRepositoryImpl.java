@@ -7,21 +7,21 @@ import org.hibernate.Transaction;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
-public  class BaseRepositoryImpl<T>  {
+public class BaseRepositoryImpl<T> {
 
 
     private EntityManager entityManager;
 
 
-
     public EntityManager getSessionFactory() {
         return entityManager;
     }
+
     public final void setSessionFactory(EntityManager sessionFactory) {
         this.entityManager = sessionFactory;
     }
-    public boolean save(T entity)
-    {
+
+    public boolean save(T entity) {
         boolean result = false;
         Session session = entityManager.unwrap(Session.class);
         Transaction ts = session.beginTransaction();
@@ -34,17 +34,15 @@ public  class BaseRepositoryImpl<T>  {
             ts.rollback();
             e.printStackTrace();
             //return false;
-        }
-        finally
-        {
+        } finally {
 
             session.close();
 
         }
         return result;
     }
-    public boolean update(T entity)
-    {
+
+    public boolean update(T entity) {
         boolean result = false;
         Session session = entityManager.unwrap(Session.class);
         Transaction ts = session.beginTransaction();
@@ -58,14 +56,13 @@ public  class BaseRepositoryImpl<T>  {
             ts.rollback();
             e.printStackTrace();
 
-        }
-        finally {
+        } finally {
             session.close();
         }
         return result;
     }
-    public boolean delete(T entity)
-    {
+
+    public boolean delete(T entity) {
         boolean result = false;
         Session session = entityManager.unwrap(Session.class);
         Transaction ts = session.beginTransaction();
@@ -78,8 +75,7 @@ public  class BaseRepositoryImpl<T>  {
         } catch (Exception e) {
             e.printStackTrace();
             ts.rollback();
-        }
-        finally {
+        } finally {
             session.close();
         }
         return result;
