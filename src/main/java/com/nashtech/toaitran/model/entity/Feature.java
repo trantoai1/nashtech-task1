@@ -1,9 +1,10 @@
-package com.nashtech.toaitran.model;
+package com.nashtech.toaitran.model.entity;
 
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Collection;
 
 @Entity
 @Table(schema = "public", name = "features")
@@ -18,6 +19,7 @@ public class Feature {
     private String description;
 
 
-    @ManyToOne
-    private Product product;
+    @Transient
+    @OneToMany
+    private Collection<FeatureDetail> featureDetails;
 }

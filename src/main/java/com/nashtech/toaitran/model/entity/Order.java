@@ -1,5 +1,6 @@
-package com.nashtech.toaitran.model;
+package com.nashtech.toaitran.model.entity;
 
+import com.nashtech.toaitran.model.OrderStatus;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -27,7 +28,7 @@ public class Order {
 
     private String address;
 
-    private BigDecimal total;
+
 
     private OrderStatus status;
     @Transient

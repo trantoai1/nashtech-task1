@@ -1,4 +1,4 @@
-package com.nashtech.toaitran.model;
+package com.nashtech.toaitran.model.entity;
 
 import lombok.Getter;
 import lombok.Setter;

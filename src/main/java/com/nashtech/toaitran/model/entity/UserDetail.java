@@ -1,4 +1,4 @@
-package com.nashtech.toaitran.model;
+package com.nashtech.toaitran.model.entity;
 
 import com.sun.istack.NotNull;
 import lombok.Getter;
@@ -8,23 +8,27 @@ import javax.persistence.*;
 import java.util.Collection;
 
 @Entity
-@Table(schema = "public", name = "users")
+@Table(schema = "public", name = "userdetails")
 @Getter
 @Setter
-public class User {
+public class UserDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userid;
-    private String username;
-    private String password;
+    private Long id;
+    @Column(nullable = true)
     private String firstName;
+    @Column(nullable = true)
     private String lastName;
+    @Column(nullable = true)
     private String address;
-    private Integer isAdmin;
-    @NotNull
+
+    @Column(nullable = true)
     private String email;
     @Transient
     @OneToMany
     private Collection<Order> orders;
-
+    //@Transient
+    @OneToOne(optional = false)
+    @PrimaryKeyJoinColumn
+    private User user;
 }

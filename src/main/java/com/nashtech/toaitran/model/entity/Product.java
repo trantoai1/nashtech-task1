@@ -1,4 +1,4 @@
-package com.nashtech.toaitran.model;
+package com.nashtech.toaitran.model.entity;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -27,9 +27,9 @@ public class Product {
 
     @ManyToOne
     private Category category;
-
-    private Integer rate;
-    private String image;
+    @Transient
+    @OneToMany
+    private Collection<Image> images;
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(pattern = "dd-MM-yyyy hh:mm:ss")
     private Date createDate;
@@ -40,6 +40,6 @@ public class Product {
 
     @Transient
     @OneToMany
-    private Collection<Feature> features;
+    private Collection<FeatureDetail> featureDetails;
 
 }

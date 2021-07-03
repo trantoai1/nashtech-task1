@@ -1,7 +1,7 @@
 # Getting Started
 
 ### Reference Documentation
-
+<img src="image/erd.png">
 For further reference, please consider the following sections:
 
 * [Official Gradle documentation](https://docs.gradle.org)
