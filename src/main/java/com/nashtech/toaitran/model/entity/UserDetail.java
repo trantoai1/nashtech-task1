@@ -1,6 +1,5 @@
 package com.nashtech.toaitran.model.entity;
 
-import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,8 +21,8 @@ public class UserDetail {
     @Column(nullable = true)
     private String address;
 
-    @Column(nullable = true)
-    private String email;
+//    @Column(nullable = true)
+//    private String email;
     @Transient
     @OneToMany
     private Collection<Order> orders;

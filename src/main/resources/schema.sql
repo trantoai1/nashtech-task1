@@ -1,6 +1,6 @@
 -- DROP SCHEMA public;
 
-CREATE SCHEMA public AUTHORIZATION trantoai;
+
 
 -- DROP SEQUENCE public.categories_id_seq;
 
@@ -56,6 +56,15 @@ CREATE SEQUENCE public.products_id_seq
     START 1
     CACHE 1
     NO CYCLE;
+-- DROP SEQUENCE public.roles_id_seq;
+
+CREATE SEQUENCE public.roles_id_seq
+    INCREMENT BY 1
+    MINVALUE 1
+    MAXVALUE 9223372036854775807
+    START 1
+    CACHE 1
+    NO CYCLE;
 -- DROP SEQUENCE public.userdetails_id_seq;
 
 CREATE SEQUENCE public.userdetails_id_seq
@@ -92,6 +101,20 @@ CREATE TABLE public.features (
 );
 
 
+-- public.roles definition
+
+-- Drop table
+
+-- DROP TABLE public.roles;
+
+CREATE TABLE public.roles (
+                              id bigserial NOT NULL,
+                              "name" varchar(60) NULL,
+                              CONSTRAINT roles_pkey PRIMARY KEY (id),
+                              CONSTRAINT uk_nb4h0p6txrmfc0xbrd1kglp9t UNIQUE (name)
+);
+
+
 -- public.users definition
 
 -- Drop table
@@ -100,8 +123,8 @@ CREATE TABLE public.features (
 
 CREATE TABLE public.users (
                               id int8 NOT NULL,
+                              email varchar(255) NULL,
                               "password" varchar(255) NULL,
-                              "role" int4 NULL,
                               username varchar(255) NULL,
                               CONSTRAINT uk_r43af9ap4edm43mmtq01oddj6 UNIQUE (username),
                               CONSTRAINT users_pkey PRIMARY KEY (id)
@@ -163,6 +186,21 @@ CREATE TABLE public.rates (
 );
 
 
+-- public.user_roles definition
+
+-- Drop table
+
+-- DROP TABLE public.user_roles;
+
+CREATE TABLE public.user_roles (
+                                   user_id int8 NOT NULL,
+                                   role_id int8 NOT NULL,
+                                   CONSTRAINT user_roles_pkey PRIMARY KEY (user_id, role_id),
+                                   CONSTRAINT fkh8ciramu9cc9q3qcqiv4ue8a6 FOREIGN KEY (role_id) REFERENCES public.roles(id),
+                                   CONSTRAINT fkhfh9dx7w3ubf1co1vdev94g3f FOREIGN KEY (user_id) REFERENCES public.users(id)
+);
+
+
 -- public.userdetails definition
 
 -- Drop table
@@ -172,7 +210,6 @@ CREATE TABLE public.rates (
 CREATE TABLE public.userdetails (
                                     id bigserial NOT NULL,
                                     address varchar(255) NULL,
-                                    email varchar(255) NULL,
                                     first_name varchar(255) NULL,
                                     last_name varchar(255) NULL,
                                     CONSTRAINT userdetails_pkey PRIMARY KEY (id),
@@ -228,6 +265,4 @@ CREATE TABLE public.orderdetails (
                                      CONSTRAINT fk92im1bt9gndrexccag7x5oq92 FOREIGN KEY (product_id) REFERENCES public.products(id),
                                      CONSTRAINT fkhnsosbuy7bhpqpnt3bjr7sh8x FOREIGN KEY (order_id) REFERENCES public.orders(orderid)
 );
-
-
 
