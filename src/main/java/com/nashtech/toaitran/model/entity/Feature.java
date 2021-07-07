@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Collection;
 
 @Entity
 @Table(schema = "public", name = "features")
@@ -14,12 +13,19 @@ public class Feature {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long featureId;
+    //@Transient
+    @ManyToOne
+    private FeatureType featureType;
 
-    private String name;
-    private String description;
+    private Double specific;
 
+    @Override
+    public String toString() {
+        return "Feature{" +
+                "featureId=" + featureId +
+                ", featureType=" + featureType.getId() +
+                ", specific=" + specific +
 
-    @Transient
-    @OneToMany
-    private Collection<FeatureDetail> featureDetails;
+                '}';
+    }
 }

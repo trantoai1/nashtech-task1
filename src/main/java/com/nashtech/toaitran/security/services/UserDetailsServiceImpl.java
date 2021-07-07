@@ -2,7 +2,7 @@ package com.nashtech.toaitran.security.services;
 
 
 import com.nashtech.toaitran.model.entity.User;
-import com.nashtech.toaitran.repository.UserRepository;
+import com.nashtech.toaitran.repository.IUserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -12,10 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private final UserRepository userRepository;
+    private final IUserRepository IUserRepository;
 
-    public UserDetailsServiceImpl (UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UserDetailsServiceImpl (IUserRepository IUserRepository) {
+        this.IUserRepository = IUserRepository;
     }
 
     @Override
@@ -23,11 +23,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username)
             throws UsernameNotFoundException {
 
-        User user = userRepository.findByUsername(username)
+        User user = IUserRepository.findByUsername(username)
                 .orElseThrow(() ->
                         new UsernameNotFoundException("User Not Found with -> username or email : " + username)
                 );
 
-        return com.nashtech.toaitran.security.services.UserDetailsImpl.build(user);
+        return UserDetailsImpl.build(user);
     }
 }

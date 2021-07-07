@@ -16,7 +16,7 @@ public class Image implements Serializable {
     private String url;
     private String alt;
     private Integer width;
-    private Integer heigh;
+    private Integer height;
     @ManyToOne
     private Product product;
 }

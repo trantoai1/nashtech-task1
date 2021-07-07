@@ -1,6 +1,8 @@
 -- DROP SCHEMA public;
 
+CREATE SCHEMA public AUTHORIZATION trantoai;
 
+COMMENT ON SCHEMA public IS 'standard public schema';
 
 -- DROP SEQUENCE public.categories_id_seq;
 
@@ -11,9 +13,45 @@ CREATE SEQUENCE public.categories_id_seq
     START 1
     CACHE 1
     NO CYCLE;
+-- DROP SEQUENCE public.categories_id_seq1;
+
+CREATE SEQUENCE public.categories_id_seq1
+    INCREMENT BY 1
+    MINVALUE 1
+    MAXVALUE 9223372036854775807
+    START 1
+    CACHE 1
+    NO CYCLE;
+-- DROP SEQUENCE public.categories_id_seq2;
+
+CREATE SEQUENCE public.categories_id_seq2
+    INCREMENT BY 1
+    MINVALUE 1
+    MAXVALUE 9223372036854775807
+    START 1
+    CACHE 1
+    NO CYCLE;
 -- DROP SEQUENCE public.features_feature_id_seq;
 
 CREATE SEQUENCE public.features_feature_id_seq
+    INCREMENT BY 1
+    MINVALUE 1
+    MAXVALUE 9223372036854775807
+    START 1
+    CACHE 1
+    NO CYCLE;
+-- DROP SEQUENCE public.features_feature_id_seq1;
+
+CREATE SEQUENCE public.features_feature_id_seq1
+    INCREMENT BY 1
+    MINVALUE 1
+    MAXVALUE 9223372036854775807
+    START 1
+    CACHE 1
+    NO CYCLE;
+-- DROP SEQUENCE public.features_feature_id_seq2;
+
+CREATE SEQUENCE public.features_feature_id_seq2
     INCREMENT BY 1
     MINVALUE 1
     MAXVALUE 9223372036854775807
@@ -38,9 +76,45 @@ CREATE SEQUENCE public.image_id_seq
     START 1
     CACHE 1
     NO CYCLE;
+-- DROP SEQUENCE public.image_id_seq1;
+
+CREATE SEQUENCE public.image_id_seq1
+    INCREMENT BY 1
+    MINVALUE 1
+    MAXVALUE 9223372036854775807
+    START 1
+    CACHE 1
+    NO CYCLE;
+-- DROP SEQUENCE public.image_id_seq2;
+
+CREATE SEQUENCE public.image_id_seq2
+    INCREMENT BY 1
+    MINVALUE 1
+    MAXVALUE 9223372036854775807
+    START 1
+    CACHE 1
+    NO CYCLE;
 -- DROP SEQUENCE public.orders_orderid_seq;
 
 CREATE SEQUENCE public.orders_orderid_seq
+    INCREMENT BY 1
+    MINVALUE 1
+    MAXVALUE 9223372036854775807
+    START 1
+    CACHE 1
+    NO CYCLE;
+-- DROP SEQUENCE public.orders_orderid_seq1;
+
+CREATE SEQUENCE public.orders_orderid_seq1
+    INCREMENT BY 1
+    MINVALUE 1
+    MAXVALUE 9223372036854775807
+    START 1
+    CACHE 1
+    NO CYCLE;
+-- DROP SEQUENCE public.orders_orderid_seq2;
+
+CREATE SEQUENCE public.orders_orderid_seq2
     INCREMENT BY 1
     MINVALUE 1
     MAXVALUE 9223372036854775807
@@ -56,6 +130,24 @@ CREATE SEQUENCE public.products_id_seq
     START 1
     CACHE 1
     NO CYCLE;
+-- DROP SEQUENCE public.products_id_seq1;
+
+CREATE SEQUENCE public.products_id_seq1
+    INCREMENT BY 1
+    MINVALUE 1
+    MAXVALUE 9223372036854775807
+    START 1
+    CACHE 1
+    NO CYCLE;
+-- DROP SEQUENCE public.products_id_seq2;
+
+CREATE SEQUENCE public.products_id_seq2
+    INCREMENT BY 1
+    MINVALUE 1
+    MAXVALUE 9223372036854775807
+    START 1
+    CACHE 1
+    NO CYCLE;
 -- DROP SEQUENCE public.roles_id_seq;
 
 CREATE SEQUENCE public.roles_id_seq
@@ -65,9 +157,45 @@ CREATE SEQUENCE public.roles_id_seq
     START 1
     CACHE 1
     NO CYCLE;
+-- DROP SEQUENCE public.roles_id_seq1;
+
+CREATE SEQUENCE public.roles_id_seq1
+    INCREMENT BY 1
+    MINVALUE 1
+    MAXVALUE 9223372036854775807
+    START 1
+    CACHE 1
+    NO CYCLE;
+-- DROP SEQUENCE public.roles_id_seq2;
+
+CREATE SEQUENCE public.roles_id_seq2
+    INCREMENT BY 1
+    MINVALUE 1
+    MAXVALUE 9223372036854775807
+    START 1
+    CACHE 1
+    NO CYCLE;
 -- DROP SEQUENCE public.userdetails_id_seq;
 
 CREATE SEQUENCE public.userdetails_id_seq
+    INCREMENT BY 1
+    MINVALUE 1
+    MAXVALUE 9223372036854775807
+    START 1
+    CACHE 1
+    NO CYCLE;
+-- DROP SEQUENCE public.userdetails_id_seq1;
+
+CREATE SEQUENCE public.userdetails_id_seq1
+    INCREMENT BY 1
+    MINVALUE 1
+    MAXVALUE 9223372036854775807
+    START 1
+    CACHE 1
+    NO CYCLE;
+-- DROP SEQUENCE public.userdetails_id_seq2;
+
+CREATE SEQUENCE public.userdetails_id_seq2
     INCREMENT BY 1
     MINVALUE 1
     MAXVALUE 9223372036854775807
@@ -87,17 +215,17 @@ CREATE TABLE public.categories (
 );
 
 
--- public.features definition
+-- public.feature_type definition
 
 -- Drop table
 
--- DROP TABLE public.features;
+-- DROP TABLE public.feature_type;
 
-CREATE TABLE public.features (
-                                 feature_id bigserial NOT NULL,
-                                 description varchar(255) NULL,
-                                 "name" varchar(255) NULL,
-                                 CONSTRAINT features_pkey PRIMARY KEY (feature_id)
+CREATE TABLE public.feature_type (
+                                     id varchar(255) NOT NULL,
+                                     "name" varchar(255) NULL,
+                                     unit varchar(255) NULL,
+                                     CONSTRAINT feature_type_pkey PRIMARY KEY (id)
 );
 
 
@@ -128,6 +256,21 @@ CREATE TABLE public.users (
                               username varchar(255) NULL,
                               CONSTRAINT uk_r43af9ap4edm43mmtq01oddj6 UNIQUE (username),
                               CONSTRAINT users_pkey PRIMARY KEY (id)
+);
+
+
+-- public.features definition
+
+-- Drop table
+
+-- DROP TABLE public.features;
+
+CREATE TABLE public.features (
+                                 feature_id bigserial NOT NULL,
+                                 "specific" float8 NULL,
+                                 feature_type_id varchar(255) NULL,
+                                 CONSTRAINT features_pkey PRIMARY KEY (feature_id),
+                                 CONSTRAINT fkmik9t9bcp94nbvt27w0fk4ocg FOREIGN KEY (feature_type_id) REFERENCES public.feature_type(id)
 );
 
 
@@ -224,10 +367,9 @@ CREATE TABLE public.userdetails (
 -- DROP TABLE public.feature_detail;
 
 CREATE TABLE public.feature_detail (
-                                       description varchar(255) NULL,
                                        product_id int8 NOT NULL,
                                        feature_id int8 NOT NULL,
-                                       CONSTRAINT feature_detail_pkey PRIMARY KEY (product_id, feature_id),
+                                       CONSTRAINT feature_detail_pkey PRIMARY KEY (feature_id, product_id),
                                        CONSTRAINT fkbmdlnfis4p1klflyrp7vgy4wg FOREIGN KEY (feature_id) REFERENCES public.features(feature_id),
                                        CONSTRAINT fks5ra90nnt9jivw55p2ltyjqee FOREIGN KEY (product_id) REFERENCES public.products(id)
 );
@@ -242,7 +384,7 @@ CREATE TABLE public.feature_detail (
 CREATE TABLE public.image (
                               id bigserial NOT NULL,
                               alt varchar(255) NULL,
-                              heigh int4 NULL,
+                              height int4 NULL,
                               url varchar(255) NULL,
                               width int4 NULL,
                               product_id int8 NULL,

@@ -1,27 +1,20 @@
 package com.nashtech.toaitran.model.entity;
 
+import com.nashtech.toaitran.model.embeded.OrderDetailKey;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
-import java.io.Serializable;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Entity
 @Table(schema = "public", name = "orderdetails")
 @Getter
 @Setter
-public class OrderDetail implements Serializable {
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long detailId;
-    @Id
-    @ManyToOne
-    @JoinColumn(name = "order_id")
-    private Order order;
-    @Id
-    @ManyToOne
-    @JoinColumn(name = "product_id")
-    private Product product;
+public class OrderDetail {
+    @EmbeddedId
+    private OrderDetailKey key;
 
     private Integer amount;
 }

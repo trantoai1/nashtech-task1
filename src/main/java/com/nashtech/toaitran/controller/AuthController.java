@@ -3,12 +3,12 @@ package com.nashtech.toaitran.controller;
 import com.nashtech.toaitran.model.RoleName;
 import com.nashtech.toaitran.model.entity.Role;
 import com.nashtech.toaitran.model.entity.User;
-import com.nashtech.toaitran.payload.request.LoginRequest;
-import com.nashtech.toaitran.payload.request.SignupRequest;
-import com.nashtech.toaitran.payload.response.JwtResponse;
-import com.nashtech.toaitran.payload.response.MessageResponse;
-import com.nashtech.toaitran.repository.RoleRepository;
-import com.nashtech.toaitran.repository.UserRepository;
+import com.nashtech.toaitran.model.dto.LoginRequest;
+import com.nashtech.toaitran.model.dto.SignupRequest;
+import com.nashtech.toaitran.model.dto.JwtResponse;
+import com.nashtech.toaitran.model.dto.MessageResponse;
+import com.nashtech.toaitran.repository.IRoleRepository;
+import com.nashtech.toaitran.repository.IUserRepository;
 import com.nashtech.toaitran.security.jwt.JwtUtils;
 import com.nashtech.toaitran.security.services.UserDetailsImpl;
 import org.springframework.http.ResponseEntity;
@@ -32,19 +32,19 @@ public class AuthController {
 
     final private AuthenticationManager authenticationManager;
 
-    final private UserRepository userRepository;
+    final private IUserRepository IUserRepository;
 
-    final private RoleRepository roleRepository;
+    final private IRoleRepository IRoleRepository;
 
     final private PasswordEncoder encoder;
 
     final private JwtUtils jwtUtils;
 
-    public AuthController (AuthenticationManager authenticationManager, UserRepository userRepository,
-                           RoleRepository roleRepository, PasswordEncoder encoder, JwtUtils jwtUtils) {
+    public AuthController (AuthenticationManager authenticationManager, IUserRepository IUserRepository,
+                           IRoleRepository IRoleRepository, PasswordEncoder encoder, JwtUtils jwtUtils) {
         this.authenticationManager = authenticationManager;
-        this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
+        this.IUserRepository = IUserRepository;
+        this.IRoleRepository = IRoleRepository;
         this.encoder = encoder;
         this.jwtUtils = jwtUtils;
     }
@@ -80,13 +80,13 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
-        if (userRepository.existsByUsername(signUpRequest.getUsername())) {
+        if (IUserRepository.existsByUsername(signUpRequest.getUsername())) {
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Error: Username is already taken!"));
         }
 
-        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+        if (IUserRepository.existsByEmail(signUpRequest.getEmail())) {
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Error: Email is already in use!"));
@@ -101,26 +101,26 @@ public class AuthController {
         Set<Role> roles = new HashSet<>();
 
         if (strRoles == null) {
-            Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
+            Role userRole = IRoleRepository.findByName(RoleName.ROLE_USER)
                     .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
             roles.add(userRole);
         } else {
             strRoles.forEach(role -> {
                 switch (role.toLowerCase()) {
                     case "admin":
-                        Role adminRole = roleRepository.findByName(RoleName.ROLE_ADMIN)
+                        Role adminRole = IRoleRepository.findByName(RoleName.ROLE_ADMIN)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(adminRole);
 
                         break;
                     case "pm":
-                        Role modRole = roleRepository.findByName(RoleName.ROLE_PM)
+                        Role modRole = IRoleRepository.findByName(RoleName.ROLE_PM)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(modRole);
 
                         break;
                     default:
-                        Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
+                        Role userRole = IRoleRepository.findByName(RoleName.ROLE_USER)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(userRole);
                 }
@@ -128,7 +128,7 @@ public class AuthController {
         }
 
         user.setRoles(roles);
-        userRepository.save(user);
+        IUserRepository.save(user);
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
