@@ -1,6 +1,7 @@
 package com.nashtech.toaitran.model.entity;
 
 import com.nashtech.toaitran.model.RoleName;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.NaturalId;
@@ -12,6 +13,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @Table(name = "roles")
+@Schema(hidden = true)
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

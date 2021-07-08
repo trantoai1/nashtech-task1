@@ -1,7 +1,6 @@
 package com.nashtech.toaitran.controller;
 
 import com.nashtech.toaitran.service.IBaseService;
-
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

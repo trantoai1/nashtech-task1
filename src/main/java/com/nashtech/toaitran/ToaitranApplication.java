@@ -28,6 +28,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
                         url = "https://github.com/thombergs/code-examples/blob/master/LICENSE")),
         servers = @Server(url = "http://localhost:8080"),
         security = {@SecurityRequirement(name = "bearerToken")}
+
 )
 @SecuritySchemes({
         @SecurityScheme(

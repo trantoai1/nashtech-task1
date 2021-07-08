@@ -1,5 +1,6 @@
 package com.nashtech.toaitran.service.impl;
 
+import com.nashtech.toaitran.exception.NotFoundException;
 import com.nashtech.toaitran.model.dto.OrderDetailDTO;
 import com.nashtech.toaitran.model.embeded.OrderDetailKey;
 import com.nashtech.toaitran.model.entity.OrderDetail;
@@ -10,6 +11,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OrderDetailServiceImpl implements IBaseService<OrderDetailDTO, OrderDetailKey>, IModelMapper<OrderDetailDTO, OrderDetail> {
@@ -22,34 +24,49 @@ public class OrderDetailServiceImpl implements IBaseService<OrderDetailDTO, Orde
     }
 
     public List<OrderDetailDTO> findAll() {
-        return null;
+        return createFromEntities(repository.findAll());
     }
 
     public OrderDetailDTO findById(OrderDetailKey orderDetailKey) {
-        return null;
+        Optional<OrderDetail> entity = repository.findById(orderDetailKey);
+        entity.orElseThrow(()-> new NotFoundException(OrderDetail.class,orderDetailKey.getOrder().getOrderid()));
+        return createFromE(entity.get());
     }
 
     public OrderDetailDTO update(OrderDetailKey orderDetailKey, OrderDetailDTO orderDetailDTO) {
-        return null;
+        Optional<OrderDetail> entity = repository.findById(orderDetailKey);
+        entity.orElseThrow(()-> new NotFoundException(OrderDetail.class,orderDetailKey.getOrder().getOrderid()));
+        return createFromE(repository.save(updateEntity(entity.get(),orderDetailDTO)));
     }
 
     public OrderDetailDTO save(OrderDetailDTO orderDetailDTO) {
-        return null;
+        return createFromE(repository.save(createFromD(orderDetailDTO)));
     }
 
     public OrderDetailDTO delete(OrderDetailKey orderDetailKey) {
-        return null;
+        OrderDetail entity = repository.getById(orderDetailKey);
+        repository.delete(entity);
+        return createFromE(entity);
     }
 
     public OrderDetail createFromD(OrderDetailDTO dto) {
-        return null;
+        OrderDetail entity = modelMapper.map(dto,OrderDetail.class);
+        return entity;
     }
 
     public OrderDetailDTO createFromE(OrderDetail entity) {
-        return null;
+        OrderDetailDTO dto = modelMapper.map(entity,OrderDetailDTO.class);
+        return dto;
     }
 
     public OrderDetail updateEntity(OrderDetail entity, OrderDetailDTO dto) {
-        return null;
+        if (entity != null && dto != null) {
+            entity.setAmount(dto.getAmount());
+            //entity.setKey(dto.getUnit());
+            //entity.setId(dto.getId());
+
+        }
+
+        return entity;
     }
 }

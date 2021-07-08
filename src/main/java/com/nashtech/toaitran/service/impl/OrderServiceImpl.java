@@ -1,5 +1,6 @@
 package com.nashtech.toaitran.service.impl;
 
+import com.nashtech.toaitran.exception.NotFoundException;
 import com.nashtech.toaitran.model.dto.OrderDTO;
 import com.nashtech.toaitran.model.entity.Order;
 import com.nashtech.toaitran.repository.IOrderRepository;
@@ -9,6 +10,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+
 @Service
 public class OrderServiceImpl implements IBaseService<OrderDTO, Long>, IModelMapper<OrderDTO, Order> {
     private final IOrderRepository repository;
@@ -23,31 +26,47 @@ public class OrderServiceImpl implements IBaseService<OrderDTO, Long>, IModelMap
         return this.createFromEntities(this.repository.findAll());
     }
 
-    public OrderDTO findById(Long aLong) {
-        return null;
+    public OrderDTO findById(Long id) {
+        Optional<Order> entity = repository.findById(id);
+        entity.orElseThrow(()-> new NotFoundException(Order.class,id));
+        return createFromE(entity.get());
     }
 
-    public OrderDTO update(Long aLong, OrderDTO t) {
-        return null;
+    public OrderDTO update(Long id, OrderDTO dto) {
+        Optional<Order> entity = repository.findById(id);
+        entity.orElseThrow(()-> new NotFoundException(Order.class,id));
+        return createFromE(repository.save(updateEntity(entity.get(),dto)));
     }
 
     public OrderDTO save(OrderDTO t) {
-        return null;
+        return createFromE(repository.save(createFromD(t)));
     }
 
-    public OrderDTO delete(Long aLong) {
-        return null;
+    public OrderDTO delete(Long id) {
+        Order entity = repository.getById(id);
+        repository.delete(entity);
+        return createFromE(entity);
     }
 
     public Order createFromD(OrderDTO dto) {
-        return null;
+        Order entity = modelMapper.map(dto,Order.class);
+        return entity;
     }
 
     public OrderDTO createFromE(Order entity) {
-        return null;
+        OrderDTO dto = modelMapper.map(entity,OrderDTO.class);
+        return dto;
     }
 
     public Order updateEntity(Order entity, OrderDTO dto) {
-        return null;
+        if (entity != null && dto != null) {
+            entity.setAddress(dto.getAddress());
+            entity.setOrderid(dto.getOrderid());
+            //entity.setStatus(dto.getStatus());
+            //entity.setTime(dto.getTime());
+
+        }
+
+        return entity;
     }
 }

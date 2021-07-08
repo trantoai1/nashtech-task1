@@ -1,5 +1,6 @@
 package com.nashtech.toaitran.model.entity;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,12 +10,20 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(schema = "public", name = "users")
+@Table(schema = "public", name = "user",uniqueConstraints = {
+        @UniqueConstraint(columnNames = {
+                "username"
+        }),
+        @UniqueConstraint(columnNames = {
+                "email"
+        })
+})
 @Getter
 @Setter
+@Schema(hidden = true)
 public class User {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(unique = true)
     private String username;
@@ -27,10 +36,11 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
     public User() {
-
+        super();
     }
 
     public User(String username, String username1, String email, String encode) {
+        super();
         //this.name = name;
         this.username = username;
         this.email = email;

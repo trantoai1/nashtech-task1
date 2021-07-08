@@ -6,7 +6,6 @@ import com.nashtech.toaitran.model.entity.Category;
 import com.nashtech.toaitran.repository.ICategoryRepository;
 import com.nashtech.toaitran.service.IBaseService;
 import com.nashtech.toaitran.service.IModelMapper;
-import lombok.Getter;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -19,43 +18,43 @@ import java.util.Optional;
 public class CategoryServiceImpl implements IBaseService<CateDTO, Long>, IModelMapper<CateDTO,Category> {
 
 
-    private final ICategoryRepository categoryRepository;
-    @Getter
+    private final ICategoryRepository repository;
+
     private final ModelMapper modelMapper;
 
     public CategoryServiceImpl(ICategoryRepository categoryRepository, ModelMapper modelMapper) {
-        this.categoryRepository = categoryRepository;
+        this.repository = categoryRepository;
         this.modelMapper = modelMapper;
     }
 
     @Override
     public List<CateDTO> findAll() {
-        return createFromEntities(categoryRepository.findAll());
+        return createFromEntities(repository.findAll());
     }
 
     @Override
     public CateDTO findById(Long id) {
-        Optional<Category> cate = categoryRepository.findById(id);
+        Optional<Category> cate = repository.findById(id);
         cate.orElseThrow(()-> new NotFoundException(Category.class,id));
         return createFromE(cate.get());
     }
 
     @Override
     public CateDTO update(Long id,CateDTO cateDTO) {
-        Optional<Category> cate = categoryRepository.findById(id);
+        Optional<Category> cate = repository.findById(id);
         cate.orElseThrow(()-> new NotFoundException(Category.class,id));
-        return createFromE(categoryRepository.save(updateEntity(cate.get(),cateDTO)));
+        return createFromE(repository.save(updateEntity(cate.get(),cateDTO)));
     }
 
     @Override
     public CateDTO save(CateDTO category) {
-        return createFromE(categoryRepository.save(createFromD(category)));
+        return createFromE(repository.save(createFromD(category)));
     }
 
     @Override
     public CateDTO delete(Long id) {
-        Category category = categoryRepository.getById(id);
-        categoryRepository.delete(category);
+        Category category = repository.getById(id);
+        repository.delete(category);
         return createFromE(category);
     }
 

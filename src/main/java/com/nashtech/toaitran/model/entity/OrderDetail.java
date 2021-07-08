@@ -1,6 +1,7 @@
 package com.nashtech.toaitran.model.entity;
 
 import com.nashtech.toaitran.model.embeded.OrderDetailKey;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,6 +13,7 @@ import javax.persistence.Table;
 @Table(schema = "public", name = "orderdetails")
 @Getter
 @Setter
+@Schema(hidden = true)
 public class OrderDetail {
     @EmbeddedId
     private OrderDetailKey key;

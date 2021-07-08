@@ -8,6 +8,6 @@ import lombok.Setter;
 public class FeatureDTO {
     private Long featureId;
 
-    private String name;
-    private String description;
+    private String featureTypeId;
+    private Double specific;
 }

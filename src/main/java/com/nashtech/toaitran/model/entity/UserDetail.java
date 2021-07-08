@@ -1,5 +1,6 @@
 package com.nashtech.toaitran.model.entity;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,6 +11,7 @@ import java.util.Collection;
 @Table(schema = "public", name = "userdetails")
 @Getter
 @Setter
+@Schema(hidden = true)
 public class UserDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

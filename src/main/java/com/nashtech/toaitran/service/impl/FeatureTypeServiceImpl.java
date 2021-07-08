@@ -1,5 +1,6 @@
 package com.nashtech.toaitran.service.impl;
 
+import com.nashtech.toaitran.exception.NotFoundException;
 import com.nashtech.toaitran.model.dto.FeatureTypeDTO;
 import com.nashtech.toaitran.model.entity.FeatureType;
 import com.nashtech.toaitran.repository.IFeatureTypeRepository;
@@ -9,6 +10,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FeatureTypeServiceImpl implements IBaseService<FeatureTypeDTO, String>, IModelMapper<FeatureTypeDTO, FeatureType> {
@@ -19,36 +21,52 @@ public class FeatureTypeServiceImpl implements IBaseService<FeatureTypeDTO, Stri
         this.repository = repository;
         this.modelMapper = modelMapper;
     }
-
+    @Override
     public List<FeatureTypeDTO> findAll() {
-        return null;
+        return createFromEntities(repository.findAll());
     }
-
-    public FeatureTypeDTO findById(String s) {
-        return null;
+    @Override
+    public FeatureTypeDTO findById(String id) {
+        Optional<FeatureType> entity = repository.findById(id);
+        entity.orElseThrow(()-> new NotFoundException(FeatureType.class,id));
+        return createFromE(entity.get());
     }
-
-    public FeatureTypeDTO update(String s, FeatureTypeDTO featureTypeDTO) {
-        return null;
+    @Override
+    public FeatureTypeDTO update(String id, FeatureTypeDTO dto) {
+        Optional<FeatureType> entity = repository.findById(id);
+        entity.orElseThrow(()-> new NotFoundException(FeatureType.class,id));
+        return createFromE(repository.save(updateEntity(entity.get(),dto)));
     }
-
-    public FeatureTypeDTO save(FeatureTypeDTO featureTypeDTO) {
-        return null;
+    @Override
+    public FeatureTypeDTO save(FeatureTypeDTO dto) {
+        return createFromE(repository.save(createFromD(dto)));
     }
-
-    public FeatureTypeDTO delete(String s) {
-        return null;
+    @Override
+    public FeatureTypeDTO delete(String id) {
+        FeatureType entity = repository.getById(id);
+        repository.delete(entity);
+        return createFromE(entity);
     }
-
+    @Override
     public FeatureType createFromD(FeatureTypeDTO dto) {
-        return null;
+        FeatureType entity = modelMapper.map(dto,FeatureType.class);
+        return entity;
     }
 
     public FeatureTypeDTO createFromE(FeatureType entity) {
-        return null;
+        FeatureTypeDTO dto = modelMapper.map(entity,FeatureTypeDTO.class);
+        return dto;
+
     }
 
     public FeatureType updateEntity(FeatureType entity, FeatureTypeDTO dto) {
-        return null;
+        if (entity != null && dto != null) {
+            entity.setName(dto.getName());
+            entity.setUnit(dto.getUnit());
+            entity.setId(dto.getId());
+
+        }
+
+        return entity;
     }
 }
