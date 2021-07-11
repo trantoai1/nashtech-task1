@@ -28,15 +28,17 @@ public class OrderDetailServiceImpl implements IBaseService<OrderDetailDTO, Orde
     }
 
     public OrderDetailDTO findById(OrderDetailKey orderDetailKey) {
-        Optional<OrderDetail> entity = repository.findById(orderDetailKey);
-        entity.orElseThrow(()-> new NotFoundException(OrderDetail.class,orderDetailKey.getOrder().getOrderid()));
-        return createFromE(entity.get());
+//        Optional<OrderDetail> entity = repository.findById(orderDetailKey);
+//        entity.orElseThrow(()-> new NotFoundException(OrderDetail.class,orderDetailKey.getOrder().getOrderid()));
+//        return createFromE(entity.get());
+        return null;
     }
 
     public OrderDetailDTO update(OrderDetailKey orderDetailKey, OrderDetailDTO orderDetailDTO) {
-        Optional<OrderDetail> entity = repository.findById(orderDetailKey);
-        entity.orElseThrow(()-> new NotFoundException(OrderDetail.class,orderDetailKey.getOrder().getOrderid()));
-        return createFromE(repository.save(updateEntity(entity.get(),orderDetailDTO)));
+//        Optional<OrderDetail> entity = repository.findById(orderDetailKey);
+//        entity.orElseThrow(()-> new NotFoundException(OrderDetail.class,orderDetailKey.getOrder().getOrderid()));
+//        return createFromE(repository.save(updateEntity(entity.get(),orderDetailDTO)));
+        return null;
     }
 
     public OrderDetailDTO save(OrderDetailDTO orderDetailDTO) {
@@ -44,9 +46,11 @@ public class OrderDetailServiceImpl implements IBaseService<OrderDetailDTO, Orde
     }
 
     public OrderDetailDTO delete(OrderDetailKey orderDetailKey) {
-        OrderDetail entity = repository.getById(orderDetailKey);
-        repository.delete(entity);
-        return createFromE(entity);
+//        Optional<OrderDetail> entity = Optional.ofNullable(repository.findById(orderDetailKey)
+//                .orElseThrow(() -> new NotFoundException(OrderDetail.class, "id")));
+//        repository.delete(entity.get());
+//        return createFromE(entity.get());
+        return null;
     }
 
     public OrderDetail createFromD(OrderDetailDTO dto) {
@@ -68,5 +72,22 @@ public class OrderDetailServiceImpl implements IBaseService<OrderDetailDTO, Orde
         }
 
         return entity;
+    }
+
+    public OrderDetailDTO findById(Long productId, Long orderId) {
+        Optional<OrderDetail> orderDetail = Optional.ofNullable(repository.findByKey_Product_ProductidAndKey_Order_Orderid(productId, orderId).orElseThrow(() -> new NotFoundException(OrderDetail.class, productId + "-" + orderId)));
+        return createFromE(orderDetail.get());
+    }
+
+    public OrderDetailDTO update(Long productId, Long orderId, OrderDetailDTO orderDetailDTO) {
+        Optional<OrderDetail> entity = Optional.ofNullable(repository.findByKey_Product_ProductidAndKey_Order_Orderid(productId, orderId).orElseThrow(() -> new NotFoundException(OrderDetail.class, productId + "-" + orderId)));
+
+        return createFromE(repository.save(updateEntity(entity.get(), orderDetailDTO)));
+    }
+
+    public OrderDetailDTO delete(Long productId, Long orderId) {
+        Optional<OrderDetail> entity = Optional.ofNullable(repository.findByKey_Product_ProductidAndKey_Order_Orderid(productId, orderId).orElseThrow(() -> new NotFoundException(OrderDetail.class, productId + "-" + orderId)));
+        repository.delete(entity.get());
+        return createFromE(entity.get());
     }
 }

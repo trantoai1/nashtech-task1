@@ -42,7 +42,7 @@ public class FeatureServiceImpl implements IBaseService<FeatureDTO,Long>, IModel
     @Override
     public FeatureDTO update(Long id, FeatureDTO dto) {
         Optional<Feature> entity = repository.findById(id);
-        entity.orElseThrow(()-> new NotFoundException(FeatureType.class,id));
+        entity.orElseThrow(() -> new NotFoundException(Feature.class, id));
         return createFromE(repository.save(updateEntity(entity.get(),dto)));
     }
 
@@ -54,9 +54,10 @@ public class FeatureServiceImpl implements IBaseService<FeatureDTO,Long>, IModel
 
     @Override
     public FeatureDTO delete(Long id) {
-        Feature entity = repository.getById(id);
-        repository.delete(entity);
-        return createFromE(entity);
+        Optional<Feature> entity = Optional.ofNullable(repository.findById(id)
+                .orElseThrow(() -> new NotFoundException(Feature.class, id)));
+        repository.delete(entity.get());
+        return createFromE(entity.get());
     }
 
     @Override
@@ -76,7 +77,7 @@ public class FeatureServiceImpl implements IBaseService<FeatureDTO,Long>, IModel
         if (entity != null && dto != null) {
             entity.setFeatureType(typeRepository.findById(dto.getFeatureTypeId()).orElseThrow(()->new NotFoundException(FeatureType.class,dto.getFeatureId())));
             entity.setSpecific(dto.getSpecific());
-            entity.setFeatureId(dto.getFeatureId());
+            //entity.setFeatureId(dto.getFeatureId());
 
         }
 

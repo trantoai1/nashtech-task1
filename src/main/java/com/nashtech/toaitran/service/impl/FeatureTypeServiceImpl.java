@@ -27,13 +27,12 @@ public class FeatureTypeServiceImpl implements IBaseService<FeatureTypeDTO, Stri
     }
     @Override
     public FeatureTypeDTO findById(String id) {
-        Optional<FeatureType> entity = repository.findById(id);
-        entity.orElseThrow(()-> new NotFoundException(FeatureType.class,id));
+        Optional<FeatureType> entity = Optional.of(repository.findById(id.toUpperCase()).orElseThrow(() -> new NotFoundException(FeatureType.class, id.toUpperCase())));
         return createFromE(entity.get());
     }
     @Override
     public FeatureTypeDTO update(String id, FeatureTypeDTO dto) {
-        Optional<FeatureType> entity = repository.findById(id);
+        Optional<FeatureType> entity = repository.findById(id.toUpperCase());
         entity.orElseThrow(()-> new NotFoundException(FeatureType.class,id));
         return createFromE(repository.save(updateEntity(entity.get(),dto)));
     }
@@ -43,9 +42,10 @@ public class FeatureTypeServiceImpl implements IBaseService<FeatureTypeDTO, Stri
     }
     @Override
     public FeatureTypeDTO delete(String id) {
-        FeatureType entity = repository.getById(id);
-        repository.delete(entity);
-        return createFromE(entity);
+        Optional<FeatureType> entity = Optional.ofNullable(repository.findById(id)
+                .orElseThrow(() -> new NotFoundException(FeatureType.class, id)));
+        repository.delete(entity.get());
+        return createFromE(entity.get());
     }
     @Override
     public FeatureType createFromD(FeatureTypeDTO dto) {
@@ -63,7 +63,7 @@ public class FeatureTypeServiceImpl implements IBaseService<FeatureTypeDTO, Stri
         if (entity != null && dto != null) {
             entity.setName(dto.getName());
             entity.setUnit(dto.getUnit());
-            entity.setId(dto.getId());
+            //entity.setId(dto.getId());
 
         }
 

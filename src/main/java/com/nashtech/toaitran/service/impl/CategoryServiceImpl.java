@@ -15,7 +15,7 @@ import java.util.Optional;
 
 @Service
 //@Transactional
-public class CategoryServiceImpl implements IBaseService<CateDTO, Long>, IModelMapper<CateDTO,Category> {
+public class CategoryServiceImpl implements IBaseService<CateDTO, Long>, IModelMapper<CateDTO, Category> {
 
 
     private final ICategoryRepository repository;
@@ -34,16 +34,16 @@ public class CategoryServiceImpl implements IBaseService<CateDTO, Long>, IModelM
 
     @Override
     public CateDTO findById(Long id) {
-        Optional<Category> cate = repository.findById(id);
-        cate.orElseThrow(()-> new NotFoundException(Category.class,id));
+        Optional<Category> cate = Optional.ofNullable(repository.findById(id)).orElseThrow(() -> new NotFoundException(Category.class, id));
+
         return createFromE(cate.get());
     }
 
     @Override
-    public CateDTO update(Long id,CateDTO cateDTO) {
+    public CateDTO update(Long id, CateDTO cateDTO) {
         Optional<Category> cate = repository.findById(id);
-        cate.orElseThrow(()-> new NotFoundException(Category.class,id));
-        return createFromE(repository.save(updateEntity(cate.get(),cateDTO)));
+        cate.orElseThrow(() -> new NotFoundException(Category.class, id));
+        return createFromE(repository.save(updateEntity(cate.get(), cateDTO)));
     }
 
     @Override
@@ -53,20 +53,21 @@ public class CategoryServiceImpl implements IBaseService<CateDTO, Long>, IModelM
 
     @Override
     public CateDTO delete(Long id) {
-        Category category = repository.getById(id);
-        repository.delete(category);
-        return createFromE(category);
+        Optional<Category> category = Optional.ofNullable(repository.findById(id)
+                .orElseThrow(() -> new NotFoundException(Category.class, id)));
+        repository.delete(category.get());
+        return createFromE(category.get());
     }
 
     @Override
     public Category createFromD(CateDTO dto) {
-        Category entity = modelMapper.map(dto,Category.class);
+        Category entity = modelMapper.map(dto, Category.class);
         return entity;
     }
 
     @Override
     public CateDTO createFromE(Category entity) {
-        CateDTO dto = modelMapper.map(entity,CateDTO.class);
+        CateDTO dto = modelMapper.map(entity, CateDTO.class);
         return dto;
     }
 
@@ -75,7 +76,7 @@ public class CategoryServiceImpl implements IBaseService<CateDTO, Long>, IModelM
         if (entity != null && dto != null) {
             entity.setCateName(dto.getCateName());
             entity.setDescription(dto.getDescription());
-            entity.setId(dto.getId());
+            //entity.setId(dto.getId());
         }
 
         return entity;

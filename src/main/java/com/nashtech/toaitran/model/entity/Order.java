@@ -1,7 +1,6 @@
 package com.nashtech.toaitran.model.entity;
 
 import com.nashtech.toaitran.model.OrderStatus;
-import io.swagger.v3.oas.annotations.Hidden;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -14,7 +13,7 @@ import java.util.Date;
 @Table(schema = "public", name = "orders")
 @Getter
 @Setter
-@Hidden
+
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

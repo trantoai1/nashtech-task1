@@ -27,8 +27,7 @@ public class OrderServiceImpl implements IBaseService<OrderDTO, Long>, IModelMap
     }
 
     public OrderDTO findById(Long id) {
-        Optional<Order> entity = repository.findById(id);
-        entity.orElseThrow(()-> new NotFoundException(Order.class,id));
+        Optional<Order> entity = Optional.ofNullable(repository.findById(id).orElseThrow(() -> new NotFoundException(Order.class, id)));
         return createFromE(entity.get());
     }
 
@@ -43,9 +42,10 @@ public class OrderServiceImpl implements IBaseService<OrderDTO, Long>, IModelMap
     }
 
     public OrderDTO delete(Long id) {
-        Order entity = repository.getById(id);
-        repository.delete(entity);
-        return createFromE(entity);
+        Optional<Order> entity = Optional.ofNullable(repository.findById(id)
+                .orElseThrow(() -> new NotFoundException(Order.class, id)));
+        repository.delete(entity.get());
+        return createFromE(entity.get());
     }
 
     public Order createFromD(OrderDTO dto) {
@@ -61,7 +61,7 @@ public class OrderServiceImpl implements IBaseService<OrderDTO, Long>, IModelMap
     public Order updateEntity(Order entity, OrderDTO dto) {
         if (entity != null && dto != null) {
             entity.setAddress(dto.getAddress());
-            entity.setOrderid(dto.getOrderid());
+            //entity.setOrderid(dto.getOrderId());
             //entity.setStatus(dto.getStatus());
             //entity.setTime(dto.getTime());
 

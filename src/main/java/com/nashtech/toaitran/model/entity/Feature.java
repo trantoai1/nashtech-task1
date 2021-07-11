@@ -19,7 +19,7 @@ public class Feature {
     @ManyToOne
     private FeatureType featureType;
 
-    private Double specific;
+    private String specific;
 
     @Override
     public String toString() {

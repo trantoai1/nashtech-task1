@@ -30,7 +30,7 @@ public class Product {
 
     @ManyToOne
     private Category category;
-
+    private Integer remain;
     @Transient
     @OneToMany
     private Collection<Image> images;

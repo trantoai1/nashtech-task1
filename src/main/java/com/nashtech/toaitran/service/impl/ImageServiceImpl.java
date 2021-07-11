@@ -46,9 +46,10 @@ public class ImageServiceImpl implements IBaseService<ImageDTO, Long>, IModelMap
     }
 
     public ImageDTO delete(Long id) {
-        Image entity = repository.getById(id);
-        repository.delete(entity);
-        return createFromE(entity);
+        Optional<Image> entity = Optional.ofNullable(repository.findById(id)
+                .orElseThrow(() -> new NotFoundException(Image.class, id)));
+        repository.delete(entity.get());
+        return createFromE(entity.get());
     }
 
     public Image createFromD(ImageDTO dto) {
@@ -65,7 +66,7 @@ public class ImageServiceImpl implements IBaseService<ImageDTO, Long>, IModelMap
         if (entity != null && dto != null) {
             entity.setAlt(dto.getAlt());
             entity.setHeight(dto.getHeight());
-            entity.setId(dto.getId());
+            //entity.setId(dto.getId());
             entity.setProduct(productRepository.findById(dto.getProductId()).orElseThrow(()-> new NotFoundException(Product.class,dto.getProductId())));
             entity.setUrl(dto.getUrl());
             entity.setWidth(dto.getWidth());

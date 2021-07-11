@@ -43,9 +43,10 @@ public class ProductServiceImpl implements IBaseService<ProductDTO, Long>, IMode
     }
 
     public ProductDTO delete(Long id) {
-        Product entity = repository.getById(id);
-        repository.delete(entity);
-        return createFromE(entity);
+        Optional<Product> entity = Optional.ofNullable(repository.findById(id)
+                .orElseThrow(() -> new NotFoundException(Product.class, id)));
+        repository.delete(entity.get());
+        return createFromE(entity.get());
     }
 
     public Product createFromD(ProductDTO dto) {
@@ -62,7 +63,9 @@ public class ProductServiceImpl implements IBaseService<ProductDTO, Long>, IMode
         if (entity != null && dto != null) {
             entity.setProductDesc(dto.getProductDesc());
             entity.setPrice(dto.getPrice());
-            entity.setProductid(dto.getProductId());
+            entity.setRemain(dto.getRemain());
+            entity.setProductName(dto.getProductName());
+
 
         }
 
