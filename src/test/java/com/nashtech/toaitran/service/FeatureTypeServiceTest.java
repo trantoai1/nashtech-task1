@@ -22,7 +22,7 @@ import static org.mockito.Mockito.when;
 public class FeatureTypeServiceTest {
     public static final String ID = "CPU";
     public static final String ENTITYNAME = "ENTITY_NAME";
-    public static final String HAS_ID_NOT_FOUND = "FeatureType has id=" + String.valueOf(ID) + " not found!";
+    public static final String HAS_ID_NOT_FOUND = "FeatureType has id=" + ID + " not found!";
     public static final String DTONAME = "DTO_NAME";
     @Mock
     IFeatureTypeRepository repository;
@@ -65,7 +65,7 @@ public class FeatureTypeServiceTest {
     @Test
     public void findById() {
         FeatureType entity = newEntity();
-        FeatureTypeDTO dto = newDTO();
+        //FeatureTypeDTO dto = newDTO();
         Optional<FeatureType> optional = Optional.of(entity);
         assertNotNull(optional);
         when(repository.findById(ID)).thenReturn(optional);
@@ -108,7 +108,7 @@ public class FeatureTypeServiceTest {
     @Test
     public void delete() {
         FeatureType entity = newEntity();
-        FeatureTypeDTO dto = newDTO();
+        //FeatureTypeDTO dto = newDTO();
         Optional<FeatureType> optional = Optional.of(entity);
         assertNotNull(optional);
         when(repository.findById(ID)).thenReturn(optional);

@@ -28,7 +28,7 @@ import static org.mockito.Mockito.when;
 public class ProductServiceTest {
     public static final long ID = 1;
     public static final String ENTITYNAME = "CateTest";
-    public static final String HAS_ID_NOT_FOUND = "Product has id=" + String.valueOf(ID) + " not found!";
+    public static final String HAS_ID_NOT_FOUND = "Product has id=" + ID + " not found!";
     public static final String DTONAME = "DTONAME";
     @Mock
     IProductRepository repository;
@@ -77,7 +77,7 @@ public class ProductServiceTest {
     @Test
     public void findById() {
         Product entity = newEntity();
-        ProductDTO dto = newDTO();
+        //ProductDTO dto = newDTO();
         Optional<Product> optional = Optional.of(entity);
         assertNotNull(optional);
         when(repository.findById(ID)).thenReturn(optional);
@@ -122,7 +122,7 @@ public class ProductServiceTest {
     @Test
     public void delete() {
         Product entity = newEntity();
-        ProductDTO dto = newDTO();
+        //ProductDTO dto = newDTO();
         Optional<Product> optional = Optional.of(entity);
         assertNotNull(optional);
         when(repository.findById(ID)).thenReturn(optional);

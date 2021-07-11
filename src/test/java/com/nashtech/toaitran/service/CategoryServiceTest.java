@@ -26,7 +26,7 @@ import static org.mockito.Mockito.when;
 public class CategoryServiceTest {
     public static final long ID = 1L;
     public static final String CATE_NAME = "CateTest";
-    public static final String HAS_ID_NOT_FOUND = "Category has id=" + String.valueOf(ID) + " not found!";
+    public static final String HAS_ID_NOT_FOUND = "Category has id=" + ID + " not found!";
     public static final String DTONAME = "DTONAME";
     @Mock
     ICategoryRepository repository;
@@ -69,7 +69,7 @@ public class CategoryServiceTest {
     @Test
     public void findById() {
         Category cate = newCate();
-        CateDTO dto = newDTO();
+        //CateDTO dto = newDTO();
         Optional<Category> optional = Optional.of(cate);
         assertNotNull(optional);
         when(repository.findById(ID)).thenReturn(optional);
@@ -112,7 +112,7 @@ public class CategoryServiceTest {
     @Test
     public void delete() {
         Category cate = newCate();
-        CateDTO dto = newDTO();
+        //CateDTO dto = newDTO();
         Optional<Category> optional = Optional.of(cate);
         assertNotNull(optional);
         when(repository.findById(ID)).thenReturn(optional);

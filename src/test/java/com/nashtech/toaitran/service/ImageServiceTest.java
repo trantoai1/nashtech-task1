@@ -28,7 +28,7 @@ import static org.mockito.Mockito.when;
 public class ImageServiceTest {
     public static final long ID = 1;
     public static final String ENTITYNAME = "CateTest";
-    public static final String HAS_ID_NOT_FOUND = "Image has id=" + String.valueOf(ID) + " not found!";
+    public static final String HAS_ID_NOT_FOUND = "Image has id=" + ID + " not found!";
     public static final String DTONAME = "DTONAME";
     @Mock
     IImageRepository repository;
@@ -77,7 +77,7 @@ public class ImageServiceTest {
     @Test
     public void findById() {
         Image entity = newEntity();
-        ImageDTO dto = newDTO();
+        //ImageDTO dto = newDTO();
         Optional<Image> optional = Optional.of(entity);
         assertNotNull(optional);
         when(repository.findById(ID)).thenReturn(optional);
@@ -122,7 +122,7 @@ public class ImageServiceTest {
     @Test
     public void delete() {
         Image entity = newEntity();
-        ImageDTO dto = newDTO();
+        //ImageDTO dto = newDTO();
         Optional<Image> optional = Optional.of(entity);
         assertNotNull(optional);
         when(repository.findById(ID)).thenReturn(optional);

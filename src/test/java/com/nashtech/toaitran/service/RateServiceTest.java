@@ -28,14 +28,13 @@ public class RateServiceTest {
     public static final long OID = 1;
     public static final long PID = 2;
     public static final int ENTITYNAME = 3;
-    public static final String HAS_ID_NOT_FOUND = "Rate has id=" + String.valueOf(OID) + "-" + String.valueOf(PID) + " not found!";
+    public static final String HAS_ID_NOT_FOUND = "Rate has id=" + OID + "-" + PID + " not found!";
     public static final int DTONAME = 5;
     @Mock
     IRateRepository repository;
     @Mock
     ModelMapper modelMapper;
-    //    @Mock
-//    IRateTypeRepository typeRepository;
+
     @InjectMocks
     RateServiceImpl service;
 
@@ -79,7 +78,7 @@ public class RateServiceTest {
     @Test
     public void findById() {
         Rate entity = newEntity();
-        RateDTO dto = newDTO();
+        //RateDTO dto = newDTO();
         Optional<Rate> optional = Optional.of(entity);
         assertNotNull(optional);
         when(repository.findByKey_Product_ProductidAndKey_User_Id(PID, OID)).thenReturn(optional);
@@ -142,7 +141,7 @@ public class RateServiceTest {
     @Test
     public void delete() {
         Rate entity = newEntity();
-        RateDTO dto = newDTO();
+        //RateDTO dto = newDTO();
         Optional<Rate> optional = Optional.of(entity);
         assertNotNull(optional);
         when(repository.findByKey_Product_ProductidAndKey_User_Id(PID, OID)).thenReturn(optional);

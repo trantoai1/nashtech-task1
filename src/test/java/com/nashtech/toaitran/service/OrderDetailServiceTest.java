@@ -30,7 +30,7 @@ public class OrderDetailServiceTest {
     public static final long OID = 1;
     public static final long PID = 2;
     public static final int ENTITYNAME = 10;
-    public static final String HAS_ID_NOT_FOUND = "OrderDetail has id=" + String.valueOf(OID) + "-" + String.valueOf(PID) + " not found!";
+    public static final String HAS_ID_NOT_FOUND = "OrderDetail has id=" + OID + "-" + PID + " not found!";
     public static final int DTONAME = 15;
     @Mock
     IOrderDetailRepository repository;
@@ -81,7 +81,7 @@ public class OrderDetailServiceTest {
     @Test
     public void findById() {
         OrderDetail entity = newEntity();
-        OrderDetailDTO dto = newDTO();
+        //OrderDetailDTO dto = newDTO();
         Optional<OrderDetail> optional = Optional.of(entity);
         assertNotNull(optional);
         when(repository.findByKey_Product_ProductidAndKey_Order_Orderid(PID, OID)).thenReturn(optional);
@@ -144,7 +144,7 @@ public class OrderDetailServiceTest {
     @Test
     public void delete() {
         OrderDetail entity = newEntity();
-        OrderDetailDTO dto = newDTO();
+        //OrderDetailDTO dto = newDTO();
         Optional<OrderDetail> optional = Optional.of(entity);
         assertNotNull(optional);
         when(repository.findByKey_Product_ProductidAndKey_Order_Orderid(PID, OID)).thenReturn(optional);
