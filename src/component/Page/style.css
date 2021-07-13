@@ -1,0 +1,97 @@
+/* NAVBVAR */
+.navbar-brand img {
+    height: 30px;
+    width: auto;
+  }
+  
+  /* BANNER */
+  .banner {
+    position: relative;
+  }
+  
+  .banner .banner-message {
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  .banner .banner-message .banner-message-small {
+    color: #ff003c;
+    font-size: 36px;
+  }
+  
+  .banner .banner-message .banner-message-large {
+    color: #fff;
+    font-size: 48px;
+  }
+  
+  /* SIDEBAR */
+  #sidebar {
+    min-height: 300px;
+    padding: 60px 30px;
+  }
+  
+  #product-list {
+    background-color: #fff;
+    min-height: 300px;
+    padding: 30px;
+  }
+  
+  .product-category {
+    margin-top: 30px;
+    margin-bottom: 20px;
+  }
+  
+  .product-divider {
+    width: 500px;
+  }
+  
+  .product-item {
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+  
+  .product-item img {
+    width: 100%;
+  }
+  
+  .product-item .product-title {
+    margin-top: 20px;
+  }
+  
+  .product-item:hover {
+    cursor: pointer;
+  }
+  
+  .product-item:hover .product-title {
+    color: #ff003c;
+  }
+  
+  .product-item button {
+    width: 100%;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    box-shadow: none;
+    padding: 10px;
+    cursor: pointer;
+  }
+  
+  .product-item button:hover {
+    background-color: #fff;
+    color: #000;
+    border: 1px solid #000;
+  }
+  
+  /* FOOTER */
+  #footer {
+    width: 100%;
+    background-color: #f8f9fa!important;
+    color: #000;
+  }
+  
