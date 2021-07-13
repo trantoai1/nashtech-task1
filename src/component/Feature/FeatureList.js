@@ -34,13 +34,13 @@ export default class FeatureList extends Component {
             
             listFeatures.map((feature,index)=>{
                 //console.log(food.name);
-                return (<div key={feature.featureId} className="input-group mb-3">
+                return (
                     <Feature 
                     id = {feature.featureId}
                     spec = {feature.specific}
                     unit = {this.props.unit}                    
                 />
-                </div>)
+                )
                  
             })
         );

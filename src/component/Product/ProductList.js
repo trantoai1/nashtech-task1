@@ -16,7 +16,7 @@ class ProductList extends Component {
     componentDidMount(){
         callAPI('products')
         .then(res => {
-            //console.log(res)
+            console.log(res)
             if(res!==undefined)
             //console.log(res)
            if(res.status===200)
@@ -36,14 +36,24 @@ class ProductList extends Component {
             
             listProducts.map((product,index)=>{
                 //console.log(food.name);
-                return (<Product 
+                return (
+                    
+
+                                
+
+                    
+                
+                <Product 
                     id = {product.productId}
                     name = {product.productName}
                     desc = {product.productDesc}
                     price = {product.price}
                     key = {product.productId}
                     remain = {product.remain}
-                />)
+                />
+                
+                
+                )
                  
             })
         );

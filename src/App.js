@@ -5,15 +5,19 @@ import React, { Component } from 'react';
 //import Food from './component/Food';
 import Header from './component/Page/Header';
 import Slider from './component/Page/Slider';
-import Content from './component/Page/Content';
-import ProductList from './component/Product/ProductList';
+import Shop from './component/Page/Shop';
 import Footer from './component/Page/Footer';
-import './component/Page/style.css';
+
 import {
   BrowserRouter as Router,
   Switch, Route
 } from 'react-router-dom';
 import LeftBar from './component/Page/LeftBar';
+import ProductDetail from './component/Page/ProductDetail';
+import Home from './component/Page/Home';
+
+
+
 class App extends Component {
 
 
@@ -22,33 +26,28 @@ class App extends Component {
       <>
         <Router>
           <Header />
-          <Slider />
-          
-            <div className="container-fluid">
-              <div className="row">
-                <LeftBar/>
+          <Switch>
+            <Route path="/product/:id" component={ProductDetail}>
+            
+
+            </Route>
+            <Route path="/products">
+              
                 
-                  <Switch>
-                    <Route path="/products">
+                <Shop />
+              
+            </Route>
+            <Route path="/topics">
+              <ProductDetail />
+            </Route>
+            <Route path="/">
+              <Slider />
+              <Home/>
+            </Route>
+          </Switch>
+          <Footer />
 
-                    <ProductList/>
 
-                    </Route>
-                    <Route path="/topics">
-                      <Topics />
-                    </Route>
-                    <Route path="/">
-                      <Content />
-                    </Route>
-                  </Switch>
-                
-                </div>
-            </div>
-          
-          
-          <Footer/>
-
-          
         </Router>
 
       </>
@@ -59,6 +58,3 @@ class App extends Component {
 
 export default App;
 
-function Topics() {
-  return <h2>topics</h2>;
-}

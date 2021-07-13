@@ -1,35 +1,47 @@
 import React, { Component } from 'react'
-import './style.css';
+
 export default class Slider extends Component {
 	render() {
 		return (
-			<div className="banner">
-				<div id="carouselExampleControls" className="carousel slide" data-ride="carousel">
-					<div className="carousel-inner">
-						<div className="carousel-item active">
-							<img className="d-block w-100" src="assets/images/slider/banner-carousel-1.jpg" alt="First slide" />
-						</div>
-						<div className="carousel-item">
-							<img className="d-block w-100" src="assets/images/slider/banner-carousel-2.jpg" alt="Second slide" />
-						</div>
-						<div className="carousel-item">
-							<img className="d-block w-100" src="assets/images/slider/banner-carousel-3.jpg" alt="Third slide" />
-						</div>
-					</div>
-					<a className="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-						<span className="carousel-control-prev-icon" aria-hidden="true"></span>
-						<span className="sr-only">Previous</span>
-					</a>
-					<a className="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-						<span className="carousel-control-next-icon" aria-hidden="true"></span>
-						<span className="sr-only">Next</span>
-					</a>
-				</div>
-				<div className="banner-message">
-					<p className="banner-message-small">BEST OFFER</p>
-					<p className="banner-message-large">NEW ARRIVALS ON SALE</p>
-				</div>
-			</div>
+			<section className="home-full-slider-wrapper mb-2">
+     
+      <div className="owl-carousel owl-theme owl-dots-modern home-full-slider">
+        <div className="item home-full-item" style={{background: '#f8d5cf'}}><img className="bg-image" src="img/photo/matheus-ferrero-334418-unsplash.jpg" alt=""/>
+          <div className="container-fluid h-100 py-5">
+            <div className="row align-items-center h-100">
+              <div className="col-lg-8 col-xl-6 mx-auto text-white text-center position-relative">
+                <h5 className="text-uppercase text-white fw-light mb-4 letter-spacing-5"> Just arrived</h5>
+                <h1 className="mb-5 display-2 fw-bold text-serif">Denim Jackets</h1>
+                <p className="lead mb-4">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                <p> <a className="btn btn-light" href="category.html">View collection</a></p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="item home-full-item bg-dark dark-overlay"><img className="bg-image" src="img/photo/ian-dooley-347942-unsplash.jpg" alt=""/>
+          <div className="container-fluid h-100">
+            <div className="row align-items-center h-100">
+              <div className="col-lg-8 col-xl-6 mx-auto text-white text-center overlay-content">
+                <h1 className="mb-4 display-2 text-uppercase fw-bold">Skeleton Tees</h1>
+                <p className="lead mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                <p> <a className="btn btn-light" href="category.html">Start shopping</a></p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="item home-full-item"><img className="bg-image" src="img/photo/haley-phelps-62815-unsplash.jpg" alt=""/>
+          <div className="container-fluid h-100">
+            <div className="row align-items-center h-100">
+              <div className="col-lg-8 col-xl-6 mx-auto text-white text-center position-relative">
+                <h5 className="text-uppercase fw-light mb-4 letter-spacing-5"> Our bestseller</h5>
+                <h1 className="mb-5 display-1 fw-bold text-serif">Skinny Jeans</h1>
+                <p> <a className="btn btn-light" href="category.html">View collection</a></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 		)
 	}
 }
