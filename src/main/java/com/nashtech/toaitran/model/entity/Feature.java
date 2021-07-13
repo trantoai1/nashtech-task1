@@ -11,6 +11,10 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Schema(hidden = true)
+@NamedQueries({
+        @NamedQuery(name = "Feature.findByType",
+                query = "SELECT a FROM Feature a WHERE a.featureType in :type")
+})
 public class Feature {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

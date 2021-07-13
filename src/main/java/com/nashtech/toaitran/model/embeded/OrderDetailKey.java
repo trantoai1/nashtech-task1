@@ -24,4 +24,12 @@ public class OrderDetailKey implements Serializable {
             name = "product_id"
     )
     private Product product;
+
+    public OrderDetailKey(Order order, Product product) {
+        this.order = order;
+        this.product = product;
+    }
+
+    public OrderDetailKey() {
+    }
 }

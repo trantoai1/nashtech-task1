@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.util.List;
-
+@CrossOrigin("*")
 @RestController
 @RequestMapping({"api/orderDetails"})
 @Tag(
@@ -27,11 +27,14 @@ public class OrderDetailControllerImpl {//implements IBaseController<OrderDetail
 
     @GetMapping("/{productId}-{orderId}")
     public OrderDetailDTO get1(@PathVariable Long productId, @PathVariable Long orderId) {
+
         return service.findById(productId, orderId);
     }
 
     @PutMapping("/{productId}-{orderId}")
     public OrderDetailDTO update(@PathVariable Long productId, @PathVariable Long orderId, @Valid @RequestBody OrderDetailDTO dto) {
+        dto.setProductId(productId);
+        dto.setOrderId(orderId);
         return service.update(productId, orderId, dto);
     }
 

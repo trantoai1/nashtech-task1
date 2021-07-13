@@ -8,6 +8,7 @@ import com.nashtech.toaitran.security.services.UserDetailsServiceImpl;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -75,9 +76,31 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
-                .antMatchers("/api/auth/**","/api/public/**","/swagger-ui**","/swagger-ui/**","/v3/api-docs/**").permitAll()
-                .antMatchers("/api/v1/admin/**").hasRole("ADMIN")
-                .antMatchers("/api/v1/**").hasAnyRole("USER","PM","ADMIN")
+                .antMatchers(
+                        "/api/auth/**",
+                        "/api/public/**",
+                        "/swagger-ui**",
+                        "/swagger-ui/**",
+                        "/v3/api-docs/**")
+                .permitAll()
+                .antMatchers(HttpMethod.GET,
+                        "/api/categories**",
+                        "/api/categories/**",
+                        "/api/images**",
+                        "/api/images/**",
+                        "/api/features**",
+                        "/api/features/**",
+                        "/api/featureTypes**",
+                        "/api/featureTypes/**",
+                        "/api/products/**",
+                        "/api/products**")
+                .permitAll()
+                .antMatchers(
+                        "/api/v1/admin/**")
+                .hasRole("ADMIN")
+                .antMatchers(
+                        "/api/v1/**")
+                .hasAnyRole("USER","PM","ADMIN")
                 .anyRequest().authenticated();
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);

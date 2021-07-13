@@ -32,4 +32,9 @@ public class ProductDTO {
     private Integer remain;
     @NotNull
     private Date updateDate;
+
+    public String getName(){
+        String detail = "sssssss";
+        return detail;
+    }
 }

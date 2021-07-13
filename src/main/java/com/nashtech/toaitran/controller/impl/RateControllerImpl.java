@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.util.List;
-
+@CrossOrigin("*")
 @RestController
 @RequestMapping({"api/rates"})
 @Tag(
@@ -32,6 +32,8 @@ public class RateControllerImpl {//implements IBaseController<RateDTO, RateKey, 
 
     @PutMapping("/{productId}-{userId}")
     public RateDTO update(@PathVariable Long productId, @PathVariable Long userId, @Valid @RequestBody RateDTO dto) {
+        dto.setUserId(userId);
+        dto.setProductId(productId);
         return service.update(productId, userId, dto);
     }
 
