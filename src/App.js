@@ -25,14 +25,14 @@ class App extends Component {
     return (
       <>
         <Router>
-          <Header />
+          
           <Switch>
-            <Route path="/product/:id" component={ProductDetail}>
-            
-
+            <Route path="/products/:id" >
+            <Header class={"header"}/>
+          <ProductDetail/>
             </Route>
             <Route path="/products">
-              
+            <Header class={"header"}/>
                 
                 <Shop />
               
@@ -40,7 +40,8 @@ class App extends Component {
             <Route path="/topics">
               <ProductDetail />
             </Route>
-            <Route path="/">
+            <Route exact path="/">
+              <Header class="header header-absolute"/>
               <Slider />
               <Home/>
             </Route>

@@ -2,32 +2,35 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import callAPI from '../../api/callAPI';
 import NumberFormat from 'react-number-format';
-import { thisExpression } from '@babel/types';
+import { withRouter } from 'react-router-dom';
+import ImageList from '../Image/ImageList';
 
 
-export default class ProductDetail extends Component {
+
+class ProductDetail extends Component {
     constructor(props) {
         super(props);
-        //console.log('init');
+        
         this.state = {
-            product: {}
+            product: {},
+            images:<div></div>
         }
-        //console.log(this.state);
+        
     }
+    
     componentDidMount() {
-        const { match: { params } } = this.props;
-        callAPI('products/' + params.id)
+        
+        callAPI('products/' + this.props.match.params.id)
             .then(res => {
                 if (res !== undefined)
-                    //console.log(res)
+                   
                     if (res.status === 200)
                         this.setState({
                             product: res.data
                         });
             });
-
     }
-
+    
     render() {
         return (
             <>
@@ -35,12 +38,9 @@ export default class ProductDetail extends Component {
                     <div className="container-fluid">
                         <div className="row">
                             <div className="col-lg-6 py-3 order-2 order-lg-1">
-                                <div className="owl-carousel owl-theme owl-dots-modern detail-full" data-slider-id="1">
-                                    <div className="detail-full-item" style={{background:" center center url(https://d19m59y37dris4.cloudfront.net/sell/2-0/img/photo/kyle-loftus-596319-detail-1.jpg) no-repeat", backgroundsize: "cover"}}>     </div>
-                                    <div className="detail-full-item" style={{background:" center center url(https://d19m59y37dris4.cloudfront.net/sell/2-0/img/photo/kyle-loftus-596319-detail-2.jpg) no-repeat", backgroundsize: "cover"}}>     </div>
-                                    <div className="detail-full-item" style={{background:" center center url(https://d19m59y37dris4.cloudfront.net/sell/2-0/img/photo/kyle-loftus-596319-detail-3.jpg) no-repeat", backgroundsize: "cover"}}>     </div>
-                                    <div className="detail-full-item" style={{background:" center center url(https://d19m59y37dris4.cloudfront.net/sell/2-0/img/photo/kyle-loftus-594535-unsplash-detail-3.jpg) no-repeat", backgroundsize: "cover"}}>     </div>
-                                    <div className="detail-full-item" style={{background:" center center url(https://d19m59y37dris4.cloudfront.net/sell/2-0/img/photo/kyle-loftus-594535-unsplash-detail-4.jpg) no-repeat", backgroundsize: "cover"}}>     </div>
+                            <div className="col-lg-6 col-xl-7 pt-4 order-2 order-lg-1">
+                                    <ImageList id= {this.props.match.params.id}></ImageList>
+
                                 </div>
                             </div>
                             <div className="d-flex align-items-center col-lg-6 col-xl-5 ps-lg-5 mb-5 order-1 order-lg-2">
@@ -375,8 +375,10 @@ export default class ProductDetail extends Component {
 
                         </div>
                     </div>
+                    
                 </section>
             </>
         )
     }
 }
+export default withRouter(ProductDetail);
