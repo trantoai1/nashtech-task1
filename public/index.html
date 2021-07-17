@@ -12,20 +12,9 @@
 
 	<!-- CSS
 	============================================ -->
-	  <link rel="stylesheet" href="%PUBLIC_URL%/vendor/nouislider/nouislider.css">
     <!-- Google fonts - Playfair Display-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,700">
-    <link rel="stylesheet" href="%PUBLIC_URL%/fonts/hkgrotesk/stylesheet.5c4e45c1.css">
-    <!-- owl carousel-->
-    <link rel="stylesheet" href="%PUBLIC_URL%/vendor/owl.carousel/assets/owl.carousel.css">
-    <!-- Lightbox -->
-    <link rel="stylesheet" href="%PUBLIC_URL%/vendor/glightbox/css/glightbox.min.css">
-    <!-- theme stylesheet-->
-    <link rel="stylesheet" href="%PUBLIC_URL%/css/style.default.0f4f85c6.css" id="theme-stylesheet">
-    <!-- Custom stylesheet - for your changes-->
-    <link rel="stylesheet" href="%PUBLIC_URL%/css/custom.0a822280.css">
-    <!-- Favicon-->
-    <link rel="shortcut icon" href="%PUBLIC_URL%/img/favicon.png">
+
     <!-- Tweaks for older IEs--><!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
@@ -72,7 +61,7 @@
       function injectSvgSprite(path) {
       
       var ajax = new XMLHttpRequest();
-      ajax.open("GET.html", path, true);
+      ajax.open("GET", path, true);
       ajax.send();
       ajax.onload = function(e) {
       var div = document.createElement("div");

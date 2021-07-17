@@ -1,58 +1,84 @@
-//import logo from './logo.svg';
+
 import './App.css';
 import React, { Component } from 'react';
-//import bootstrap from 'bootstrap';
-//import Food from './component/Food';
-import Header from './component/Page/Header';
-import Slider from './component/Page/Slider';
-import Shop from './component/Page/Shop';
-import Footer from './component/Page/Footer';
+
+import Footer from './pages/Footer';
 
 import {
   BrowserRouter as Router,
-  Switch, Route
+  Switch, Route, Redirect
 } from 'react-router-dom';
-import LeftBar from './component/Page/LeftBar';
-import ProductDetail from './component/Page/ProductDetail';
-import Home from './component/Page/Home';
+import { routes } from './const/routes';
+import Header from './pages/Header';
+import AuthService from './services/AuthService';
+import PrivateRoute from './components/PrivateRoute';
 
-
+import Permit from './pages/Permit';
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.logOut = this.logOut.bind(this);
+    
+
+    this.state = {
+      //showModeratorBoard: false,
+      showAdminBoard: false,
+      currentUser: undefined,
+      routeComponents:undefined,
+    };
+  }
+
+  componentDidMount() {
+    const user = AuthService.getCurrentUser();
+    console.log(AuthService.getCurrentUser());
+    if (user) {
+      this.setState({
+        currentUser: user,
+        //showModeratorBoard: user.roles.includes("ROLE_MODERATOR"),
+        showAdminBoard: user.roles.includes("ROLE_ADMIN"),
+        
+      });
+    }
+    this.setState({
+      routeComponents: routes.map(({ path, component,user,admin }, key) => 
+       (
+         admin? 
+           this.state.showAdminBoard?<PrivateRoute path={path} component={component} key={key}/>:<Route key={key} path="/permit" component={Permit}/>
+           : 
+          user?
+          
+              <PrivateRoute path={path} component={component} key={key}/>
+          :
+          <Route exact path={path} component={component} key={key} />
 
 
+      )
+      
+      ),
+    });
+    
+  }
+
+  logOut() {
+    AuthService.logout();
+  }
+  
+  
   render() {
+  
     return (
       <>
         <Router>
-          
+          <Header />
           <Switch>
-            <Route path="/products/:id" >
-            <Header class={"header"}/>
-          <ProductDetail/>
-            </Route>
-            <Route path="/products">
-            <Header class={"header"}/>
-                
-                <Shop />
-              
-            </Route>
-            <Route path="/topics">
-              <ProductDetail />
-            </Route>
-            <Route exact path="/">
-              <Header class="header header-absolute"/>
-              <Slider />
-              <Home/>
-            </Route>
+            
+            {this.state.routeComponents}
+            
           </Switch>
           <Footer />
-
-
         </Router>
-
       </>
-
     );
   }
 }
