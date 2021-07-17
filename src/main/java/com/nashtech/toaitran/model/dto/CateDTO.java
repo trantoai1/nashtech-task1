@@ -14,4 +14,5 @@ public class CateDTO {
     @NotNull
     private String cateName;
     private String description;
+    private Integer amountProducts;
 }

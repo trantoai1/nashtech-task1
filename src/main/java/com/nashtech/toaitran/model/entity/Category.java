@@ -19,6 +19,7 @@ public class Category {
 
     private String cateName;
     private String description;
+
     @Transient
     @OneToMany(fetch = FetchType.LAZY)
     private Collection<Product> products;

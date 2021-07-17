@@ -75,4 +75,8 @@ public class ImageServiceImpl implements IBaseService<ImageDTO, Long>, IModelMap
 
         return entity;
     }
+
+    public List<ImageDTO> findAll(Long productId) {
+        return createFromEntities(repository.findAllByProduct_Productid(productId));
+    }
 }

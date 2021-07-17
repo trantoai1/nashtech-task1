@@ -8,6 +8,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Set;
 
 @Setter
 @Getter
@@ -32,6 +33,7 @@ public class ProductDTO {
     private Integer remain;
     @NotNull
     private Date updateDate;
+    private Set<Long> featureIds;
 
     public String getName(){
         String detail = "sssssss";

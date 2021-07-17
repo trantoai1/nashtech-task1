@@ -4,15 +4,11 @@ import com.nashtech.toaitran.service.IBaseService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 public interface IBaseController<D, ID, S extends IBaseService<D,ID> > {
     S getService();
 
-    @GetMapping("")
-    default List<D> getAll() {
-        return getService().findAll();
-    }
+
 
     @GetMapping("/{id}")
     default D get1(@PathVariable ID id) {

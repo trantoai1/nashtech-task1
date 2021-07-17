@@ -5,11 +5,12 @@ import com.nashtech.toaitran.model.dto.ProductDTO;
 import com.nashtech.toaitran.service.impl.ProductServiceImpl;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Getter;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
+import java.util.Set;
+
 @CrossOrigin("*")
 @RestController
 @RequestMapping({"api/products"})
@@ -20,5 +21,19 @@ public class ProductControllerImpl implements IBaseController<ProductDTO, Long, 
     @Resource
     @Getter
     private ProductServiceImpl service;
-
+    @GetMapping("")
+    public List<ProductDTO> getAll(@RequestParam(required = false) Long categoryId, @RequestParam(required = false) Set<Long> featureIds ) {
+        if(categoryId!=null && featureIds!=null) {
+            //FilterProductRequest filterProductRequest = new FilterProductRequest(categoryId,featureIds);
+            return getService().findAll(categoryId,featureIds);
+        }
+        else if (categoryId!=null)
+        {
+            return getService().findAll(categoryId);
+        }
+        else if (featureIds!=null)
+            return getService().findAll(featureIds);
+        else
+            return getService().findAll();
+    }
 }

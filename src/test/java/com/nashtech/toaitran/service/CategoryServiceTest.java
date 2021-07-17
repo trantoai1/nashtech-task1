@@ -79,7 +79,7 @@ public class CategoryServiceTest {
     }
 
     @Test
-    public void findById_Null() {
+    public void findById_Null_throwNotFound() {
         when(repository.findById(ID)).thenThrow(new NotFoundException(Category.class, ID));
         NotFoundException exception = assertThrows(NotFoundException.class, () -> service.findById(ID));
         assertEquals(HAS_ID_NOT_FOUND, exception.getMessage());

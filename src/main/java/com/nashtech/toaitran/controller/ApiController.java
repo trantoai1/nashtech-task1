@@ -27,4 +27,8 @@ public class ApiController {
     public String adminAccess() {
         return "Admin Board.";
     }
+    @GetMapping("/public")
+    public String publicAccess(){
+        return "public";
+    }
 }

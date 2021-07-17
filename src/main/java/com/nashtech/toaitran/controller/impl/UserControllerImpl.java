@@ -1,6 +1,7 @@
 package com.nashtech.toaitran.controller.impl;
 
 import com.nashtech.toaitran.controller.IBaseController;
+import com.nashtech.toaitran.controller.IGetController;
 import com.nashtech.toaitran.model.dto.JwtResponse;
 import com.nashtech.toaitran.service.impl.UserDetailServiceImpl;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -16,7 +17,7 @@ import javax.annotation.Resource;
 @Tag(
         name = "User"
 )
-public class UserControllerImpl implements IBaseController<JwtResponse, Long, UserDetailServiceImpl> {
+public class UserControllerImpl implements IBaseController<JwtResponse, Long, UserDetailServiceImpl>, IGetController<JwtResponse, Long, UserDetailServiceImpl> {
     @Resource
     @Getter
     private UserDetailServiceImpl service;

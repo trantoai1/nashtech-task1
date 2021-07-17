@@ -2,7 +2,9 @@ package com.nashtech.toaitran.service.impl;
 
 import com.nashtech.toaitran.exception.NotFoundException;
 import com.nashtech.toaitran.model.dto.ProductDTO;
+import com.nashtech.toaitran.model.entity.Feature;
 import com.nashtech.toaitran.model.entity.Product;
+import com.nashtech.toaitran.repository.IFeatureRepository;
 import com.nashtech.toaitran.repository.IProductRepository;
 import com.nashtech.toaitran.service.IBaseService;
 import com.nashtech.toaitran.service.IModelMapper;
@@ -11,17 +13,22 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class ProductServiceImpl implements IBaseService<ProductDTO, Long>, IModelMapper<ProductDTO, Product> {
     private final IProductRepository repository;
     private final ModelMapper modelMapper;
-
-    public ProductServiceImpl(IProductRepository repository, ModelMapper modelMapper) {
+    private final IFeatureRepository featureRepository;
+    public ProductServiceImpl(IProductRepository repository, ModelMapper modelMapper, IFeatureRepository featureRepository) {
         this.repository = repository;
         this.modelMapper = modelMapper;
+        this.featureRepository = featureRepository;
     }
-
+    private List<Feature> findAllFeature(Set<Long> featureIds)
+    {
+        return featureRepository.findAllByFeaturesID(featureIds);
+    }
     public List<ProductDTO> findAll() {
         return createFromEntities(repository.findAll());
     }
@@ -34,7 +41,9 @@ public class ProductServiceImpl implements IBaseService<ProductDTO, Long>, IMode
 
     public ProductDTO update(Long id, ProductDTO productDTO) {
         Optional<Product> entity = repository.findById(id);
+
         entity.orElseThrow(()-> new NotFoundException(Product.class,id));
+        entity.get().setFeatures(findAllFeature(productDTO.getFeatureIds()));
         return createFromE(repository.save(updateEntity(entity.get(),productDTO)));
     }
 
@@ -51,6 +60,7 @@ public class ProductServiceImpl implements IBaseService<ProductDTO, Long>, IMode
 
     public Product createFromD(ProductDTO dto) {
         Product entity = modelMapper.map(dto,Product.class);
+        entity.setFeatures(findAllFeature(dto.getFeatureIds()));
         return entity;
     }
 
@@ -65,10 +75,28 @@ public class ProductServiceImpl implements IBaseService<ProductDTO, Long>, IMode
             entity.setPrice(dto.getPrice());
             entity.setRemain(dto.getRemain());
             entity.setProductName(dto.getProductName());
+            entity.setFeatures(findAllFeature(dto.getFeatureIds()));
 
 
         }
 
         return entity;
+    }
+
+    public List<ProductDTO> findAll(Long categoryId, Set<Long> featureIds) {
+
+        return createFromEntities(repository.findAllByFilter(featureIds,categoryId));
+    }
+
+
+    public List<ProductDTO> findAll(Long categoryId) {
+
+            return createFromEntities(repository.findAllByCategory_Id(categoryId));
+
+
+    }
+
+    public List<ProductDTO> findAll(Set<Long> featureIds) {
+        return createFromEntities(repository.findAllByFeaturesID(featureIds));
     }
 }

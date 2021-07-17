@@ -1,6 +1,7 @@
 package com.nashtech.toaitran.controller.impl;
 
 import com.nashtech.toaitran.controller.IBaseController;
+import com.nashtech.toaitran.controller.IGetController;
 import com.nashtech.toaitran.model.dto.FeatureTypeDTO;
 import com.nashtech.toaitran.service.impl.FeatureTypeServiceImpl;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -16,7 +17,7 @@ import javax.annotation.Resource;
 @Tag(
         name = "FeatureType"
 )
-public class FeatureTypeControllerImpl implements IBaseController<FeatureTypeDTO, String, FeatureTypeServiceImpl> {
+public class FeatureTypeControllerImpl implements IBaseController<FeatureTypeDTO, String, FeatureTypeServiceImpl>, IGetController<FeatureTypeDTO, String, FeatureTypeServiceImpl> {
     @Resource
     @Getter
     private FeatureTypeServiceImpl service;

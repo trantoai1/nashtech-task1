@@ -1,6 +1,7 @@
 package com.nashtech.toaitran.controller.impl;
 
 import com.nashtech.toaitran.controller.IBaseController;
+import com.nashtech.toaitran.controller.IGetController;
 import com.nashtech.toaitran.model.dto.OrderDTO;
 import com.nashtech.toaitran.service.impl.OrderServiceImpl;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -16,7 +17,7 @@ import javax.annotation.Resource;
 @Tag(
         name = "Orders"
 )
-public class OrderControllerImpl implements IBaseController<OrderDTO,Long, OrderServiceImpl> {
+public class OrderControllerImpl implements IBaseController<OrderDTO,Long, OrderServiceImpl>, IGetController<OrderDTO,Long, OrderServiceImpl> {
     @Resource
     @Getter
     private OrderServiceImpl service;
