@@ -1,15 +1,5 @@
 import React, { Component } from "react";
 import AuthService from "../../services/AuthService";
-import {location} from 'react-router-dom';
-const required = value => {
-  if (!value) {
-    return (
-      <div className="alert alert-danger" role="alert">
-        This field is required!
-      </div>
-    );
-  }
-};
 
 export default class Login extends Component {
   constructor(props) {

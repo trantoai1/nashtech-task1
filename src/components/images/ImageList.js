@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import get from '../../api/callAPI';
+import {get} from '../../api/callAPI';
 import Image from './Image';
 export default class ImageList extends Component {
     constructor(props) {
@@ -25,7 +25,7 @@ export default class ImageList extends Component {
         });
         
     }
-
+   
     render() {
         var listImage = this.state.images
         //console.log('render');

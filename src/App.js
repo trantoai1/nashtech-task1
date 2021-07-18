@@ -6,7 +6,7 @@ import Footer from './pages/Footer';
 
 import {
   BrowserRouter as Router,
-  Switch, Route, Redirect
+  Switch, Route
 } from 'react-router-dom';
 import { routes } from './const/routes';
 import Header from './pages/Header';

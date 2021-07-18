@@ -43,7 +43,7 @@ class Header extends Component {
                 
 
 
-                <div className="search-area-wrapper">
+                {/*<div className="search-area-wrapper">
                     <div className="search-area d-flex align-items-center justify-content-center">
                         <div className="close-btn">
                             <svg className="svg-icon svg-icon-light w-3rem h-3rem">
@@ -61,7 +61,7 @@ class Header extends Component {
                             </div>
                         </form>
                     </div>
-                </div>
+                </div>*/}
 
             </header>
         );

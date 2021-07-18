@@ -1,5 +1,4 @@
 
-import {get,post} from '../api/callAPI';
 
 import axios from 'axios';
 const AUTH_URL = process.env.REACT_APP_AUTH_URL;

@@ -139,7 +139,7 @@ export default class Profile extends Component {
           
           <div className="col-xl-3 col-lg-4 mb-5">
             <div className="customer-sidebar card border-0"> 
-              <div className="customer-profile"><a className="d-inline-block" href="#"><img className="img-fluid rounded-circle customer-image shadow" src="https://d19m59y37dris4.cloudfront.net/sell/2-0/img/photo/kyle-loftus-589739-unsplash-avatar.jpg" alt=""/></a>
+              <div className="customer-profile"><a className="d-inline-block" href="/"><img className="img-fluid rounded-circle customer-image shadow" src="https://d19m59y37dris4.cloudfront.net/sell/2-0/img/photo/kyle-loftus-589739-unsplash-avatar.jpg" alt=""/></a>
                 <h5>Julie Trnka</h5>
                 <p className="text-muted text-sm mb-0">Ostrava, Czech Republic</p>
               </div>

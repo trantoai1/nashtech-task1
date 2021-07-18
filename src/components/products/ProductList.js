@@ -40,7 +40,7 @@ class ProductList extends Component {
     }
     
     
-    componentWillUpdate()
+    componentDidUpdate()
     {
         
          if(this.state.data.categoryId!==this.props.categoryId||this.state.data.featureIds!==this.props.featureIds)
@@ -62,7 +62,7 @@ class ProductList extends Component {
             params["categoryId"] = this.state.data.categoryId;
             if(this.state.data.featureIds.length>0)
                 params["featureIds"] = this.state.data.featureIds.reduce((f,s)=>`${f},${s}`);
-            console.log(params);
+            //console.log(params);
             //console.log({"categoryId":this.state.data.categoryId,"featureIds":this.state.data.featureIds.reduce((f,s)=>`${f},${s}`)});
             get('products',params)
             .then(res => {
@@ -113,21 +113,7 @@ class ProductList extends Component {
         //     });
         
     }
-    componentDidUpdate()
-    {
-        // if(this.state.update)
-        // get('products',this.state.data.categoryId)
-        // .then(res => {
-        //     //console.log(res)
-        //     if(res!==undefined)
-        //     //console.log(res)
-        // if(res.status===200)
-        //     this.setState({
-        //         products: res.data
-        //     });
-        // });
-        
-    }
+    
     render() {
         var listProducts = this.state.products
         //console.log('render');
@@ -146,11 +132,13 @@ class ProductList extends Component {
                 
                 <Product 
                     id = {product.productId}
-                    name = {product.productName}
+                    name = {product.fullName}
                     desc = {product.productDesc}
                     price = {product.price}
                     key = {product.productId}
                     remain = {product.remain}
+                    categoryName = {product.categoryName}
+
                 />
                 
                 

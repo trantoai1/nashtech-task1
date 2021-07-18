@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {QueryString as qs} from 'qs';
+
 import authHeader from '../services/authHeader';
 
 export default async function callAPI (endpoint,params,method='GET',body){
@@ -29,12 +29,28 @@ export default async function callAPI (endpoint,params,method='GET',body){
         }
     
 };
+// export async function getArray (endpoint,params){
+//     try {
+        
+//        let res = await axios.get(`${process.env.REACT_APP_API_URL}/${endpoint}`,{params:params,headers:authHeader(),paramsSerializer: (params) => {
+//         return qs.stringify(params,{ arrayFormat: 'repeat' })
+//       }})
+        
+//        if(res.status === 200){
+           
+//         }    
+        
+//         return res;
+//     }
+//     catch (err) {
+//         console.error(err);
+//     }
+// };
+
 export async function get (endpoint,params){
     try {
         
-       let res = await axios.get(`${process.env.REACT_APP_API_URL}/${endpoint}`,{params:params,headers:authHeader(),paramsSerializer: (params) => {
-        return qs.stringify(params,{ arrayFormat: 'repeat' })
-      }})
+       let res = await axios.get(`${process.env.REACT_APP_API_URL}/${endpoint}`,{params:params,headers:authHeader()});
         
        if(res.status === 200){
            
@@ -46,7 +62,6 @@ export async function get (endpoint,params){
         console.error(err);
     }
 };
-
 
 export async function post (endpoint,body){
     try {
