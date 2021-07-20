@@ -25,6 +25,10 @@ public class Feature {
 
     private String specific;
 
+    public String getDetailFeature()
+    {
+        return specific+featureType.getUnit();
+    }
     @Override
     public String toString() {
         return "Feature{" +

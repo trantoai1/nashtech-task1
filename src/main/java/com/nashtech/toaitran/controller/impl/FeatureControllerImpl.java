@@ -22,11 +22,14 @@ public class FeatureControllerImpl implements IBaseController<FeatureDTO,Long,Fe
 
 
     @GetMapping("")
-    public List<FeatureDTO> getAll(@RequestParam(required = false) String featureType) {
+    public List<FeatureDTO> getAll(@RequestParam(required = false) String featureType,@RequestParam(required = false) Long productId) {
         if(featureType!=null)
         return getService().findAll(featureType);
-        else
-            return getService().findAll();
+
+        if(productId!=null)
+            return getService().findAll(productId);
+
+        return getService().findAll();
     }
 
 }

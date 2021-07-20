@@ -87,4 +87,7 @@ public class FeatureServiceImpl implements IBaseService<FeatureDTO,Long>, IModel
     public List<FeatureDTO> findAll(String featureTypeId) {
         return createFromEntities(repository.findAllByFeatureType_Id(featureTypeId));
     }
+    public List<FeatureDTO> findAll(Long productId) {
+        return createFromEntities(repository.findAllByProductId(productId));
+    }
 }

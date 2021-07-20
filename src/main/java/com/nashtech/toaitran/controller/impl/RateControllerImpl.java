@@ -21,8 +21,11 @@ public class RateControllerImpl {//implements IBaseController<RateDTO, RateKey, 
     private RateServiceImpl service;
 
     @GetMapping("")
-    public List<RateDTO> getAll() {
+    public List<RateDTO> getAll(@RequestParam(required = false) Long productId) {
+        if(productId==null)
         return getService().findAll();
+        else
+            return getService().findAll(productId);
     }
 
     @GetMapping("/{productId}-{userId}")
@@ -31,7 +34,7 @@ public class RateControllerImpl {//implements IBaseController<RateDTO, RateKey, 
     }
 
     @PutMapping("/{productId}-{userId}")
-    public RateDTO update(@PathVariable Long productId, @PathVariable Long userId, @Valid @RequestBody RateDTO dto) {
+    public RateDTO update(@PathVariable Long productId, @PathVariable Long userId,@RequestBody RateDTO dto) {
         dto.setUserId(userId);
         dto.setProductId(productId);
         return service.update(productId, userId, dto);

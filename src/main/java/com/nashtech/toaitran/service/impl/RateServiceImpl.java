@@ -1,10 +1,15 @@
 package com.nashtech.toaitran.service.impl;
 
+import com.nashtech.toaitran.exception.EntityPrimaryKeyExistsException;
 import com.nashtech.toaitran.exception.NotFoundException;
 import com.nashtech.toaitran.model.dto.RateDTO;
 import com.nashtech.toaitran.model.embeded.RateKey;
+import com.nashtech.toaitran.model.entity.Product;
 import com.nashtech.toaitran.model.entity.Rate;
+import com.nashtech.toaitran.model.entity.User;
+import com.nashtech.toaitran.repository.IProductRepository;
 import com.nashtech.toaitran.repository.IRateRepository;
+import com.nashtech.toaitran.repository.IUserRepository;
 import com.nashtech.toaitran.service.IBaseService;
 import com.nashtech.toaitran.service.IModelMapper;
 import org.modelmapper.ModelMapper;
@@ -17,10 +22,13 @@ import java.util.Optional;
 public class RateServiceImpl implements IBaseService<RateDTO, RateKey>, IModelMapper<RateDTO, Rate> {
     private final IRateRepository repository;
     private final ModelMapper modelMapper;
-
-    public RateServiceImpl(IRateRepository repository, ModelMapper modelMapper) {
+    private final IProductRepository productRepository;
+    private final IUserRepository userRepository;
+    public RateServiceImpl(IRateRepository repository, ModelMapper modelMapper, IProductRepository productRepository, IUserRepository userRepository) {
         this.repository = repository;
         this.modelMapper = modelMapper;
+        this.productRepository = productRepository;
+        this.userRepository = userRepository;
     }
 
     public List<RateDTO> findAll() {
@@ -42,6 +50,10 @@ public class RateServiceImpl implements IBaseService<RateDTO, RateKey>, IModelMa
     }
 
     public RateDTO save(RateDTO rateDTO) {
+        Optional<Rate> entity = repository.findByKey_Product_ProductidAndKey_User_Id(rateDTO.getProductId(), rateDTO.getUserId());
+        if(entity.isPresent())
+            throw new EntityPrimaryKeyExistsException(Rate.class,rateDTO.getProductId() + "-" + rateDTO.getUserId());
+        //entity.get().setKey(findKey(rateDTO));
         return createFromE(repository.save(createFromD(rateDTO)));
     }
 
@@ -55,11 +67,15 @@ public class RateServiceImpl implements IBaseService<RateDTO, RateKey>, IModelMa
 
     public Rate createFromD(RateDTO dto) {
         Rate entity = modelMapper.map(dto,Rate.class);
+        entity.setKey(findKey(dto));
         return entity;
     }
 
     public RateDTO createFromE(Rate entity) {
         RateDTO dto = modelMapper.map(entity,RateDTO.class);
+        dto.setUser(entity.getKey().getUser());
+        dto.setProductId(entity.getKey().getProduct().getProductid());
+        dto.setUserId(entity.getKey().getUser().getId());
         return dto;
     }
 
@@ -70,15 +86,21 @@ public class RateServiceImpl implements IBaseService<RateDTO, RateKey>, IModelMa
         }
         return entity;
     }
-
+    private RateKey findKey(RateDTO dto){
+        return findKey(dto.getProductId(),dto.getUserId());
+    }
     public RateDTO findById(Long productId, Long userId) {
         Optional<Rate> entity = Optional.ofNullable(repository.findByKey_Product_ProductidAndKey_User_Id(productId, userId).orElseThrow(() -> new NotFoundException(Rate.class, productId + "-" + userId)));
         return createFromE(entity.get());
     }
-
+    private RateKey findKey(Long productId, Long userId) {
+        Optional<User> user = Optional.ofNullable(userRepository.findById(userId).orElseThrow(()-> new NotFoundException(User.class,userId)));
+        Optional<Product> product = Optional.ofNullable(productRepository.findById(productId).orElseThrow(()-> new NotFoundException(Product.class,productId)));
+        return new RateKey(user.get(),product.get());
+    }
     public RateDTO update(Long productId, Long userId, RateDTO dto) {
         Optional<Rate> entity = Optional.ofNullable(repository.findByKey_Product_ProductidAndKey_User_Id(productId, userId).orElseThrow(() -> new NotFoundException(Rate.class, productId + "-" + userId)));
-
+        entity.get().setKey(findKey(dto));
         return createFromE(repository.save(updateEntity(entity.get(), dto)));
     }
 
@@ -86,5 +108,9 @@ public class RateServiceImpl implements IBaseService<RateDTO, RateKey>, IModelMa
         Optional<Rate> entity = Optional.ofNullable(repository.findByKey_Product_ProductidAndKey_User_Id(productId, userId).orElseThrow(() -> new NotFoundException(Rate.class, productId + "-" + userId)));
         repository.delete(entity.get());
         return createFromE(entity.get());
+    }
+
+    public List<RateDTO> findAll(Long productId) {
+        return createFromEntities(repository.findAllByKey_Product_ProductidOrderByPointDesc(productId));
     }
 }

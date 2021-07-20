@@ -1,5 +1,7 @@
 package com.nashtech.toaitran.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.nashtech.toaitran.model.entity.User;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,4 +21,12 @@ public class RateDTO {
     private Long productId;
     @NotNull
     private Long userId;
+    @JsonIgnore
+    private User user;
+    public String getUserName(){
+        return user.getUsername();
+    }
+    public String getUserEmail(){
+        return user.getEmail();
+    }
 }

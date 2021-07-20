@@ -2,8 +2,10 @@ package com.nashtech.toaitran.service.impl;
 
 import com.nashtech.toaitran.exception.NotFoundException;
 import com.nashtech.toaitran.model.dto.ProductDTO;
+import com.nashtech.toaitran.model.entity.Category;
 import com.nashtech.toaitran.model.entity.Feature;
 import com.nashtech.toaitran.model.entity.Product;
+import com.nashtech.toaitran.repository.ICategoryRepository;
 import com.nashtech.toaitran.repository.IFeatureRepository;
 import com.nashtech.toaitran.repository.IProductRepository;
 import com.nashtech.toaitran.service.IBaseService;
@@ -11,27 +13,29 @@ import com.nashtech.toaitran.service.IModelMapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements IBaseService<ProductDTO, Long>, IModelMapper<ProductDTO, Product> {
     private final IProductRepository repository;
     private final ModelMapper modelMapper;
     private final IFeatureRepository featureRepository;
-    public ProductServiceImpl(IProductRepository repository, ModelMapper modelMapper, IFeatureRepository featureRepository) {
+    private final ICategoryRepository categoryRepository;
+    public ProductServiceImpl(IProductRepository repository, ModelMapper modelMapper, IFeatureRepository featureRepository, ICategoryRepository categoryRepository) {
         this.repository = repository;
         this.modelMapper = modelMapper;
         this.featureRepository = featureRepository;
+        this.categoryRepository = categoryRepository;
     }
     private List<Feature> findAllFeature(Set<Long> featureIds)
     {
         return featureRepository.findAllByFeaturesID(featureIds);
     }
-    public List<ProductDTO> findAll() {
-        return createFromEntities(repository.findAll());
-    }
+
 
     public ProductDTO findById(Long id) {
         Optional<Product> entity = repository.findById(id);
@@ -43,11 +47,17 @@ public class ProductServiceImpl implements IBaseService<ProductDTO, Long>, IMode
         Optional<Product> entity = repository.findById(id);
 
         entity.orElseThrow(()-> new NotFoundException(Product.class,id));
+        entity.get().setUpdateDate(new Date());
         entity.get().setFeatures(findAllFeature(productDTO.getFeatureIds()));
         return createFromE(repository.save(updateEntity(entity.get(),productDTO)));
     }
 
     public ProductDTO save(ProductDTO productDTO) {
+        Product entity = createFromD(productDTO);
+        if(productDTO.getCreateDate()==null)
+        {
+            entity.setCreateDate(new Date());
+        }
         return createFromE(repository.save(createFromD(productDTO)));
     }
 
@@ -66,6 +76,10 @@ public class ProductServiceImpl implements IBaseService<ProductDTO, Long>, IMode
 
     public ProductDTO createFromE(Product entity) {
         ProductDTO dto = modelMapper.map(entity,ProductDTO.class);
+        dto.setCategoryName(entity.getCategory().getCateName());
+        dto.setFeaturesName(entity.getFeatures().stream().map(Feature::getDetailFeature).collect(Collectors.joining(" ")));
+        dto.setFeatureIds(entity.getFeatures().stream().map(Feature::getFeatureId).collect(Collectors.toSet()));
+        dto.setFeatureTypes(entity.getFeatures().stream().map((e)->e.getFeatureType().getId()).collect(Collectors.toSet()));
         return dto;
     }
 
@@ -76,7 +90,7 @@ public class ProductServiceImpl implements IBaseService<ProductDTO, Long>, IMode
             entity.setRemain(dto.getRemain());
             entity.setProductName(dto.getProductName());
             entity.setFeatures(findAllFeature(dto.getFeatureIds()));
-
+            entity.setCategory(categoryRepository.findById(dto.getCategoryId()).orElseThrow(()-> new NotFoundException(Category.class,dto.getCategoryId())));
 
         }
 
@@ -98,5 +112,8 @@ public class ProductServiceImpl implements IBaseService<ProductDTO, Long>, IMode
 
     public List<ProductDTO> findAll(Set<Long> featureIds) {
         return createFromEntities(repository.findAllByFeaturesID(featureIds));
+    }
+    public List<ProductDTO> findAll() {
+        return createFromEntities(repository.findAll());
     }
 }

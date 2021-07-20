@@ -1,5 +1,6 @@
 package com.nashtech.toaitran.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,17 +27,27 @@ public class ProductDTO {
     private Long categoryId;
 
 
-    @NotNull
+    private String categoryName;
+    @JsonIgnore
+    private String featuresName;
+
+
     private Date createDate;
     @NotNull
     @DecimalMin("0")
     private Integer remain;
-    @NotNull
+
     private Date updateDate;
     private Set<Long> featureIds;
+    @JsonIgnore
+    private Set<String> featureTypes;
 
-    public String getName(){
-        String detail = "sssssss";
+    public Set<String> getFeaTypes() {
+        return featureTypes;
+    }
+
+    public String getFullName(){
+        String detail = categoryName+ " " + productName + " " +featuresName;
         return detail;
     }
 }

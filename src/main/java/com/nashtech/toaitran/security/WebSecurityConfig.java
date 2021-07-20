@@ -88,6 +88,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/api/categories/**",
                         "/api/images**",
                         "/api/images/**",
+                        "/api/rates**",
+                        "/api/rates/**",
                         "/api/features**",
                         "/api/features/**",
                         "/api/featureTypes**",

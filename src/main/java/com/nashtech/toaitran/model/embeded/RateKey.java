@@ -17,4 +17,12 @@ public class RateKey implements Serializable {
     private Product product;
     @ManyToOne
     private User user;
+
+    public RateKey(User user, Product product) {
+        setProduct(product);
+        setUser(user);
+    }
+    public RateKey(){
+
+    }
 }
