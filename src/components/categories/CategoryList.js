@@ -7,7 +7,8 @@ export default class CategoryList extends Component {
         super(props);
         //console.log('init'); 
         this.state = {
-            categories: []
+            categories: [],
+            
         }
         //console.log(this.state);
     }
@@ -40,7 +41,11 @@ export default class CategoryList extends Component {
                     id = {category.id}
                     name = {category.cateName}
                     desc = {category.description}  
-                    amount = {category.amountProducts}                  
+                    amount = {category.amountProducts}
+                    isTable = {this.props.isTable} 
+                    deleteCate={(id)=>this.props.deleteCate(id)}  
+                    select = {this.props.select} 
+                            
                 />
                 )
                  

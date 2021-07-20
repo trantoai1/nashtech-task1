@@ -6,6 +6,7 @@ import Home from "../pages/homepage/Home";
 import Login from "../pages/customer/Login";
 import Customer from "../pages/customer/Customer";
 import Profile from "../pages/customer/Profile";
+import DashBoard from "../pages/dashboard/DashBoard";
 export  const routes = [
 {
     path: '/',
@@ -68,6 +69,15 @@ export  const routes = [
     pub:false,
     user:true,
     admin:true,
+    sub:[],
+},
+{
+    path: '/dashboard',
+    component: DashBoard,
+    name: 'DashBoard',
+    pub:false,
+    user:true,
+    admin:false,
     sub:[],
 },
 ];

@@ -43,9 +43,9 @@ class App extends Component {
     this.setState({
       routeComponents: routes.map(({ path, component,user,admin }, key) => 
        (
-         admin? 
-           this.state.showAdminBoard?<PrivateRoute path={path} component={component} key={key}/>:<Route key={key} path="/permit" component={Permit}/>
-           : 
+        //  admin? 
+        //    this.state.showAdminBoard?<PrivateRoute path={path} component={component} key={key}/>:<Route key={key} path="/permit" component={Permit}/>
+        //    : 
           user?
           
               <PrivateRoute path={path} component={component} key={key}/>

@@ -21,9 +21,9 @@ import './assets/css/custom.css';
 // import './assets/vendor/jquery.cookie/jquery.cookie.js';
 // import './assets/js/demo.js';
 ReactDOM.render(
-  <React.StrictMode>
+  <React.Fragment>
     <App />
-  </React.StrictMode>,
+  </React.Fragment>,
   document.getElementById('root')
 );
 

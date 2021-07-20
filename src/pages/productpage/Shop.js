@@ -71,8 +71,10 @@ export default class Shop extends Component {
                                     </select>
                                 </div>
         </header>*/}
+        <div class="masonry-wrapper mx-n3">
                             <div className="row">
                             <ProductList categoryId={this.state.categoryId} featureIds={this.state.featureIds} key={this.state.featureIds} ref={this.productList}/>
+                            </div>
                             </div>
                             {/*<nav className="d-flex justify-content-center mb-5 mt-3" aria-label="page navigation">
                                 <ul className="pagination">

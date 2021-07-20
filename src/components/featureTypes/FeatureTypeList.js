@@ -39,7 +39,8 @@ export default class FeatureTypeList extends Component {
                     unit = {type.unit}
                     checkedFeature={(e,id)=>this.props.checkedFeature(e,id)}
                     key = {index}
-                    
+                    isRadio = {this.props.isRadio}
+                    currentfeatures={this.props.currentfeatures}
                 />)
                  
             })

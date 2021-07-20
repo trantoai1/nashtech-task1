@@ -20,11 +20,7 @@ class ProductList extends Component {
     
     
     componentDidMount(){
-        
-        
-        console.log('componentDidMount:'+this.state.data);
-        //if(this.state.data===undefined)
-            get('products')
+        get('products')
             .then(res => {
                 //console.log(res)
                 if(res!==undefined)
@@ -34,18 +30,15 @@ class ProductList extends Component {
                     products: res.data
                 });
             });
-        
-        
-        
     }
     
     
     componentDidUpdate()
     {
-        
+        if(!this.props.isTable)
+        {
          if(this.state.data.categoryId!==this.props.categoryId||this.state.data.featureIds!==this.props.featureIds)
         {
-            console.log('.................State change..................');
               this.setState({
                 data:{
                     categoryId:this.props.categoryId,
@@ -62,13 +55,12 @@ class ProductList extends Component {
             params["categoryId"] = this.state.data.categoryId;
             if(this.state.data.featureIds.length>0)
                 params["featureIds"] = this.state.data.featureIds.reduce((f,s)=>`${f},${s}`);
-            //console.log(params);
-            //console.log({"categoryId":this.state.data.categoryId,"featureIds":this.state.data.featureIds.reduce((f,s)=>`${f},${s}`)});
+            
             get('products',params)
             .then(res => {
-                //console.log(res)
+                
                 if(res!==undefined)
-                //console.log(res)
+                
             if(res.status===200)
                 this.setState({
                     products: res.data
@@ -77,59 +69,19 @@ class ProductList extends Component {
             this.setState({
                 update: false,
             });
-        }
-       
-        // else
-        // getBody('products',this.state.data)
-        //     .then(res => {
-        //         //console.log(res)
-        //         if(res!==undefined)
-        //         //console.log(res)
-        //     if(res.status===200)
-        //         this.setState({
-        //             products: res.data
-        //         });
-        //     });
-        // if(this.state.data.featureIds!==this.props.filter.featureIds)
-        // {
-        //     this.setState({
-        //         data:{
-        //             categoryId:this.props.filter.categoryId,
-        //             featureIds: JSON.stringify(this.props.filter.featureIds),
-        //         },
-        //     });
-            
-        // }
-        // else
-        //     getBody('products',this.state.data)
-        //     .then(res => {
-        //         //console.log(res)
-        //         if(res!==undefined)
-        //         //console.log(res)
-        //     if(res.status===200)
-        //         this.setState({
-        //             products: res.data
-        //         });
-        //     });
-        
+        }     
+    }   
     }
     
     render() {
         var listProducts = this.state.products
-        //console.log('render');
-        //console.log(this.state);
+       
         
         return (
             
             listProducts.map((product,index)=>{
-                //console.log(food.name);
-                return (
-                    
-
-                                
-
-                    
                 
+                return (
                 <Product 
                     id = {product.productId}
                     name = {product.fullName}
@@ -137,11 +89,11 @@ class ProductList extends Component {
                     price = {product.price}
                     key = {product.productId}
                     remain = {product.remain}
+                    isTable = {this.props.isTable}
                     categoryName = {product.categoryName}
-
+                    isTable = {this.props.isTable} 
+                    deleteProduct={(id)=>this.props.deleteProduct(id)}
                 />
-                
-                
                 )
                  
             })
