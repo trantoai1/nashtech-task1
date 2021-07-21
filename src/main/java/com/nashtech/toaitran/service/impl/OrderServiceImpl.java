@@ -27,7 +27,8 @@ public class OrderServiceImpl implements IBaseService<OrderDTO, Long>, IModelMap
     }
 
     public OrderDTO findById(Long id) {
-        Optional<Order> entity = Optional.ofNullable(repository.findById(id).orElseThrow(() -> new NotFoundException(Order.class, id)));
+        Optional<Order> entity = Optional.ofNullable(repository.findById(id)
+                .orElseThrow(() -> new NotFoundException(Order.class, id)));
         return createFromE(entity.get());
     }
 

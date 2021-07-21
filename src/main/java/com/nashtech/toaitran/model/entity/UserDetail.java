@@ -14,7 +14,7 @@ import java.util.Collection;
 @Schema(hidden = true)
 public class UserDetail {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+   // @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = true)
     private String firstName;
@@ -32,4 +32,28 @@ public class UserDetail {
     @OneToOne(optional = false)
     @PrimaryKeyJoinColumn
     private User user;
+
+    public UserDetail(Long id, String firstName, String lastName, String address, User user) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        //this.user = user;
+        //orders = new ArrayList<>();
+    }
+
+    public UserDetail() {
+    }
+
+    @Override
+    public String toString() {
+        return "UserDetail{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", address='" + address + '\'' +
+                ", orders=" + orders +
+                ", user=" + user +
+                '}';
+    }
 }

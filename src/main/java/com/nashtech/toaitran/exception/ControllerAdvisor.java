@@ -38,7 +38,8 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.FOUND);
     }
     @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex
+            , HttpHeaders headers, HttpStatus status, WebRequest request) {
         List<String> details = new ArrayList<>();
         ex.getFieldErrors().forEach(e -> details.add(e.getField() + " " + e.getDefaultMessage()));
         Map<String, Object> body = new LinkedHashMap<>();
@@ -65,7 +66,8 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.NOT_ACCEPTABLE);
     }
     @Override
-    protected ResponseEntity<Object> handleTypeMismatch(TypeMismatchException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    protected ResponseEntity<Object> handleTypeMismatch(TypeMismatchException ex
+            , HttpHeaders headers, HttpStatus status, WebRequest request) {
 
 
         Map<String, Object> body = new LinkedHashMap<>();

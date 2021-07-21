@@ -17,7 +17,8 @@ import javax.annotation.Resource;
 @Tag(
         name = "Orders"
 )
-public class OrderControllerImpl implements IBaseController<OrderDTO,Long, OrderServiceImpl>, IGetController<OrderDTO,Long, OrderServiceImpl> {
+public class OrderControllerImpl implements IBaseController<OrderDTO,Long, OrderServiceImpl>
+        , IGetController<OrderDTO,Long, OrderServiceImpl> {
     @Resource
     @Getter
     private OrderServiceImpl service;

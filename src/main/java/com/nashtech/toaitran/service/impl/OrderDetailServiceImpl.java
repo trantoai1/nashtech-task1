@@ -60,7 +60,8 @@ public class OrderDetailServiceImpl implements IBaseService<OrderDetailDTO, Orde
     }
 
     private void minusRemainProduct(OrderDetailDTO orderDetailDTO, int currentNum) {
-        Product product = productRepository.findById(orderDetailDTO.getProductId()).orElseThrow(()->new NotFoundException(Product.class,orderDetailDTO.getProductId()));
+        Product product = productRepository.findById(orderDetailDTO.getProductId())
+                .orElseThrow(()->new NotFoundException(Product.class,orderDetailDTO.getProductId()));
         int remain = product.getRemain();
         if(remain < (orderDetailDTO.getAmount()-currentNum))
             throw new NumberErrorException("Number of product "+product.getProductid()+" not enough");
@@ -105,12 +106,14 @@ public class OrderDetailServiceImpl implements IBaseService<OrderDetailDTO, Orde
     }
 
     public OrderDetailDTO findById(Long productId, Long orderId) {
-        Optional<OrderDetail> orderDetail = Optional.ofNullable(repository.findByKey_Product_ProductidAndKey_Order_Orderid(productId, orderId).orElseThrow(() -> new NotFoundException(OrderDetail.class, productId + "-" + orderId)));
+        Optional<OrderDetail> orderDetail = Optional.ofNullable(repository.findByKey_Product_ProductidAndKey_Order_Orderid(productId, orderId)
+                .orElseThrow(() -> new NotFoundException(OrderDetail.class, productId + "-" + orderId)));
         return createFromE(orderDetail.get());
     }
 
     public OrderDetailDTO update(Long productId, Long orderId, OrderDetailDTO orderDetailDTO) {
-        Optional<OrderDetail> entity = Optional.ofNullable(repository.findByKey_Product_ProductidAndKey_Order_Orderid(productId, orderId).orElseThrow(() -> new NotFoundException(OrderDetail.class, productId + "-" + orderId)));
+        Optional<OrderDetail> entity = Optional.ofNullable(repository.findByKey_Product_ProductidAndKey_Order_Orderid(productId, orderId)
+                .orElseThrow(() -> new NotFoundException(OrderDetail.class, productId + "-" + orderId)));
         entity.get().setKey(findKey(productId, orderId));
         int currentNum = entity.get().getAmount();
         minusRemainProduct(orderDetailDTO,currentNum);
@@ -118,13 +121,16 @@ public class OrderDetailServiceImpl implements IBaseService<OrderDetailDTO, Orde
     }
 
     private OrderDetailKey findKey(Long productId, Long orderId) {
-        Optional<Order> order = Optional.ofNullable(orderRepository.findById(orderId).orElseThrow(()-> new NotFoundException(Order.class,orderId)));
-        Optional<Product> product = Optional.ofNullable(productRepository.findById(productId).orElseThrow(()-> new NotFoundException(Product.class,productId)));
+        Optional<Order> order = Optional.ofNullable(orderRepository.findById(orderId)
+                .orElseThrow(()-> new NotFoundException(Order.class,orderId)));
+        Optional<Product> product = Optional.ofNullable(productRepository.findById(productId)
+                .orElseThrow(()-> new NotFoundException(Product.class,productId)));
         return new OrderDetailKey(order.get(),product.get());
     }
 
     public OrderDetailDTO delete(Long productId, Long orderId) {
-        Optional<OrderDetail> entity = Optional.ofNullable(repository.findByKey_Product_ProductidAndKey_Order_Orderid(productId, orderId).orElseThrow(() -> new NotFoundException(OrderDetail.class, productId + "-" + orderId)));
+        Optional<OrderDetail> entity = Optional.ofNullable(repository.findByKey_Product_ProductidAndKey_Order_Orderid(productId, orderId)
+                .orElseThrow(() -> new NotFoundException(OrderDetail.class, productId + "-" + orderId)));
         repository.delete(entity.get());
         return createFromE(entity.get());
     }

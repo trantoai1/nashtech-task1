@@ -1,5 +1,6 @@
 package com.nashtech.toaitran.controller;
 
+import com.nashtech.toaitran.model.dto.ChangePassRequest;
 import com.nashtech.toaitran.model.dto.LoginRequest;
 import com.nashtech.toaitran.model.dto.SignupRequest;
 import com.nashtech.toaitran.service.impl.UserDetailServiceImpl;
@@ -30,5 +31,10 @@ public class AuthController {
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
 
         return service.register(signUpRequest);
+    }
+    @PostMapping("/changePass")
+    public ResponseEntity<?> changePass(@Valid @RequestBody ChangePassRequest signUpRequest) {
+
+        return service.changePass(signUpRequest);
     }
 }

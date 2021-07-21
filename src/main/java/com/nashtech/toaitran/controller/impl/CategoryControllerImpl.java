@@ -15,7 +15,8 @@ import javax.annotation.Resource;
 @RestController
 @RequestMapping("api/categories")
 @Tag( name = "Categories")
-public class CategoryControllerImpl implements IBaseController<CateDTO, Long, CategoryServiceImpl>, IGetController<CateDTO, Long, CategoryServiceImpl> {
+public class CategoryControllerImpl implements IBaseController<CateDTO, Long, CategoryServiceImpl>
+        , IGetController<CateDTO, Long, CategoryServiceImpl> {
     @Resource
     @Getter
     private CategoryServiceImpl service;

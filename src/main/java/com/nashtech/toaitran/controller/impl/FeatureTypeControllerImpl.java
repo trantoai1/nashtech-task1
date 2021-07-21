@@ -17,7 +17,8 @@ import javax.annotation.Resource;
 @Tag(
         name = "FeatureType"
 )
-public class FeatureTypeControllerImpl implements IBaseController<FeatureTypeDTO, String, FeatureTypeServiceImpl>, IGetController<FeatureTypeDTO, String, FeatureTypeServiceImpl> {
+public class FeatureTypeControllerImpl implements IBaseController<FeatureTypeDTO, String, FeatureTypeServiceImpl>
+        , IGetController<FeatureTypeDTO, String, FeatureTypeServiceImpl> {
     @Resource
     @Getter
     private FeatureTypeServiceImpl service;

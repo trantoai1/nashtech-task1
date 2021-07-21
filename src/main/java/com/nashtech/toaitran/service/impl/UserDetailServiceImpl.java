@@ -1,13 +1,13 @@
 package com.nashtech.toaitran.service.impl;
 
+import com.nashtech.toaitran.exception.NotFoundException;
 import com.nashtech.toaitran.model.RoleName;
-import com.nashtech.toaitran.model.dto.JwtResponse;
-import com.nashtech.toaitran.model.dto.LoginRequest;
-import com.nashtech.toaitran.model.dto.MessageResponse;
-import com.nashtech.toaitran.model.dto.SignupRequest;
+import com.nashtech.toaitran.model.dto.*;
 import com.nashtech.toaitran.model.entity.Role;
 import com.nashtech.toaitran.model.entity.User;
+import com.nashtech.toaitran.model.entity.UserDetail;
 import com.nashtech.toaitran.repository.IRoleRepository;
+import com.nashtech.toaitran.repository.IUserDetailRepository;
 import com.nashtech.toaitran.repository.IUserRepository;
 import com.nashtech.toaitran.security.jwt.JwtUtils;
 import com.nashtech.toaitran.security.services.UserDetailsImpl;
@@ -24,25 +24,29 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-public class UserDetailServiceImpl implements IBaseService<JwtResponse, Long>, IModelMapper<JwtResponse, User> {
+public class UserDetailServiceImpl implements IBaseService<UserDetailDTO, Long>
+        , IModelMapper<UserDetailDTO, User> {
     final private AuthenticationManager authenticationManager;
     final private IRoleRepository roleRepository;
     final private PasswordEncoder encoder;
     final private JwtUtils jwtUtils;
     private final IUserRepository repository;
     private final ModelMapper modelMapper;
+    private final IUserDetailRepository userDetailRepository;
 
-    public UserDetailServiceImpl(AuthenticationManager authenticationManager, IRoleRepository roleRepository, PasswordEncoder encoder, JwtUtils jwtUtils, IUserRepository repository, ModelMapper modelMapper) {
+    public UserDetailServiceImpl(AuthenticationManager authenticationManager, IRoleRepository roleRepository, PasswordEncoder encoder, JwtUtils jwtUtils, IUserRepository repository, ModelMapper modelMapper, IUserDetailRepository userDetailRepository) {
         this.authenticationManager = authenticationManager;
         this.roleRepository = roleRepository;
         this.encoder = encoder;
         this.jwtUtils = jwtUtils;
         this.repository = repository;
         this.modelMapper = modelMapper;
+        this.userDetailRepository = userDetailRepository;
     }
 
     public ResponseEntity<?> checkLogin(LoginRequest loginRequest) {
@@ -71,7 +75,20 @@ public class UserDetailServiceImpl implements IBaseService<JwtResponse, Long>, I
                 userDetails.getEmail(),
                 roles));
     }
-
+    public ResponseEntity<?> changePass(ChangePassRequest request)
+    {
+        if (!repository.existsByUsername(request.getUsername())) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: Username not found taken!"));
+        }
+        User user = repository.findByUsernameAndPassword(request.getUsername()
+                ,encoder.encode(request.getOldPassword()))
+                .orElseThrow(()->new NotFoundException("Username and old password not match"));
+        user.setPassword(encoder.encode(request.getPassword()));
+        repository.save(user);
+        return ResponseEntity.ok(new MessageResponse("Change password successfully!"));
+    }
     public ResponseEntity<?> register(SignupRequest signUpRequest) {
         if (repository.existsByUsername(signUpRequest.getUsername())) {
             return ResponseEntity
@@ -86,13 +103,13 @@ public class UserDetailServiceImpl implements IBaseService<JwtResponse, Long>, I
         }
 
         // Create new user's account
-        User user = new User(signUpRequest.getUsername(), signUpRequest.getUsername(),
-                signUpRequest.getEmail(),
-                encoder.encode(signUpRequest.getPassword()));
-
-        Set<String> strRoles = signUpRequest.getRole();
+        UserDetailDTO dto = modelMapper.map(signUpRequest,UserDetailDTO.class);
+        save(dto);
+        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+    }
+    private Set<Role> getRole(Set<String> strRoles)
+    {
         Set<Role> roles = new HashSet<>();
-
         if (strRoles == null) {
             Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
                     .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
@@ -119,51 +136,97 @@ public class UserDetailServiceImpl implements IBaseService<JwtResponse, Long>, I
                 }
             });
         }
-
-        user.setRoles(roles);
-        repository.save(user);
-
-        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+        return roles;
     }
-
+    private UserDetail getDetail(Long id)
+    {
+        UserDetail detail= userDetailRepository.findById(id)
+                .orElse(new UserDetail(1L,"","","",null));
+        return detail;
+    }
     @Override
-    public List<JwtResponse> findAll() {
+    public List<UserDetailDTO> findAll() {
         return createFromEntities(repository.findAll());
     }
 
     @Override
-    public JwtResponse findById(Long aLong) {
-        return null;
+    public UserDetailDTO findById(Long id) {
+        User entity = repository.findById(id).orElseThrow(()->new NotFoundException(User.class,id));
+
+        return createFromE(entity);
     }
 
     @Override
-    public JwtResponse update(Long aLong, JwtResponse jwtResponse) {
-        return null;
+    public UserDetailDTO update(Long id, UserDetailDTO signupRequest) {
+        User entity = repository.findById(id).orElseThrow(()->new NotFoundException(User.class,id));
+        entity = updateEntity(entity,signupRequest);
+        saveDetail(entity,signupRequest);
+        return createFromE(repository.save(entity));
+    }
+    private void updateDetail(UserDetailDTO signUpRequest)
+    {
+
+        User entity = repository.findByUsername(signUpRequest.getUsername())
+                .orElseThrow(() -> new NotFoundException("Username =" + signUpRequest.getUsername() + " not found!"));
+        saveDetail(entity,signUpRequest);
+    }
+    private void saveDetail(User entity,UserDetailDTO signUpRequest)
+    {
+        UserDetail userDetail = new UserDetail(entity.getId()
+                , signUpRequest.getFirstName() == null ? signUpRequest.getUsername() : signUpRequest.getFirstName()
+                , signUpRequest.getLastName() == null ? signUpRequest.getUsername() : signUpRequest.getLastName()
+                , signUpRequest.getAddress() == null ? "" : signUpRequest.getAddress(), entity);
+        userDetailRepository.save(userDetail);
+    }
+    @Override
+    public UserDetailDTO save(UserDetailDTO signUpRequest) {
+        User entity = createFromD(signUpRequest);
+        repository.save(entity);
+        updateDetail(signUpRequest);
+        return createFromE(entity);
     }
 
     @Override
-    public JwtResponse save(JwtResponse jwtResponse) {
-        return null;
+    public UserDetailDTO delete(Long id) {
+        Optional<User> entity = Optional.ofNullable(repository.findById(id)
+                .orElseThrow(() -> new NotFoundException(User.class, id)));
+
+        repository.delete(entity.get());
+        userDetailRepository.delete(getDetail(id));
+        return createFromE(entity.get());
+
     }
 
     @Override
-    public JwtResponse delete(Long aLong) {
-        return null;
+    public User createFromD(UserDetailDTO dto) {
+        User user = modelMapper.map(dto,User.class);
+        user.setRoles(getRole(dto.getRole()));
+        user.setPassword(encoder.encode(dto.getPassword()));
+        return user;
     }
 
     @Override
-    public User createFromD(JwtResponse dto) {
-        return null;
-    }
-
-    @Override
-    public JwtResponse createFromE(User entity) {
-        JwtResponse dto = modelMapper.map(entity, JwtResponse.class);
+    public UserDetailDTO createFromE(User entity) {
+        UserDetailDTO dto = modelMapper.map(entity, UserDetailDTO.class);
+        UserDetail detail = this.getDetail(entity.getId());
+        dto.setAddress(detail.getAddress());
+        dto.setRole(entity.getRoles().stream().map((item)-> String.valueOf(item.getName())).collect(Collectors.toSet()));
+        dto.setFirstName(detail.getFirstName());
+        dto.setLastName(detail.getLastName());
+        dto.setPassword("");
         return dto;
     }
 
     @Override
-    public User updateEntity(User entity, JwtResponse dto) {
-        return null;
+    public User updateEntity(User entity, UserDetailDTO dto) {
+        if (entity != null && dto != null) {
+            entity.setRoles(getRole(dto.getRole()));
+            if(dto.getPassword()!=null)
+            entity.setPassword(encoder.encode(dto.getPassword()));
+            if(dto.getUsername()!=null)
+            entity.setUsername(dto.getUsername());
+            entity.setEmail(dto.getEmail());
+        }
+        return entity;
     }
 }

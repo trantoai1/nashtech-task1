@@ -90,22 +90,27 @@ public class RateServiceImpl implements IBaseService<RateDTO, RateKey>, IModelMa
         return findKey(dto.getProductId(),dto.getUserId());
     }
     public RateDTO findById(Long productId, Long userId) {
-        Optional<Rate> entity = Optional.ofNullable(repository.findByKey_Product_ProductidAndKey_User_Id(productId, userId).orElseThrow(() -> new NotFoundException(Rate.class, productId + "-" + userId)));
+        Optional<Rate> entity = Optional.ofNullable(repository.findByKey_Product_ProductidAndKey_User_Id(productId, userId)
+                .orElseThrow(() -> new NotFoundException(Rate.class, productId + "-" + userId)));
         return createFromE(entity.get());
     }
     private RateKey findKey(Long productId, Long userId) {
-        Optional<User> user = Optional.ofNullable(userRepository.findById(userId).orElseThrow(()-> new NotFoundException(User.class,userId)));
-        Optional<Product> product = Optional.ofNullable(productRepository.findById(productId).orElseThrow(()-> new NotFoundException(Product.class,productId)));
+        Optional<User> user = Optional.ofNullable(userRepository.findById(userId)
+                .orElseThrow(()-> new NotFoundException(User.class,userId)));
+        Optional<Product> product = Optional.ofNullable(productRepository.findById(productId)
+                .orElseThrow(()-> new NotFoundException(Product.class,productId)));
         return new RateKey(user.get(),product.get());
     }
     public RateDTO update(Long productId, Long userId, RateDTO dto) {
-        Optional<Rate> entity = Optional.ofNullable(repository.findByKey_Product_ProductidAndKey_User_Id(productId, userId).orElseThrow(() -> new NotFoundException(Rate.class, productId + "-" + userId)));
+        Optional<Rate> entity = Optional.ofNullable(repository.findByKey_Product_ProductidAndKey_User_Id(productId, userId)
+                .orElseThrow(() -> new NotFoundException(Rate.class, productId + "-" + userId)));
         entity.get().setKey(findKey(dto));
         return createFromE(repository.save(updateEntity(entity.get(), dto)));
     }
 
     public RateDTO delete(Long productId, Long userId) {
-        Optional<Rate> entity = Optional.ofNullable(repository.findByKey_Product_ProductidAndKey_User_Id(productId, userId).orElseThrow(() -> new NotFoundException(Rate.class, productId + "-" + userId)));
+        Optional<Rate> entity = Optional.ofNullable(repository.findByKey_Product_ProductidAndKey_User_Id(productId, userId)
+                .orElseThrow(() -> new NotFoundException(Rate.class, productId + "-" + userId)));
         repository.delete(entity.get());
         return createFromE(entity.get());
     }

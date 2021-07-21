@@ -90,7 +90,8 @@ public class ProductServiceImpl implements IBaseService<ProductDTO, Long>, IMode
             entity.setRemain(dto.getRemain());
             entity.setProductName(dto.getProductName());
             entity.setFeatures(findAllFeature(dto.getFeatureIds()));
-            entity.setCategory(categoryRepository.findById(dto.getCategoryId()).orElseThrow(()-> new NotFoundException(Category.class,dto.getCategoryId())));
+            entity.setCategory(categoryRepository.findById(dto.getCategoryId())
+                    .orElseThrow(()-> new NotFoundException(Category.class,dto.getCategoryId())));
 
         }
 

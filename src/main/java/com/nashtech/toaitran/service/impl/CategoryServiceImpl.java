@@ -34,7 +34,8 @@ public class CategoryServiceImpl implements IBaseService<CateDTO, Long>, IModelM
 
     @Override
     public CateDTO findById(Long id) {
-        Optional<Category> cate = Optional.ofNullable(repository.findById(id)).orElseThrow(() -> new NotFoundException(Category.class, id));
+        Optional<Category> cate = Optional.ofNullable(repository.findById(id))
+                .orElseThrow(() -> new NotFoundException(Category.class, id));
 
         return createFromE(cate.get());
     }

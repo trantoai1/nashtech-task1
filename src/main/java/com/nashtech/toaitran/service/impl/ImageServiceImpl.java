@@ -67,7 +67,8 @@ public class ImageServiceImpl implements IBaseService<ImageDTO, Long>, IModelMap
             entity.setAlt(dto.getAlt());
             entity.setHeight(dto.getHeight());
             //entity.setId(dto.getId());
-            entity.setProduct(productRepository.findById(dto.getProductId()).orElseThrow(()-> new NotFoundException(Product.class,dto.getProductId())));
+            entity.setProduct(productRepository.findById(dto.getProductId())
+                    .orElseThrow(()-> new NotFoundException(Product.class,dto.getProductId())));
             entity.setUrl(dto.getUrl());
             entity.setWidth(dto.getWidth());
 

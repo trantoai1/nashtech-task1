@@ -27,7 +27,8 @@ public class FeatureTypeServiceImpl implements IBaseService<FeatureTypeDTO, Stri
     }
     @Override
     public FeatureTypeDTO findById(String id) {
-        Optional<FeatureType> entity = Optional.of(repository.findById(id.toUpperCase()).orElseThrow(() -> new NotFoundException(FeatureType.class, id.toUpperCase())));
+        Optional<FeatureType> entity = Optional.of(repository.findById(id.toUpperCase())
+                .orElseThrow(() -> new NotFoundException(FeatureType.class, id.toUpperCase())));
         return createFromE(entity.get());
     }
     @Override

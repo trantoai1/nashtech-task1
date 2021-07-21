@@ -77,12 +77,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
                 .antMatchers(
+                        "/api/auth/changePass")
+                .hasAnyRole("USER","PM","ADMIN")
+                .antMatchers(
                         "/api/auth/**",
                         "/api/v1/public**",
                         "/swagger-ui**",
                         "/swagger-ui/**",
                         "/v3/api-docs/**")
-                .permitAll()
+                    .permitAll()
                 .antMatchers(HttpMethod.GET,
                         "/api/categories**",
                         "/api/categories/**",
@@ -96,13 +99,28 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/api/featureTypes/**",
                         "/api/products/**",
                         "/api/products**")
-                .permitAll()
+                    .permitAll()
                 .antMatchers(
-                        "/api/v1/admin**")
-                .hasRole("ADMIN")
+                        "/api/v1/admin**",
+                        "/api/categories**",
+                        "/api/categories/**",
+                        "/api/images**",
+                        "/api/images/**",
+                        "/api/users**",
+                        "/api/users/**",
+                        "/api/features**",
+                        "/api/features/**",
+                        "/api/featureTypes**",
+                        "/api/featureTypes/**",
+                        "/api/products/**",
+                        "/api/products**")
+                    .hasRole("ADMIN")
+                .antMatchers("api/rates**",
+                        "api/rates/**")
+                    .hasRole("USER")
                 .antMatchers(
                         "/api/v1/**")
-                .hasAnyRole("USER","PM","ADMIN")
+                    .hasAnyRole("USER","PM","ADMIN")
                 .anyRequest().authenticated();
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
