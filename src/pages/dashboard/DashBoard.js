@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
-import { Link, Route, Switch,location } from 'react-router-dom';
+import { Link, Redirect, Route,} from 'react-router-dom';
 
 import AuthService from '../../services/AuthService';
 import FormCate from './FormCate';
+import FormCustomer from './FormCustomer';
 import FormProduct from './FormProduct';
 import TableCate from './TableCate';
+import TableCustomer from './TableCustomer';
 import TableProduct from './TableProduct';
 
 
@@ -16,6 +18,7 @@ export default class DashBoard extends Component {
             table: <></>,
             cateComponent:<TableCate addNewCate={()=>this.handleAddNewCate()}/>,
             productComponent:<TableProduct addNewProc={()=>this.handleAddNewProduct()}/>,
+            customerComponent:<TableCustomer addNewUser={()=>this.handleAddNewUser()}/>,
         }
         //this.query = new URLSearchParams(this.props.location.search);
     }
@@ -25,7 +28,17 @@ export default class DashBoard extends Component {
         console.log(user);
         this.setState({
             user: user,
+        });
+       
+    }
+    componentDidMount(){
+        
+    }
+    async handleAddNewUser(){
+        await this.setState({
+            customerComponent:<FormCustomer/>,
         })
+        
     }
     async handleAddNewProduct(){
         await this.setState({
@@ -42,6 +55,11 @@ export default class DashBoard extends Component {
     async resetProductComponent(){
         await this.setState({
             productComponent:<TableProduct addNewProc={()=>this.handleAddNewProduct()}/>,
+        })
+    }
+    async resetUserComponent(){
+        await this.setState({
+            customerComponent:<TableCustomer addNewUser={()=>this.handleAddNewUser()}/>,
         })
     }
     async resetCateComponent(){
@@ -67,7 +85,7 @@ export default class DashBoard extends Component {
 
                                         </svg>Manager Category</span>
                                         </Link>
-                                    <Link className="list-group-item d-flex justify-content-between align-items-center text-decoration-none" to="/dashboard/customers"><span>
+                                    <Link className="list-group-item d-flex justify-content-between align-items-center text-decoration-none" to="/dashboard/customers" onClick={()=>this.resetUserComponent()}><span>
                                         <svg className="svg-icon svg-icon-heavy me-2">
 
                                         </svg>Manager Customer</span></Link>
@@ -75,10 +93,7 @@ export default class DashBoard extends Component {
                                         <svg className="svg-icon svg-icon-heavy me-2">
 
                                         </svg>Manager Product</span></Link>
-                                    <Link className="list-group-item d-flex justify-content-between align-items-center text-decoration-none" to="customer-login.html"><span>
-                                        <svg className="svg-icon svg-icon-heavy me-2">
-
-                                        </svg>Log out</span></Link>
+                                    
                                 </nav>
                             </div>
                         </div>
@@ -99,8 +114,12 @@ export default class DashBoard extends Component {
                             <Route exact path="/dashboard/products/:id" >
                                 <FormProduct/>
                             </Route>
-                            <Route exact path="/dashboard/customers"></Route>
-                            
+                            <Route exact path="/dashboard/customers">
+                            {this.state.customerComponent}
+                            </Route>
+                            <Route exact path="/dashboard/customers/:id">
+                            <FormCustomer/>
+                            </Route>
                         </div>
 
                     </div>

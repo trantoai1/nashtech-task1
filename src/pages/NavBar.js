@@ -1,17 +1,27 @@
 import React, { Component } from 'react'
 import { routes } from '../const/routes';
 import { Link } from 'react-router-dom';
+import AuthService from '../services/AuthService';
 export default class NavBar extends Component {
+    constructor(props) {
+        super(props);
+        this.logOut = this.logOut.bind(this);
+    
+    
+       
+        
+      }
+    curruser = AuthService.getCurrentUser();
 
-
-    nav = routes.map(({ path,name,pub,sub }, key) => pub&&( 
+    nav = routes.map(({ path,name,pub,sub,user ,admin}, key) => (pub||(!this.curruser&&path==='/customer')||(this.curruser&&user)||(this.curruser&&this.curruser.roles.includes('ROLE_ADMIN')&&admin))&&( 
     
     <li key={key} className={sub.length>0?'nav-item dropdown':'nav-item'}> <Link className={sub.length>0?'nav-link dropdown-toggle':'nav-link'} id="homeDropdownMenuLink" to={path} >{name}</Link> </li>
     
     ));
-    componentDidMount(){
-        //console.log(this.nav);
-    }
+    logOut() {
+        AuthService.logout();
+        window.location.href = '/';
+      }
     render() {
         return (
             <nav className="navbar navbar-expand-lg bg-transparent navbar-sticky navbar-airy navbar-light bg-hover-white bg-fixed-white navbar-hover-light navbar-fixed-light">
@@ -25,6 +35,8 @@ export default class NavBar extends Component {
                         <div className="collapse navbar-collapse" id="navbarCollapse">
                             <ul className="navbar-nav mx-auto">
                                 {this.nav}
+                                {this.curruser&&<li  className='nav-item'>
+                                <a className='nav-link' href="/customer" onClick={(e)=>this.logOut()} >Log Out</a> </li>}
                             </ul>
                             
                         </div>

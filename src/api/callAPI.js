@@ -29,78 +29,42 @@ export default async function callAPI (endpoint,params,method='GET',body){
         }
     
 };
-// export async function getArray (endpoint,params){
-//     try {
-        
-//        let res = await axios.get(`${process.env.REACT_APP_API_URL}/${endpoint}`,{params:params,headers:authHeader(),paramsSerializer: (params) => {
-//         return qs.stringify(params,{ arrayFormat: 'repeat' })
-//       }})
-        
-//        if(res.status === 200){
-           
-//         }    
-        
-//         return res;
-//     }
-//     catch (err) {
-//         console.error(err);
-//     }
-// };
+
 
 export async function get (endpoint,params){
-    try {
+    
         
        let res = await axios.get(`${process.env.REACT_APP_API_URL}/${endpoint}`,{params:params,headers:authHeader()});
         
-       if(res.status === 200){
-           
-        }    
+          
         
         return res;
-    }
-    catch (err) {
-        console.error(err);
-    }
+    
 };
 
 export async function post (endpoint,body){
-    try {
+    
        let res = await axios.post(`${process.env.REACT_APP_API_URL}/${endpoint}`,body,{headers:authHeader()})
-        if(res.status === 200){
            
-        }    
         
         return res;
-    }
-    catch (err) {
-        console.error(err);
-    }
+    
 };
 
 export async function put (endpoint,body){
-    try {
+   
        let res = await axios.put(`${process.env.REACT_APP_API_URL}/${endpoint}`,body,{headers:authHeader()})
-        if(res.status === 200){
-           
-        }    
+         
         
         return res;
-    }
-    catch (err) {
-        console.error(err);
-    }
+    
 };
 
 export async function del(endpoint){
-    try {
+    
        let res = await axios.delete(`${process.env.REACT_APP_API_URL}/${endpoint}`,{headers:authHeader()})
-        if(res.status === 200){
-           
-        }    
+         
         
         return res;
-    }
-    catch (err) {
-        console.error(err);
-    }
+    
 };

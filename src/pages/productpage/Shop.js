@@ -2,37 +2,46 @@
 import React, { Component } from 'react'
 import ProductList from '../../components/products/ProductList'
 import LeftBar from './LeftBar'
-
+import Modal from './Modal';
 export default class Shop extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         //console.log('init'); 
         this.state = {
             categoryId: undefined,
-            featureIds:[],
+            featureIds: [],
+            modelId: 0,
+            modelComponent: <> </>,
         }
         this.productList = React.createRef();
     }
-    
-    
-    async handleFilterByCate(id)
-    {
-       await this.setState({
+
+
+    async handleFilterByCate(id) {
+        await this.setState({
             categoryId: id,
         })
         //console.log('handleFilterByCate:'+this.state.categoryId);
     }
-    async handleFilterbyFeature(e,id)
-    {
+    async handleFilterbyFeature(e, id) {
         let list = [];
         if (e.target.checked)
-            list = [...this.state.featureIds,id]
+            list = [...this.state.featureIds, id]
         else
             list = this.state.featureIds.filter(item => item !== id);
+        ///console.log(e.target.checked,id);
         await this.setState({
-            featureIds:list
+            featureIds: list
         });
-        //console.log(e.target.checked,this.state.featureIds);
+        //console.log(this.state.featureIds);
+    }
+    openModel(id) {
+        //const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+        this.setState({
+            modelId: id,
+            modelComponent: <Modal productId={id} key={id} />
+        })
+        //await sleep(3000);
     }
     render() {
         return (
@@ -42,11 +51,11 @@ export default class Shop extends Component {
 
                         <ol className="breadcrumb justify-content-center">
                             <li className="breadcrumb-item"><a href="index.html">Home</a></li>
-                            <li className="breadcrumb-item active">Jackets and tops        </li>
+                            <li className="breadcrumb-item active">Apple's product        </li>
                         </ol>
 
                         <div className="hero-content pb-5 text-center">
-                            <h1 className="hero-heading">Jackets and tops</h1>
+                            <h1 className="hero-heading">Apple's product</h1>
                             <div className="row">
                                 <div className="col-xl-8 offset-xl-2"><p className="lead text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt.</p></div>
                             </div>
@@ -71,10 +80,10 @@ export default class Shop extends Component {
                                     </select>
                                 </div>
         </header>*/}
-        <div class="masonry-wrapper mx-n3">
-                            <div className="row">
-                            <ProductList categoryId={this.state.categoryId} featureIds={this.state.featureIds} key={this.state.featureIds} ref={this.productList}/>
-                            </div>
+                            <div className="masonry-wrapper mx-n3">
+                                <div className="row">
+                                    <ProductList categoryId={this.state.categoryId} featureIds={this.state.featureIds} key={this.state.featureIds} ref={this.productList} openModel={(id) => this.openModel(id)} />
+                                </div>
                             </div>
                             {/*<nav className="d-flex justify-content-center mb-5 mt-3" aria-label="page navigation">
                                 <ul className="pagination">
@@ -88,14 +97,14 @@ export default class Shop extends Component {
                                 </ul>
         </nav>*/}
                         </div>
+                        {this.state.modelComponent}
 
-
-                        <LeftBar filterByCate={(id)=>this.handleFilterByCate(id)} checkedFeature={(e,id)=>this.handleFilterbyFeature(e,id)}/>
+                        <LeftBar filterByCate={(id) => this.handleFilterByCate(id)} checkedFeature={(e, id) => this.handleFilterbyFeature(e, id)} />
 
                     </div>
                 </div>
-                {/*<Modal/>*/}
-                
+
+
             </>
         )
     }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Fade } from 'reactstrap';
+
 import Form from 'react-validation/build/form';
 import Input from 'react-validation/build/input';
 import Button from 'react-validation/build/button';
@@ -8,35 +8,21 @@ import TextArea from 'react-validation/build/textarea';
 import validator from 'validator';
 import {get, post,put } from '../../api/callAPI';
 import { withRouter } from 'react-router-dom';
-const required = (value) => {
-    if (!value.toString().trim().length) {
-      // We can return string or jsx as the 'error' prop for the validated Component
-      return 'require';
-    }
-  };
-  const email = (value) => {
-    if (!validator.isEmail(value)) {
-      return `${value} is not a valid email.`
-    }
-  };
-   
-  const lt = (value, props) => {
-    // get the maxLength from component's props
-    if (!value.toString().trim().length > props.maxLength) {
-      // Return jsx
-      return <span className="error">The value exceeded {props.maxLength} symbols.</span>
-    }
-  };
+import Message from '../../util/Message';
+import {required,} from "../../util/constrain";
+
 class FormCate extends Component {
     constructor(props){
         super (props);
         this.state={
-            isCreate : false,
-            message:<></>,
+            
             id:0,
             key:0,
             name:'',
             descript:'',
+            type:'success',
+            isShow : false,
+            message:'',
         }
         
     }
@@ -91,35 +77,47 @@ class FormCate extends Component {
         {
             put(`categories/${this.props.match.params.id}`,params)
             .then(res=>{
-                if(res!==undefined)
+                if(res&&res.status===202)
                 this.setState({
-                    message:res.data.cateName,
-                    
+                    message:`Update category ${res.data.cateName} success!`,
+                    type:'success'
                 });
                 console.log(res);
+            },
+            err=>{
+                err.response&&this.setState({
+                    message:`${err.response.data.error} ${err.response.data.message}`,
+                    type:'danger',
+                });
             })
         }
         else
         {
             post(`categories`,params)
             .then(res=>{
-                if(res!==undefined)
+                if(res&&res.status===201)
                 this.setState({
-                    message:res.data.cateName,
+                  message:`Create category ${res.data.cateName} success!`,
+                  type:'success'
                     
                 });
                 console.log(res);
+            },
+            err=>{
+                err.response&&this.setState({
+                    message:`${err.response.data.error} ${err.response.data.message}`,
+                    type:'danger',
+                });
             })
         }
         await this.setState({
-            isCreate:!this.setState.isCreate,
+            isShow:!this.setState.isShow,
         })
         }
     }
     render() {
         return (
-            <>{this.state.isCreate&&<Fade in={true}  >
-            <div className="alert alert-success">{this.state.message}</div></Fade>}
+            <><Message isShow={this.state.isShow} type={this.state.type} message={this.state.message} key={this.state.message}/>
             <div className="block mb-5">
               <div className="block-header"><strong className="text-uppercase">{this.props.match.params.id?'Edit':'New'} Category</strong></div>
               <div className="block-body">

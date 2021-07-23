@@ -1,7 +1,9 @@
 
 
 import axios from 'axios';
+import authHeader from './authHeader';
 const AUTH_URL = process.env.REACT_APP_AUTH_URL;
+const API_URL = `${process.env.REACT_APP_API_URL}/v1/`;
 class AuthService {
   login(username, password) {
     return axios.post(AUTH_URL + "signin", {
@@ -16,7 +18,18 @@ class AuthService {
         return response.data;
       });
   }
+  changePass(username, oldPassword,password) {
+    return axios.post(AUTH_URL + "changePass", {
+        "username":username,
+        "password":password,
+        "oldPassword":oldPassword},{headers: authHeader()
+      })
+      .then(response => {
+        
 
+        return response.data;
+      });
+  }
   logout() {
     localStorage.removeItem("user");
   }
@@ -32,6 +45,7 @@ class AuthService {
   getCurrentUser() {
     return JSON.parse(localStorage.getItem('user'));;
   }
+  
 }
 
 export default new AuthService();

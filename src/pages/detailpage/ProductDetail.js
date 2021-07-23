@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import callAPI from '../../api/callAPI';
+
 
 import { withRouter } from 'react-router-dom';
 
@@ -27,7 +27,7 @@ class ProductDetail extends Component {
     
     componentDidMount() {
         
-        callAPI('products/' + this.props.match.params.id)
+        get('products/' + this.props.match.params.id)
             .then(res => {
                 if (res !== undefined)
                    
@@ -53,10 +53,11 @@ class ProductDetail extends Component {
             //console.log(res)
             if(res!==undefined)
             
-           if(res.status===200)
+            if(res.status===200)
             this.setState({
-                rates: res.data,
-                rate: res.data.length===0?0:res.data.length===1?res.data[0].point:Math.ceil(res.data.reduce((a,b)=> a.point+b.point)/res.data.length),
+                rates:  res.data,
+                rate:   res.data.length===0?0://if no review => point = 0
+                        Math.ceil(res.data.reduce((a,b)=> a.point+b.point)/res.data.length),
             });
             //console.log(this.state.rate);
         });
@@ -109,7 +110,7 @@ class ProductDetail extends Component {
             <>
                 <section className="product-details">
                     <div className="container-fluid">         
-                        <ProductView product={this.state.product} ratePoint={this.state.rate} key={this.state.rate} totalReview={this.state.rates.length}/>
+                        <ProductView product={this.state.product} productId={this.props.match.params.id} ratePoint={this.state.rate} key={this.state.rate} totalReview={this.state.rates.length}/>
                     </div>
                 </section>
                 <section className="mt-5">

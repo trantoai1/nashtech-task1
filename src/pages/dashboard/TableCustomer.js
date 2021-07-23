@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
-import ProductList from '../../components/products/ProductList';
+
 import { del } from '../../api/callAPI';
 import { Fade } from 'reactstrap';
-import { Link } from 'react-router-dom';
+import UserList from '../../components/user/UserList';
 import Message from '../../util/Message';
-export default class TableProduct extends Component {
+export default class TableCustomer extends Component {
     constructor(props){
         super (props);
         this.state={
@@ -19,15 +19,15 @@ export default class TableProduct extends Component {
 
     async doDelete(id)
     {
-        del(`products/${id}`)
+        del(`users/${id}`)
         .then(res=>{
             if(res&&res.status===202)
             this.setState({
-                message:`Delete product ${res.data.productName} success!`,
+                message:`Delete user ${res.data.username} success!`,
                 key:id,
                 type:'success',
             });
-            console.log(res);
+            //console.log(res);
         },
         err=>{
             this.setState({
@@ -60,21 +60,21 @@ export default class TableProduct extends Component {
             <>
             
             <Message isShow={this.state.isShow} type={this.state.type} message={this.state.message} key={this.state.message}/>
-            <a onClick={()=>this.props.addNewProc()} className="btn btn-primary">Add new</a>
+            <a onClick={()=>this.props.addNewUser()} className="btn btn-primary">Add new</a>
             <hr/>
             <table className="table table-borderless table-hover table-responsive-md">
                                 <thead className="bg-light">
                                     <tr>
-                                        <th className="py-4 text-uppercase text-sm">Product #</th>
-                                        <th className="py-4 text-uppercase text-sm">Name</th>
-                                        <th className="py-4 text-uppercase text-sm">Category</th>
-                                        <th className="py-4 text-uppercase text-sm">Remain</th>
-                                        <th className="py-4 text-uppercase text-sm">Price</th>
+                                        <th className="py-4 text-uppercase text-sm">#</th>
+                                        <th className="py-4 text-uppercase text-sm">Username</th>
+                                        <th className="py-4 text-uppercase text-sm">Email</th>
+                                        <th className="py-4 text-uppercase text-sm">Address</th>
+                                        <th className="py-4 text-uppercase text-sm">Role</th>
                                         <th className="py-4 text-uppercase text-sm">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <ProductList isTable={true} deleteProduct={(id)=>this.handleDelete(id)} key={this.state.key}/>
+                                    <UserList  deleteUser={(id)=>this.handleDelete(id)} key={this.state.key}/>
                                 </tbody>
                             </table>
 

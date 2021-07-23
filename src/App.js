@@ -6,73 +6,107 @@ import Footer from './pages/Footer';
 
 import {
   BrowserRouter as Router,
-  Switch, Route
+  Switch, Route, Redirect
 } from 'react-router-dom';
 import { routes } from './const/routes';
 import Header from './pages/Header';
 import AuthService from './services/AuthService';
-import PrivateRoute from './components/PrivateRoute';
+import AdminRoute from './util/AdminRoute';
+import PrivateRoute from './util/PrivateRoute';
+import { get } from './api/callAPI';
 
-import Permit from './pages/Permit';
+import Permit from './util/Permit';
+import authHeader from './services/authHeader';
+
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.logOut = this.logOut.bind(this);
-    
+    //this.logOut = this.logOut.bind(this);
+
 
     this.state = {
       //showModeratorBoard: false,
       showAdminBoard: false,
       currentUser: undefined,
-      routeComponents:undefined,
+      routeComponents: undefined,
     };
+    
   }
 
   componentDidMount() {
     const user = AuthService.getCurrentUser();
-    console.log(AuthService.getCurrentUser());
+    //console.log(AuthService.getCurrentUser());
     if (user) {
-      this.setState({
-        currentUser: user,
-        //showModeratorBoard: user.roles.includes("ROLE_MODERATOR"),
-        showAdminBoard: user.roles.includes("ROLE_ADMIN"),
-        
-      });
+      if (user.roles.includes("ROLE_ADMIN")) {
+        get('v1/admin')
+          .then(res => {
+            //console.log(res)
+            if(res)
+              if (res.status === 200)
+
+              this.setState({
+                currentUser: user,
+                showAdminBoard: true,
+              })
+              console.log(res)
+          }, err => {
+            console.log(err.response);
+
+          })
+
+      }
+      else {
+        get('v1/user')
+          .then(res => {
+            console.log(res);
+            if(res)
+            if (res.status === 200)
+              this.setState({
+                currentUser: user,
+
+              })
+            
+          }, err => {
+            
+          })
+      }
     }
     this.setState({
-      routeComponents: routes.map(({ path, component,user,admin }, key) => 
-       (
-        //  admin? 
-        //    this.state.showAdminBoard?<PrivateRoute path={path} component={component} key={key}/>:<Route key={key} path="/permit" component={Permit}/>
-        //    : 
-          user?
-          
-              <PrivateRoute path={path} component={component} key={key}/>
-          :
-          <Route exact path={path} component={component} key={key} />
-
-
+      routeComponents: routes.map(({ path, component, user, admin }, key) =>
+      (
+        user ? <PrivateRoute exact path={path} component={component} key={key} /> :
+        admin ? <AdminRoute path={path} component={component} key={key} /> :
+         
+            <Route exact path={path} component={component} key={key} />
       )
-      
       ),
     });
     
   }
+  // componentWillUpdate()
+  // {
+  //   const user =  AuthService.getCurrentUser();
+  //   console.log(user);
+  //   if(user!==this.state.currentUser)
+  //   {
+  //     this.setState({
+  //       currentUser:user,
+  //     })
+  //   }
+  // }
 
-  logOut() {
-    AuthService.logout();
-  }
   
-  
+
+
   render() {
-  
+    //console.log(this.state.routeComponents);
     return (
       <>
         <Router>
           <Header />
           <Switch>
-            
+
             {this.state.routeComponents}
             
           </Switch>

@@ -19,12 +19,13 @@ export default class Customer extends Component {
                     </div>
                 </section>
                 <section>
-      <div className="container">
-        <div className="row justify-content-center">
-                <Login />
-                <Register/></div>
-      </div>
-    </section>
+                    <div className="container">
+                        <div className="row justify-content-center">
+                            <Login />
+                            <Register />
+                        </div>
+                    </div>
+                </section>
             </>
         )
     }

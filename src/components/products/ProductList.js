@@ -93,6 +93,7 @@ class ProductList extends Component {
                     categoryName = {product.categoryName}
                     isTable = {this.props.isTable} 
                     deleteProduct={(id)=>this.props.deleteProduct(id)}
+                    openModel={(id)=>this.props.openModel(id)}
                 />
                 )
                  

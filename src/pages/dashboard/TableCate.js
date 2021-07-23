@@ -3,13 +3,16 @@ import CategoryList from '../../components/categories/CategoryList'
 import { del } from '../../api/callAPI';
 import { Fade } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import Message from '../../util/Message';
 export default class TableCate extends Component {
     constructor(props){
         super (props);
         this.state={
-            isDelete : false,
-            message:<></>,
+            
             key:0,
+            type:'success',
+            isShow : false,
+            message:'',
         }
         
     }
@@ -19,15 +22,23 @@ export default class TableCate extends Component {
     {
         del(`categories/${id}`)
         .then(res=>{
-            if(res!==undefined)
+            if(res&&res.status===202)
             this.setState({
-                message:res.data.cateName,
+                message:`Delete category ${res.data.cateName} success`,
+                type:'success',
                 key:id,
             });
             console.log(res);
-        })
+        },
+        err=>{
+            this.setState({
+                message:`${err.response.data.error} ${err.response.data.message}`,
+                type:'danger',
+            });
+        }
+        );
         await this.setState({
-            isDelete:!this.setState.isDelete,
+            isShow:!this.setState.isShow,
         })
     }
     componentDidMount(){
@@ -41,7 +52,7 @@ export default class TableCate extends Component {
         }
         setTimeout(() => {
             this.setState({
-                isDelete: false
+                isShow: false
             });
           }, 2000);
     }
@@ -49,9 +60,8 @@ export default class TableCate extends Component {
     render() {
         return (
             <>
-            
-            {this.state.isDelete&&<Fade in={true}  >
-            <div className="alert alert-success">{this.state.message}</div></Fade>}
+           <Message isShow={this.state.isShow} type={this.state.type} message={this.state.message} key={this.state.message}/>
+           
             <a onClick={()=>this.props.addNewCate()} className="btn btn-primary">Add new</a>
             <hr/>
             <table className="table table-borderless table-hover table-responsive-md">

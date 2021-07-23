@@ -11,6 +11,8 @@ export default class ImageList extends Component {
         //console.log(this.state);
     }
     componentDidMount(){
+        //console.log('didmount');
+        //console.log(this.props.id);
         get('images',{"productId":this.props.id})
         .then(res => {
             if (res !== undefined)
@@ -29,7 +31,7 @@ export default class ImageList extends Component {
     render() {
         var listImage = this.state.images
         //console.log('render');
-        //console.log(this.state);
+        //console.log(listImage);
         
         return (
             

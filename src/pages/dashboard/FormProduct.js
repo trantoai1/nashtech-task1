@@ -5,37 +5,21 @@ import Input from 'react-validation/build/input';
 import Button from 'react-validation/build/button';
 import CheckButton from "react-validation/build/button";
 import TextArea from 'react-validation/build/textarea';
-import Select from 'react-validation/build/select';
-import validator from 'validator';
+
+
 import { get, post, put } from '../../api/callAPI';
 import { withRouter } from 'react-router-dom';
 import CategoryList from '../../components/categories/CategoryList';
 import FeatureTypeList from '../../components/featureTypes/FeatureTypeList';
-const required = (value) => {
-    if (!value.toString().trim().length) {
-        // We can return string or jsx as the 'error' prop for the validated Component
-        return 'require';
-    }
-};
-const email = (value) => {
-    if (!validator.isEmail(value)) {
-        return `${value} is not a valid email.`
-    }
-};
-
-const lt = (value, props) => {
-    // get the maxLength from component's props
-    if (!value.toString().trim().length > props.maxLength) {
-        // Return jsx
-        return <span className="error">The value exceeded {props.maxLength} symbols.</span>
-    }
-};
+import Message from '../../util/Message';
+import {required,} from "../../util/constrain";
 class FormProduct extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isCreate: false,
-            message: <></>,
+            type:'success',
+            isShow : false,
+            message:'',
             key: 0,
             id:0,
             name: '',
@@ -74,7 +58,7 @@ class FormProduct extends Component {
                     this.setState({
                         features:f
                     })
-                    //console.log('features',this.state.features);
+                    
                 });
             this.setState({
                 id:this.props.match.params.id,
@@ -100,11 +84,13 @@ class FormProduct extends Component {
     }
     priceOnChange(e)
     {
+        if(e.target.value>=0)
         this.setState({
             price:e.target.value,
         })
     }
     remainOnChange(e) {
+        if(e.target.value>=0)
         this.setState({
             remain: e.target.value,
         })
@@ -117,17 +103,13 @@ class FormProduct extends Component {
     }
     async handleFilterbyFeature(e)
     {
-        // let list = [];
-        //  if (e.target.checked)
-        //      list = [...this.state.featureIds,id]
-        //  else
-        //     list = this.state.featureIds.filter(item => item !== id);
+        
         await this.setState({
             features:{...this.state.features,
                 [e.target.name]:Number(e.target.value),
             }
         });
-        //console.log('featureschane',this.state.features);
+        
     }
     async doCreate(e) {
         e.preventDefault();
@@ -141,38 +123,49 @@ class FormProduct extends Component {
             params['remain'] = this.state.remain;
             params['categoryId'] = Number(this.state.cate);
             params['featureIds'] = Object.values(this.state.features)
-            console.log(params);
+            
             if (this.props.match.params.id) {
                 put(`products/${this.props.match.params.id}`, params)
                     .then(res => {
-                        if (res !== undefined)
+                        if (res&&res.status===202)
                             this.setState({
-                                message: res.data.productName,
-
+                                message: `Update product ${res.data.productName} success!`,
+                                type:'success',
                             });
-                        console.log(res);
+                        
+                    },
+                    err=>{
+                        err.response&&this.setState({
+                            message:`${err.response.data.error} ${err.response.data.message}`,
+                            type:'danger',
+                        });
                     })
             }
             else {
                 post(`products`, params)
                     .then(res => {
-                        if (res !== undefined)
+                        if (res &&res.status===201)
                             this.setState({
-                                message: res.data.productName,
-
+                                message: `Create product ${res.data.productName} success!`,
+                                type:'success',
                             });
-                        console.log(res);
+                        
+                    },
+                    err=>{
+                        err.response&&this.setState({
+                            message:`${err.response.data.error} ${err.response.data.message}`,
+                            type:'danger',
+                        });
                     })
             }
             await this.setState({
-                isCreate: !this.setState.isCreate,
+                isShow: !this.setState.isShow,
             })
         }
     }
     render() {
         return (
-            <>{this.state.isCreate && <Fade in={true}  >
-                <div className="alert alert-success">{this.state.message}</div></Fade>}
+            <><Message isShow={this.state.isShow} type={this.state.type} message={this.state.message} key={this.state.message}/>
                 <div className="block mb-5">
                     <div className="block-header"><strong className="text-uppercase">{this.props.match.params.id ? 'Edit' : 'New'} Product</strong></div>
                     <div className="block-body">

@@ -2,11 +2,7 @@ import React, { Component } from 'react'
 
 export default class Category extends Component {
     
-    componentDidMount()
-    {
-        console.log(this.props.va,this.props.id,this.props.id==this.props.va);
-
-    }
+    
     render() {
         if(this.props.select)
         

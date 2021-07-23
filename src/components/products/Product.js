@@ -23,7 +23,7 @@ class Product extends Component {
                         images: res.data 
                     });
                 }
-                    console.log(this.state.images);
+                    //console.log(this.state.images);
         });
     }
     render() {
@@ -57,7 +57,7 @@ class Product extends Component {
                                     <i className="fa fa-shopping-cart"></i></a>
                                     <Link className="btn btn-dark btn-buy" to={'/products/'+this.props.id}>
                                         <i className="fa-search fa"></i><span className="btn-buy-label ms-2">View</span></Link>
-                                        <a className="btn btn-outline-dark btn-product-right d-none d-sm-inline-block" href="/" data-bs-toggle="modal" data-bs-target="#exampleModal"><i className="fa fa-expand-arrows-alt"></i></a>
+                                        <a className="btn btn-outline-dark btn-product-right d-none d-sm-inline-block" href="" onClick={(e)=>this.props.openModel(this.props.id)} data-bs-toggle="modal" data-bs-target="#exampleModal"><i className="fa fa-expand-arrows-alt"></i></a>
                             </div>
                         </div>
                     </div>

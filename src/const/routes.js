@@ -7,6 +7,10 @@ import Login from "../pages/customer/Login";
 import Customer from "../pages/customer/Customer";
 import Profile from "../pages/customer/Profile";
 import DashBoard from "../pages/dashboard/DashBoard";
+import Cart from "../pages/cart/Cart";
+import CheckOut from "../pages/cart/CheckOut";
+import Orders from "../pages/customer/Orders";
+import Order from "../pages/customer/Order";
 export  const routes = [
 {
     path: '/',
@@ -37,18 +41,18 @@ export  const routes = [
 },
 {
     path: '/cart',
-    component: Login,
+    component: Cart,
     name: 'Cart',
     pub:true,
-    user:true,
-    admin:true,
+    user:false,
+    admin:false,
     sub:[],
 },
 {
     path: '/customer',
     component: Customer,
     name: 'Customer',
-    pub:true,
+    pub:false,
     user:false,
     admin:false,
     sub:[],
@@ -63,12 +67,39 @@ export  const routes = [
     sub:[],
 },
 {
+    path: '/checkout',
+    component: CheckOut,
+    name: 'Check Out',
+    pub:false,
+    user:true,
+    admin:false,
+    sub:[],
+},
+{
     path: '/profile',
     component: Profile,
     name: 'Profile',
     pub:false,
     user:true,
-    admin:true,
+    admin:false,
+    sub:[],
+},
+{
+    path: '/orders',
+    component: Orders,
+    name: 'Orders',
+    pub:false,
+    user:true,
+    admin:false,
+    sub:[],
+},
+{
+    path: '/orders/:id',
+    component: Order,
+    name: 'Order',
+    pub:false,
+    user:true,
+    admin:false,
     sub:[],
 },
 {
@@ -76,8 +107,8 @@ export  const routes = [
     component: DashBoard,
     name: 'DashBoard',
     pub:false,
-    user:true,
-    admin:false,
+    user:false,
+    admin:true,
     sub:[],
 },
 ];
