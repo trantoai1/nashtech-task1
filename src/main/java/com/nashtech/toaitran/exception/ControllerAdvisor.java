@@ -26,6 +26,8 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> notFoundHandler(NotFoundException ex) {
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());
+        body.put("error", "Entity not found!");
+        body.put("status",HttpStatus.NOT_FOUND);
         body.put("message", ex.getMessage());
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
@@ -34,6 +36,8 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> foundHandler(EntityPrimaryKeyExistsException ex) {
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());
+        body.put("error", "Primary key has existed!");
+        body.put("status",HttpStatus.FOUND);
         body.put("message", ex.getMessage());
         return new ResponseEntity<>(body, HttpStatus.FOUND);
     }
@@ -44,8 +48,10 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
         ex.getFieldErrors().forEach(e -> details.add(e.getField() + " " + e.getDefaultMessage()));
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());
-        body.put("message", "Validation fail");
-        body.put("errors", details);
+        body.put("error", "Validation fail");
+        body.put("status",status);
+        body.put("message", details);
+        //body.put("errors", details);
         return new ResponseEntity(body, status);
     }
 
@@ -54,7 +60,8 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());
         body.put("message", ex.getMessage());
-
+        body.put("error", "SQL error!");
+        body.put("status",HttpStatus.CONFLICT);
         return new ResponseEntity<>(body, HttpStatus.CONFLICT);
     }
     @ExceptionHandler(NumberErrorException.class)
@@ -62,7 +69,8 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());
         body.put("message", ex.getMessage());
-
+        body.put("status",HttpStatus.NOT_ACCEPTABLE);
+        body.put("error", "Number format error!");
         return new ResponseEntity<>(body, HttpStatus.NOT_ACCEPTABLE);
     }
     @Override

@@ -4,6 +4,7 @@ import com.nashtech.toaitran.model.dto.RateDTO;
 import com.nashtech.toaitran.service.impl.RateServiceImpl;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Getter;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -44,7 +45,7 @@ public class RateControllerImpl {//implements IBaseController<RateDTO, RateKey, 
     public RateDTO delete(@PathVariable Long productId, @PathVariable Long userId) {
         return service.delete(productId, userId);
     }
-
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("")
     public RateDTO insert(@Valid @RequestBody RateDTO d) {
         return getService().save(d);

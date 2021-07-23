@@ -14,6 +14,7 @@ import com.nashtech.toaitran.security.services.UserDetailsImpl;
 import com.nashtech.toaitran.service.IBaseService;
 import com.nashtech.toaitran.service.IModelMapper;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -68,23 +69,25 @@ public class UserDetailServiceImpl implements IBaseService<UserDetailDTO, Long>
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());
-
+        UserDetail entity = this.getDetail(userDetails.getId());
         return ResponseEntity.ok(new JwtResponse(jwt,
                 userDetails.getId(),
                 userDetails.getUsername(),
                 userDetails.getEmail(),
-                roles));
+                roles,entity.getFirstName()+" "+entity.getLastName()));
     }
     public ResponseEntity<?> changePass(ChangePassRequest request)
     {
         if (!repository.existsByUsername(request.getUsername())) {
             return ResponseEntity
                     .badRequest()
-                    .body(new MessageResponse("Error: Username not found taken!"));
+                    .body(new MessageResponse("Error: Username not found!"));
         }
-        User user = repository.findByUsernameAndPassword(request.getUsername()
-                ,encoder.encode(request.getOldPassword()))
-                .orElseThrow(()->new NotFoundException("Username and old password not match"));
+        User user = repository.findByUsername(request.getUsername()).get();
+        System.out.println(user.getPassword());
+        System.out.println(encoder.encode(request.getOldPassword()));
+        if(!encoder.matches(request.getOldPassword(),user.getPassword()))
+                throw new NotFoundException("Username and old password not match");
         user.setPassword(encoder.encode(request.getPassword()));
         repository.save(user);
         return ResponseEntity.ok(new MessageResponse("Change password successfully!"));
@@ -105,7 +108,7 @@ public class UserDetailServiceImpl implements IBaseService<UserDetailDTO, Long>
         // Create new user's account
         UserDetailDTO dto = modelMapper.map(signUpRequest,UserDetailDTO.class);
         save(dto);
-        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+        return new ResponseEntity<>(new MessageResponse("User registered successfully!"), HttpStatus.CREATED);
     }
     private Set<Role> getRole(Set<String> strRoles)
     {
@@ -190,9 +193,9 @@ public class UserDetailServiceImpl implements IBaseService<UserDetailDTO, Long>
     public UserDetailDTO delete(Long id) {
         Optional<User> entity = Optional.ofNullable(repository.findById(id)
                 .orElseThrow(() -> new NotFoundException(User.class, id)));
-
-        repository.delete(entity.get());
         userDetailRepository.delete(getDetail(id));
+        repository.delete(entity.get());
+
         return createFromE(entity.get());
 
     }
@@ -201,6 +204,7 @@ public class UserDetailServiceImpl implements IBaseService<UserDetailDTO, Long>
     public User createFromD(UserDetailDTO dto) {
         User user = modelMapper.map(dto,User.class);
         user.setRoles(getRole(dto.getRole()));
+
         user.setPassword(encoder.encode(dto.getPassword()));
         return user;
     }

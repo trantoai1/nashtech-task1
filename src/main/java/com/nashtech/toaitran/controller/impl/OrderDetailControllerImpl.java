@@ -4,6 +4,7 @@ import com.nashtech.toaitran.model.dto.OrderDetailDTO;
 import com.nashtech.toaitran.service.impl.OrderDetailServiceImpl;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Getter;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -21,8 +22,11 @@ public class OrderDetailControllerImpl {//implements IBaseController<OrderDetail
     private OrderDetailServiceImpl service;
 
     @GetMapping("")
-    public List<OrderDetailDTO> getAll() {
-        return getService().findAll();
+    public List<OrderDetailDTO> getAll(@RequestParam(required = false) Long orderId) {
+        if (orderId == null)
+            return getService().findAll();
+        else
+            return getService().findAll(orderId);
     }
 
     @GetMapping("/{productId}-{orderId}")
@@ -42,7 +46,7 @@ public class OrderDetailControllerImpl {//implements IBaseController<OrderDetail
     public OrderDetailDTO delete(@PathVariable Long productId, @PathVariable Long orderId) {
         return service.delete(productId, orderId);
     }
-
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("")
     public OrderDetailDTO insert(@Valid @RequestBody OrderDetailDTO d) {
         return getService().save(d);

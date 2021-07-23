@@ -16,4 +16,6 @@ public interface IProductRepository extends JpaRepository<Product,Long> {
 
     @Query(value = "SELECT * from products p where  p.id in (SELECT fd.product_id from feature_detail fd where fd.feature_id in ?1)",nativeQuery = true)
     List<Product> findAllByFeaturesID(Set<Long>featureIds);
+    @Query(value = "SELECT * from products p where  p.id in ?1",nativeQuery = true)
+    List<Product> findAllByProductID(Set<Long>featureIds);
 }

@@ -26,6 +26,7 @@ public class Order {
     @DateTimeFormat(pattern = "dd-MM-yyyy hh:mm:ss")
     private Date time;
 
+    private String phone;
     private String address;
 
 

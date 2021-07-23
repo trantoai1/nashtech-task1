@@ -110,7 +110,9 @@ public class ProductServiceImpl implements IBaseService<ProductDTO, Long>, IMode
 
 
     }
-
+    public List<ProductDTO> findAllBySetProducts(Set<Long> productIds) {
+        return createFromEntities(repository.findAllByProductID(productIds));
+    }
     public List<ProductDTO> findAll(Set<Long> featureIds) {
         return createFromEntities(repository.findAllByFeaturesID(featureIds));
     }

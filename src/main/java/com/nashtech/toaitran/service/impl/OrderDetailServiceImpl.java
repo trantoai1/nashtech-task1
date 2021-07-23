@@ -36,7 +36,9 @@ public class OrderDetailServiceImpl implements IBaseService<OrderDetailDTO, Orde
     public List<OrderDetailDTO> findAll() {
         return createFromEntities(repository.findAll());
     }
-
+    public List<OrderDetailDTO> findAll(Long orderId) {
+        return createFromEntities(repository.findByKey_Order_Orderid(orderId));
+    }
     public OrderDetailDTO findById(OrderDetailKey orderDetailKey) {
 //        Optional<OrderDetail> entity = repository.findById(orderDetailKey);
 //        entity.orElseThrow(()-> new NotFoundException(OrderDetail.class,orderDetailKey.getOrder().getOrderid()));

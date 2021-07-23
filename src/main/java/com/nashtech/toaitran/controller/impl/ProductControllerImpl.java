@@ -22,7 +22,11 @@ public class ProductControllerImpl implements IBaseController<ProductDTO, Long, 
     @Getter
     private ProductServiceImpl service;
     @GetMapping("")
-    public List<ProductDTO> getAll(@RequestParam(required = false) Long categoryId, @RequestParam(required = false) Set<Long> featureIds ) {
+    public List<ProductDTO> getAll(@RequestParam(required = false) Long categoryId, @RequestParam(required = false) Set<Long> featureIds, @RequestParam(required = false) Set<Long> products ) {
+        if(products!=null)
+        {
+            return getService().findAllBySetProducts(products);
+        }
         if(categoryId!=null && featureIds!=null) {
             //FilterProductRequest filterProductRequest = new FilterProductRequest(categoryId,featureIds);
             return getService().findAll(categoryId,featureIds);
