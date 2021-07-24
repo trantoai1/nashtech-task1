@@ -13,9 +13,20 @@ export default class NavBar extends Component {
       }
     curruser = AuthService.getCurrentUser();
 
-    nav = routes.map(({ path,name,pub,sub,user ,admin}, key) => (pub||(!this.curruser&&path==='/customer')||(this.curruser&&user)||(this.curruser&&this.curruser.roles.includes('ROLE_ADMIN')&&admin))&&( 
+    nav = routes.map(({ path,name,pub,sub,user ,admin}, key) => (
+        pub||
+        (!this.curruser&&path==='/customer')
+        ||(this.curruser&&user&&this.curruser.roles.includes('ROLE_USER')&&(name!=='Order'&&path!=='/checkout'))||
+        (
+            this.curruser&&this.curruser.roles.includes('ROLE_ADMIN')&&admin
+        &&(name!=='Order'&&path!=='/checkout')
+        )
+        
+        )&&( 
     
-    <li key={key} className={sub.length>0?'nav-item dropdown':'nav-item'}> <Link className={sub.length>0?'nav-link dropdown-toggle':'nav-link'} id="homeDropdownMenuLink" to={path} >{name}</Link> </li>
+    <li key={key} className={sub.length>0?'nav-item dropdown':'nav-item'}>
+         <Link className={sub.length>0?'nav-link dropdown-toggle':'nav-link'}
+          id="homeDropdownMenuLink" to={path} >{name}</Link> </li>
     
     ));
     logOut() {

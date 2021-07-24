@@ -76,15 +76,6 @@ export  const routes = [
     sub:[],
 },
 {
-    path: '/profile',
-    component: Profile,
-    name: 'Profile',
-    pub:false,
-    user:true,
-    admin:false,
-    sub:[],
-},
-{
     path: '/orders',
     component: Orders,
     name: 'Orders',
@@ -93,6 +84,16 @@ export  const routes = [
     admin:false,
     sub:[],
 },
+{
+    path: '/profile',
+    component: Profile,
+    name: 'Profile',
+    pub:false,
+    user:true,
+    admin:false,
+    sub:[],
+},
+
 {
     path: '/orders/:id',
     component: Order,

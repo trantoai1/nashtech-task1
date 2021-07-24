@@ -7,6 +7,7 @@ import Form from 'react-validation/build/form';
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 import Button from 'react-validation/build/button';
+import Avatar from './Avatar';
 export default class Profile extends Component {
   constructor(props) {
     super(props);
@@ -22,17 +23,7 @@ export default class Profile extends Component {
       email:'',
     }
   }
-  componentDidMount(){
-    const user = AuthService.getCurrentUser();
-    if(user)
-    {
-      this.setState({
-        username:user.username,
-        fullName:user.fullName,
-        email:user.email,
-      })
-    }
-  }
+  
   onChangeOldPass(e) {
     this.setState({
       oldpass: e.target.value
@@ -170,23 +161,7 @@ export default class Profile extends Component {
 
               </div>
 
-              <div className="col-xl-3 col-lg-4 mb-5">
-                <div className="customer-sidebar card border-0">
-                  <div className="customer-profile"><a className="d-inline-block" href="/"><img className="img-fluid rounded-circle customer-image shadow" src="https://d19m59y37dris4.cloudfront.net/sell/2-0/img/photo/kyle-loftus-589739-unsplash-avatar.jpg" alt="" /></a>
-                    <h5>{this.state.fullName}</h5>
-                    <p className="text-muted text-sm mb-0">{this.state.email}</p>
-                  </div>
-                  <nav className="list-group customer-nav"><a className="list-group-item d-flex justify-content-between align-items-center text-decoration-none" href="/orders"><span>
-                    <svg className="svg-icon svg-icon-heavy me-2">
-
-                    </svg>Orders</span>
-                    </a><a className="active list-group-item d-flex justify-content-between align-items-center text-decoration-none" href="/profile"><span>
-                      <svg className="svg-icon svg-icon-heavy me-2">
-
-                      </svg>Profile</span></a>
-                  </nav>
-                </div>
-              </div>
+              <Avatar/>
 
             </div>
           </div>
