@@ -11,18 +11,22 @@ export default class Message extends Component {
     }
     componentDidMount()
     {
-        this.setState({
-            message:this.props.message,
-            isShow:this.props.isShow?this.props.isShow:false,
-            type: this.props.type?this.props.type:'success',
-        })
-        setTimeout(() => {
+        if(this.props.isShow)
+        {
             this.setState({
-                isShow: false,
-            });
-          }, 3500);
+                message:this.props.message,
+                isShow:this.props.isShow?this.props.isShow:false,
+                type: this.props.type?this.props.type:'success',
+            })
+            setTimeout(() => {
+                this.setState({
+                    isShow: false,
+                });
+              }, 3500);
+        }
+        
     }
-
+   
     render() {
         return (
             <>

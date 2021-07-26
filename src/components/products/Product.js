@@ -38,7 +38,7 @@ class Product extends Component {
                                         <td className="py-4 align-middle"><NumberFormat value={this.props.price} displayType={'text'} thousandSeparator={true} prefix='$'/></td>
                                         <td className="py-4 align-middle">
                                             <a className="btn btn-outline-dark btn-sm" href={`products/${this.props.id}`}>Edit</a>
-                                            <a className="btn btn-outline-dark btn-sm" onClick={(e)=>this.props.deleteProduct(this.props.id)}>Delete</a>
+                                            <button className="btn btn-outline-dark btn-sm" onClick={(e)=>this.props.deleteProduct(this.props.id)}>Delete</button>
                                             </td>
                                     </tr>
                                     
@@ -57,7 +57,7 @@ class Product extends Component {
                                     <i className="fa fa-shopping-cart"></i></a>
                                     <Link className="btn btn-dark btn-buy" to={'/products/'+this.props.id}>
                                         <i className="fa-search fa"></i><span className="btn-buy-label ms-2">View</span></Link>
-                                        <a className="btn btn-outline-dark btn-product-right d-none d-sm-inline-block" href="" onClick={(e)=>this.props.openModel(this.props.id)} data-bs-toggle="modal" data-bs-target="#exampleModal"><i className="fa fa-expand-arrows-alt"></i></a>
+                                        <button className="btn btn-outline-dark btn-product-right d-none d-sm-inline-block"  onClick={(e)=>this.props.openModel(this.props.id)} data-bs-toggle="modal" data-bs-target="#exampleModal"><i className="fa fa-expand-arrows-alt"></i></button>
                             </div>
                         </div>
                     </div>

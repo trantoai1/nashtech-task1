@@ -6,7 +6,7 @@ import Footer from './pages/Footer';
 
 import {
   BrowserRouter as Router,
-  Switch, Route, Redirect
+  Switch, Route
 } from 'react-router-dom';
 import { routes } from './const/routes';
 import Header from './pages/Header';
@@ -15,8 +15,7 @@ import AdminRoute from './util/AdminRoute';
 import PrivateRoute from './util/PrivateRoute';
 import { get } from './api/callAPI';
 
-import Permit from './util/Permit';
-import authHeader from './services/authHeader';
+
 
 
 class App extends Component {

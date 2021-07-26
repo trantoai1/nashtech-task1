@@ -1,8 +1,8 @@
-import validator from "validator";
+
 import { isEmail } from "validator";
 import Validate from "./Validate";
-import React, { Component } from 'react'
-import { Fade } from 'reactstrap';
+import React from 'react'
+
 export  const required = (value) => {
     if (!value) {
       return (

@@ -1,10 +1,13 @@
 import React, { Component } from 'react'
-import { Fade } from 'reactstrap';
+
 import Form from 'react-validation/build/form';
 import Input from 'react-validation/build/input';
 import Button from 'react-validation/build/button';
 import CheckButton from "react-validation/build/button";
 import TextArea from 'react-validation/build/textarea';
+import PulseLoader from 'react-spinners/PulseLoader';
+import imgurService from '../../services/imgurService';
+import { css } from "@emotion/react";
 
 
 import { get, post, put } from '../../api/callAPI';
@@ -13,6 +16,11 @@ import CategoryList from '../../components/categories/CategoryList';
 import FeatureTypeList from '../../components/featureTypes/FeatureTypeList';
 import Message from '../../util/Message';
 import {required,} from "../../util/constrain";
+const override = css`
+  display: inline-block;
+  margin: 2 auto;
+  
+`;
 class FormProduct extends Component {
     constructor(props) {
         super(props);
@@ -30,6 +38,11 @@ class FormProduct extends Component {
             features:{},
             currentfeatures:[],
             feaTypes:[],
+            imgs:[],
+            filename:'',
+            showProgess:false,
+           
+            urls :[],
         }
 
     }
@@ -54,6 +67,7 @@ class FormProduct extends Component {
                     let f = {};
                     this.state.currentfeatures.map((value,index)=>{
                         f[this.state.feaTypes[index]]=value
+                        return '';
                     })
                     this.setState({
                         features:f
@@ -65,6 +79,53 @@ class FormProduct extends Component {
             })
             
         }
+    }
+    showProgessBar()
+    {
+         this.setState({
+            showProgess:!this.state.showProgess,
+        })
+    }
+    handleUpload(){
+        this.showProgessBar();
+        
+        const listImgs= Object.values(this.state.imgs);
+        //console.log(listImgs);
+        const length = listImgs.length;
+        //console.log(length);
+        if(length===0) return;
+        
+        listImgs.map((img,index)=>{
+            //console.log(index,length-1,(index===length-1));
+            let list = [];
+            imgurService.upload(img)
+            .then(res=>{
+                if(res&&res.status===200)
+                {
+                    this.setState({
+                        urls:[...this.state.urls,res.data.link], 
+                    });
+                    if(index===length-1){
+                        this.setState({
+                            showProgess:false,
+                        })
+                    }
+                }
+                return list;
+            });
+            
+            return list;
+        });
+        //console.log(newUrls);
+        
+        //this.showProgessBar();
+        //console.log(this.state.urls);
+    }
+    imgOnChange(e){
+        this.setState({
+            imgs:e.target.files,
+            filename:e.target.value
+        })
     }
     idOnChange(e)
     {
@@ -112,7 +173,10 @@ class FormProduct extends Component {
         
     }
     async doCreate(e) {
+        //console.log(this.state.urls);
+       
         e.preventDefault();
+        //return;
         this.form.validateAll();
         if (this.checkBtn.context._errors.length === 0) {
             let params = {};
@@ -128,6 +192,19 @@ class FormProduct extends Component {
                 put(`products/${this.props.match.params.id}`, params)
                     .then(res => {
                         if (res&&res.status===202)
+                            if(this.state.urls.length>0)
+                            {
+                                const productId = res.data.productId;
+                                this.state.urls.map((url,index)=>{
+                                    post('images',{
+                                        "productId":productId,
+                                        "url":url
+                                    }).then(res2=>{
+                                        console.log(res2);
+                                    })
+                                    return '';
+                                })
+                            }
                             this.setState({
                                 message: `Update product ${res.data.productName} success!`,
                                 type:'success',
@@ -145,6 +222,19 @@ class FormProduct extends Component {
                 post(`products`, params)
                     .then(res => {
                         if (res &&res.status===201)
+                            if(this.state.urls.length>0)
+                            {
+                                const productId = res.data.productId;
+                                this.state.urls.map((url,index)=>{
+                                    post('images',{
+                                        "productId":productId,
+                                        "url":url
+                                    }).then(res2=>{
+                                        console.log(res2);
+                                    })
+                                    return '';
+                                })
+                            }
                             this.setState({
                                 message: `Create product ${res.data.productName} success!`,
                                 type:'success',
@@ -245,6 +335,8 @@ class FormProduct extends Component {
                                             validations={[required]} />
                                     </div>
                                 </div>
+                            </div>
+                            <div className="row">
                                 <div className="col-sm-6">
                                     <div className="mb-4">
                                         <label className="form-label" htmlFor="remain">Category</label>
@@ -262,6 +354,25 @@ class FormProduct extends Component {
 </select>
                                     </div>
                                 </div>
+                                </div>
+                            <div className="row">
+                                <div className="col">
+                                    <div className="mb-4">
+                                        <label className="form-label" htmlFor="remain">Images</label>
+                                        <br/><input className="form-control "
+                                            name="image"
+                                            id="image"
+                                            value={this.state.filename}
+                                            onChange={(e) => this.imgOnChange(e)}
+                                            type="file"
+                                            multiple
+                                            //validations={[required]} 
+                                            />
+                <button className="btn btn-success" onClick={()=>this.handleUpload()}>Upload</button>
+                {this.state.showProgess&&<PulseLoader color='aqua' loading={this.state.showProgess} css={override} size={15}/>}
+                                    </div>
+                                </div>
+                                
                             </div>
                             <div className="block-header"><strong className="text-uppercase">Feature</strong></div>
                             

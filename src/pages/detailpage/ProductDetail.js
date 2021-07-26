@@ -6,6 +6,7 @@ import { withRouter } from 'react-router-dom';
 import ProductView from './components/ProductView';
 
 import {get} from '../../api/callAPI';
+import FormReview from './components/FormReview';
 
 
 class ProductDetail extends Component {
@@ -146,40 +147,7 @@ class ProductDetail extends Component {
                                 <div className="row mb-5">
                                     <div className="col-lg-10 col-xl-9">
                                         {this.state.rateComponent}
-                                        <div className="py-5 px-3">
-                                            <h5 className="text-uppercase mb-4">Leave a review</h5>
-                                            <form className="form" id="contact-form" method="post" action="https://demo.bootstrapious.com/sell/2-0/contact.php">
-                                                <div className="row">
-                                                    <div className="col-sm-6">
-                                                        <div className="mb-4">
-                                                            <label className="form-label" htmlFor="name">Your name *</label>
-                                                            <input className="form-control" type="text" name="name" id="name" placeholder="Enter your name" required="required" />
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-sm-6">
-                                                        <div className="mb-4">
-                                                            <label className="form-label" htmlFor="rating">Your rating *</label>
-                                                            <select className="custom-select focus-shadow-0" name="rating" id="rating">
-                                                                <option value="5">&#9733;&#9733;&#9733;&#9733;&#9733; (5/5)</option>
-                                                                <option value="4">&#9733;&#9733;&#9733;&#9733;&#9734; (4/5)</option>
-                                                                <option value="3">&#9733;&#9733;&#9733;&#9734;&#9734; (3/5)</option>
-                                                                <option value="2">&#9733;&#9733;&#9734;&#9734;&#9734; (2/5)</option>
-                                                                <option value="1">&#9733;&#9734;&#9734;&#9734;&#9734; (1/5)</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="mb-4">
-                                                    <label className="form-label" htmlFor="email">Your email *</label>
-                                                    <input className="form-control" type="email" name="email" id="email" placeholder="Enter your  email" required="required" />
-                                                </div>
-                                                <div className="mb-4">
-                                                    <label className="form-label" htmlFor="review">Review text *</label>
-                                                    <textarea className="form-control" rows="4" name="review" id="review" placeholder="Enter your review" required="required"></textarea>
-                                                </div>
-                                                <button className="btn btn-outline-dark" type="submit">Post review</button>
-                                            </form>
-                                        </div>
+                                        <FormReview productId={this.props.match.params.id}/>
                                     </div>
                                 </div>
                             </div>

@@ -55,6 +55,7 @@ class CartService{
         const keys = Object.keys(cart);
         keys.map((key,index)=>{
             body['details'][key] = cart[key];
+            return [];
         })
 
         post('orders',body).then(res=>{

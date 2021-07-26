@@ -6,7 +6,7 @@ export default class Slider extends Component {
 			<section className="home-full-slider-wrapper mb-2">
      
       <div className="owl-carousel owl-theme owl-dots-modern home-full-slider">
-        <div className="item home-full-item" style={{background: '#f8d5cf'}}><img className="bg-image" src="https://scontent-sin6-4.xx.fbcdn.net/v/t1.6435-9/126425927_203894087916545_3750231988109285927_n.png?_nc_cat=101&ccb=1-3&_nc_sid=730e14&_nc_ohc=Gpk48coI-VAAX81DLVz&_nc_ht=scontent-sin6-4.xx&oh=1a295f09b3aac1396cf86d1eafc2d13f&oe=60FA7DBE" alt=""/>
+        <div className="item home-full-item" style={{background: '#f8d5cf'}}><img className="bg-image" src="https://www.apple.com/v/macbook-pro-13/f/images/overview/hero_endframe__bsza6x4fldiq_large_2x.jpg" alt=""/>
           <div className="container-fluid h-100 py-5">
             <div className="row align-items-center h-100">
               <div className="col-lg-8 col-xl-6 mx-auto text-white text-center position-relative">

@@ -3,7 +3,7 @@
 import axios from 'axios';
 import authHeader from './authHeader';
 const AUTH_URL = process.env.REACT_APP_AUTH_URL;
-const API_URL = `${process.env.REACT_APP_API_URL}/v1/`;
+
 class AuthService {
   login(username, password) {
     return axios.post(AUTH_URL + "signin", {

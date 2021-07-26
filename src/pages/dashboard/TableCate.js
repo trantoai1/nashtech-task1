@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import CategoryList from '../../components/categories/CategoryList'
 import { del } from '../../api/callAPI';
-import { Fade } from 'reactstrap';
-import { Link } from 'react-router-dom';
+
 import Message from '../../util/Message';
 export default class TableCate extends Component {
     constructor(props){
@@ -62,7 +61,7 @@ export default class TableCate extends Component {
             <>
            <Message isShow={this.state.isShow} type={this.state.type} message={this.state.message} key={this.state.message}/>
            
-            <a onClick={()=>this.props.addNewCate()} className="btn btn-primary">Add new</a>
+            <button onClick={()=>this.props.addNewCate()} className="btn btn-primary">Add new</button>
             <hr/>
             <table className="table table-borderless table-hover table-responsive-md">
                                 <thead className="bg-light">

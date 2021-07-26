@@ -56,7 +56,17 @@ export default class Login extends Component {
         window.location.href = '/profile';
       },
       error => {
-        const resMessage =
+        if(error.response.status===401)
+        {
+          this.setState({
+            isShow: true,
+            type: 'danger',
+            message: 'Your login information is incorrect'
+          });
+        }
+        else
+        {
+          const resMessage =
           (error.response &&
             error.response.data &&
             error.response.data.error) ||
@@ -68,6 +78,8 @@ export default class Login extends Component {
           type: 'danger',
           message: resMessage
         });
+        }
+        
       }
     );
     }

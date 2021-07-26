@@ -5,7 +5,7 @@ import Input from 'react-validation/build/input';
 import Button from 'react-validation/build/button';
 import CheckButton from "react-validation/build/button";
 import TextArea from 'react-validation/build/textarea';
-import validator from 'validator';
+
 import {get, post,put } from '../../api/callAPI';
 import { withRouter } from 'react-router-dom';
 import Message from '../../util/Message';

@@ -128,7 +128,7 @@ export default class Cart extends Component {
                                                         </div>
                                                     </div>
                                                     <div className="col-2 text-center"><NumberFormat value={product.price * this.state.items[product.productId]} displayType={'text'} thousandSeparator={true} prefix='$' /></div>
-                                                    <div className="col-1 text-center"><a className="cart-remove" href="#" onClick={() => this.handleRemove(product.productId)}> <i className="fa fa-times"></i></a></div>
+                                                    <div className="col-1 text-center"><a className="cart-remove"  onClick={() => this.handleRemove(product.productId)}> <i className="fa fa-times"></i></a></div>
                                                 </div>
                                             </div>))}
 

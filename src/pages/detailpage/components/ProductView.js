@@ -150,7 +150,7 @@ export default class ProductView extends Component {
                         </div>
                         <ul className="list-inline">
                             <li className="list-inline-item">
-                                <a className="btn btn-dark btn-lg mb-1" onClick={() => this.add2Cart()}> <i className="fa fa-shopping-cart me-2"></i>Add to Cart</a>
+                                <button className="btn btn-dark btn-lg mb-1" onClick={() => this.add2Cart()}> <i className="fa fa-shopping-cart me-2"></i>Add to Cart</button>
                             </li>
                             <Message isShow={this.state.isShow} type={this.state.type} message={this.state.message} key={this.state.message} />
                         </ul>

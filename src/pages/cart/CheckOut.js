@@ -71,6 +71,7 @@ export default class CheckOut extends Component {
     const keys = Object.keys(cart);
     keys.map((key,index)=>{
         body['details'][key] = cart[key];
+        return [];
     })
 
     post('orders',body).then(res=>{
@@ -122,10 +123,8 @@ export default class CheckOut extends Component {
               <div className="col-lg-8">
               <Message isShow={this.state.isShow} type={this.state.type} message={this.state.message} key={this.state.message}/>
                 <ul className="custom-nav nav nav-pills mb-5">
-                  <li className="nav-item w-25"><a className="nav-link text-sm active" href="checkout1.html">Address</a></li>
-                  <li className="nav-item w-25"><a className="nav-link text-sm disabled" href="#">Delivery Method</a></li>
-                  <li className="nav-item w-25"><a className="nav-link text-sm disabled" href="#">Payment Method </a></li>
-                  <li className="nav-item w-25"><a className="nav-link text-sm disabled" href="#">Order Review</a></li>
+                  <li className="nav-item w-25"><span className="nav-link text-sm active" href="checkout1.html">Address</span></li>
+                  
                 </ul>
                 <form >
                   <div className="block">
@@ -159,7 +158,7 @@ export default class CheckOut extends Component {
                     {/* Shippping Address*/}
 
                   </div>
-                  <div className="mb-5 d-flex justify-content-between flex-column flex-lg-row"><a className="btn btn-link text-muted" href="cart" > <i className="fa fa-angle-left me-2"></i>Back </a><a className="btn btn-dark" href="#" onClick={() => this.checkOut()}>Check Out<i className="fa fa-angle-right ms-2"></i></a></div>
+                  <div className="mb-5 d-flex justify-content-between flex-column flex-lg-row"><a className="btn btn-link text-muted" href="cart" > <i className="fa fa-angle-left me-2"></i>Back </a><button className="btn btn-dark"  onClick={() => this.checkOut()}>Check Out<i className="fa fa-angle-right ms-2"></i></button></div>
                 </form>
               </div>
               <div className="col-lg-4">
