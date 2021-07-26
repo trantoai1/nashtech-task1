@@ -56,7 +56,7 @@ public class FeatureServiceImpl implements IBaseService<FeatureDTO,Long>, IModel
     public FeatureDTO delete(Long id) {
         Optional<Feature> entity = Optional.ofNullable(repository.findById(id)
                 .orElseThrow(() -> new NotFoundException(Feature.class, id)));
-        repository.delete(entity.get());
+       repository.delete(entity.get());
         return createFromE(entity.get());
     }
 

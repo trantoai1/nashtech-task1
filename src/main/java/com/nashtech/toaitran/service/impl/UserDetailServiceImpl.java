@@ -22,6 +22,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
@@ -74,10 +75,10 @@ public class UserDetailServiceImpl implements IBaseService<UserDetailDTO, Long>
                 userDetails.getId(),
                 userDetails.getUsername(),
                 userDetails.getEmail(),
-                roles,entity.getFirstName()+" "+entity.getLastName()));
+                roles, entity.getFirstName() + " " + entity.getLastName()));
     }
-    public ResponseEntity<?> changePass(ChangePassRequest request)
-    {
+
+    public ResponseEntity<?> changePass(ChangePassRequest request) {
         if (!repository.existsByUsername(request.getUsername())) {
             return ResponseEntity
                     .badRequest()
@@ -86,12 +87,13 @@ public class UserDetailServiceImpl implements IBaseService<UserDetailDTO, Long>
         User user = repository.findByUsername(request.getUsername()).get();
         System.out.println(user.getPassword());
         System.out.println(encoder.encode(request.getOldPassword()));
-        if(!encoder.matches(request.getOldPassword(),user.getPassword()))
-                throw new NotFoundException("Username and old password not match");
+        if (!encoder.matches(request.getOldPassword(), user.getPassword()))
+            throw new NotFoundException("Username and old password not match");
         user.setPassword(encoder.encode(request.getPassword()));
         repository.save(user);
         return ResponseEntity.ok(new MessageResponse("Change password successfully!"));
     }
+
     public ResponseEntity<?> register(SignupRequest signUpRequest) {
         if (repository.existsByUsername(signUpRequest.getUsername())) {
             return ResponseEntity
@@ -106,12 +108,12 @@ public class UserDetailServiceImpl implements IBaseService<UserDetailDTO, Long>
         }
 
         // Create new user's account
-        UserDetailDTO dto = modelMapper.map(signUpRequest,UserDetailDTO.class);
+        UserDetailDTO dto = modelMapper.map(signUpRequest, UserDetailDTO.class);
         save(dto);
         return new ResponseEntity<>(new MessageResponse("User registered successfully!"), HttpStatus.CREATED);
     }
-    private Set<Role> getRole(Set<String> strRoles)
-    {
+
+    private Set<Role> getRole(Set<String> strRoles) {
         Set<Role> roles = new HashSet<>();
         if (strRoles == null) {
             Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
@@ -141,12 +143,13 @@ public class UserDetailServiceImpl implements IBaseService<UserDetailDTO, Long>
         }
         return roles;
     }
-    private UserDetail getDetail(Long id)
-    {
-        UserDetail detail= userDetailRepository.findById(id)
-                .orElse(new UserDetail(1L,"","","",null));
+
+    private UserDetail getDetail(Long id) {
+        UserDetail detail = userDetailRepository.findById(id)
+                .orElse(new UserDetail(1L, "", "", "", null));
         return detail;
     }
+
     @Override
     public List<UserDetailDTO> findAll() {
         return createFromEntities(repository.findAll());
@@ -154,33 +157,34 @@ public class UserDetailServiceImpl implements IBaseService<UserDetailDTO, Long>
 
     @Override
     public UserDetailDTO findById(Long id) {
-        User entity = repository.findById(id).orElseThrow(()->new NotFoundException(User.class,id));
+        User entity = repository.findById(id).orElseThrow(() -> new NotFoundException(User.class, id));
 
         return createFromE(entity);
     }
 
     @Override
     public UserDetailDTO update(Long id, UserDetailDTO signupRequest) {
-        User entity = repository.findById(id).orElseThrow(()->new NotFoundException(User.class,id));
-        entity = updateEntity(entity,signupRequest);
-        saveDetail(entity,signupRequest);
+        User entity = repository.findById(id).orElseThrow(() -> new NotFoundException(User.class, id));
+        entity = updateEntity(entity, signupRequest);
+        saveDetail(entity, signupRequest);
         return createFromE(repository.save(entity));
     }
-    private void updateDetail(UserDetailDTO signUpRequest)
-    {
+
+    private void updateDetail(UserDetailDTO signUpRequest) {
 
         User entity = repository.findByUsername(signUpRequest.getUsername())
                 .orElseThrow(() -> new NotFoundException("Username =" + signUpRequest.getUsername() + " not found!"));
-        saveDetail(entity,signUpRequest);
+        saveDetail(entity, signUpRequest);
     }
-    private void saveDetail(User entity,UserDetailDTO signUpRequest)
-    {
+
+    private void saveDetail(User entity, UserDetailDTO signUpRequest) {
         UserDetail userDetail = new UserDetail(entity.getId()
                 , signUpRequest.getFirstName() == null ? signUpRequest.getUsername() : signUpRequest.getFirstName()
                 , signUpRequest.getLastName() == null ? signUpRequest.getUsername() : signUpRequest.getLastName()
                 , signUpRequest.getAddress() == null ? "" : signUpRequest.getAddress(), entity);
         userDetailRepository.save(userDetail);
     }
+
     @Override
     public UserDetailDTO save(UserDetailDTO signUpRequest) {
         User entity = createFromD(signUpRequest);
@@ -189,6 +193,7 @@ public class UserDetailServiceImpl implements IBaseService<UserDetailDTO, Long>
         return createFromE(entity);
     }
 
+    @Transactional
     @Override
     public UserDetailDTO delete(Long id) {
         Optional<User> entity = Optional.ofNullable(repository.findById(id)
@@ -202,7 +207,7 @@ public class UserDetailServiceImpl implements IBaseService<UserDetailDTO, Long>
 
     @Override
     public User createFromD(UserDetailDTO dto) {
-        User user = modelMapper.map(dto,User.class);
+        User user = modelMapper.map(dto, User.class);
         user.setRoles(getRole(dto.getRole()));
 
         user.setPassword(encoder.encode(dto.getPassword()));
@@ -214,7 +219,7 @@ public class UserDetailServiceImpl implements IBaseService<UserDetailDTO, Long>
         UserDetailDTO dto = modelMapper.map(entity, UserDetailDTO.class);
         UserDetail detail = this.getDetail(entity.getId());
         dto.setAddress(detail.getAddress());
-        dto.setRole(entity.getRoles().stream().map((item)-> String.valueOf(item.getName())).collect(Collectors.toSet()));
+        dto.setRole(entity.getRoles().stream().map((item) -> String.valueOf(item.getName())).collect(Collectors.toSet()));
         dto.setFirstName(detail.getFirstName());
         dto.setLastName(detail.getLastName());
         dto.setPassword("");
@@ -225,10 +230,10 @@ public class UserDetailServiceImpl implements IBaseService<UserDetailDTO, Long>
     public User updateEntity(User entity, UserDetailDTO dto) {
         if (entity != null && dto != null) {
             entity.setRoles(getRole(dto.getRole()));
-            if(dto.getPassword()!=null)
-            entity.setPassword(encoder.encode(dto.getPassword()));
-            if(dto.getUsername()!=null)
-            entity.setUsername(dto.getUsername());
+            if (dto.getPassword() != null)
+                entity.setPassword(encoder.encode(dto.getPassword()));
+            if (dto.getUsername() != null)
+                entity.setUsername(dto.getUsername());
             entity.setEmail(dto.getEmail());
         }
         return entity;

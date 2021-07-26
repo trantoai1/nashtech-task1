@@ -1,6 +1,7 @@
 package com.nashtech.toaitran.exception;
 
 import org.hibernate.HibernateException;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -61,6 +62,15 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
         body.put("timestamp", LocalDateTime.now());
         body.put("message", ex.getMessage());
         body.put("error", "SQL error!");
+        body.put("status",HttpStatus.CONFLICT);
+        return new ResponseEntity<>(body, HttpStatus.CONFLICT);
+    }
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<Object> hibernateHandler(ConstraintViolationException ex) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("message", ex.getMessage());
+        body.put("error", "Constraint Violation Error!");
         body.put("status",HttpStatus.CONFLICT);
         return new ResponseEntity<>(body, HttpStatus.CONFLICT);
     }

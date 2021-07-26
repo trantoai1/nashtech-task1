@@ -32,7 +32,7 @@ public class Product {
     private Category category;
     private Integer remain;
     @Transient
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE)
     private Collection<Image> images;
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -45,7 +45,7 @@ public class Product {
 
 
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.REMOVE)
     @JoinTable(name = "feature_detail",
             joinColumns = @JoinColumn(name = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "feature_id"))

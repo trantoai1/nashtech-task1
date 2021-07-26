@@ -7,11 +7,13 @@ import com.nashtech.toaitran.model.entity.Feature;
 import com.nashtech.toaitran.model.entity.Product;
 import com.nashtech.toaitran.repository.ICategoryRepository;
 import com.nashtech.toaitran.repository.IFeatureRepository;
+import com.nashtech.toaitran.repository.IImageRepository;
 import com.nashtech.toaitran.repository.IProductRepository;
 import com.nashtech.toaitran.service.IBaseService;
 import com.nashtech.toaitran.service.IModelMapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -25,11 +27,13 @@ public class ProductServiceImpl implements IBaseService<ProductDTO, Long>, IMode
     private final ModelMapper modelMapper;
     private final IFeatureRepository featureRepository;
     private final ICategoryRepository categoryRepository;
-    public ProductServiceImpl(IProductRepository repository, ModelMapper modelMapper, IFeatureRepository featureRepository, ICategoryRepository categoryRepository) {
+    private final IImageRepository imageRepository;
+    public ProductServiceImpl(IProductRepository repository, ModelMapper modelMapper, IFeatureRepository featureRepository, ICategoryRepository categoryRepository, IImageRepository imageRepository) {
         this.repository = repository;
         this.modelMapper = modelMapper;
         this.featureRepository = featureRepository;
         this.categoryRepository = categoryRepository;
+        this.imageRepository = imageRepository;
     }
     private List<Feature> findAllFeature(Set<Long> featureIds)
     {
@@ -61,9 +65,12 @@ public class ProductServiceImpl implements IBaseService<ProductDTO, Long>, IMode
         return createFromE(repository.save(createFromD(productDTO)));
     }
 
+    @Transactional
     public ProductDTO delete(Long id) {
         Optional<Product> entity = Optional.ofNullable(repository.findById(id)
                 .orElseThrow(() -> new NotFoundException(Product.class, id)));
+        imageRepository.deleteAllByProductID(id);
+        featureRepository.deleteAllByProductID(id);
         repository.delete(entity.get());
         return createFromE(entity.get());
     }

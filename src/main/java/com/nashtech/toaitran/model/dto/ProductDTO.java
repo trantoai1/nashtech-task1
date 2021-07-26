@@ -15,7 +15,7 @@ import java.util.Set;
 @Getter
 public class ProductDTO {
     private Long productId;
-    @DecimalMin(value = "1000")
+    @DecimalMin(value = "1")
     private BigDecimal price;
     @NotNull
     @NotBlank
