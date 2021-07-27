@@ -13,4 +13,6 @@ public interface IRateRepository extends JpaRepository<Rate, RateKey> {
 
     //@Query(value = "SELECT * From features f where f.feature_id in (SELECT fd.feature_id From rates fd where fd.product_id=?1)",nativeQuery = true)
     List<Rate> findAllByKey_Product_ProductidOrderByPointDesc(Long productId);
+
+    
 }

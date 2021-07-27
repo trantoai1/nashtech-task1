@@ -4,9 +4,11 @@ import com.nashtech.toaitran.exception.EntityPrimaryKeyExistsException;
 import com.nashtech.toaitran.exception.NotFoundException;
 import com.nashtech.toaitran.model.dto.RateDTO;
 import com.nashtech.toaitran.model.embeded.RateKey;
+import com.nashtech.toaitran.model.entity.OrderDetail;
 import com.nashtech.toaitran.model.entity.Product;
 import com.nashtech.toaitran.model.entity.Rate;
 import com.nashtech.toaitran.model.entity.User;
+import com.nashtech.toaitran.repository.IOrderDetailRepository;
 import com.nashtech.toaitran.repository.IProductRepository;
 import com.nashtech.toaitran.repository.IRateRepository;
 import com.nashtech.toaitran.repository.IUserRepository;
@@ -24,13 +26,22 @@ public class RateServiceImpl implements IBaseService<RateDTO, RateKey>, IModelMa
     private final ModelMapper modelMapper;
     private final IProductRepository productRepository;
     private final IUserRepository userRepository;
-    public RateServiceImpl(IRateRepository repository, ModelMapper modelMapper, IProductRepository productRepository, IUserRepository userRepository) {
+    private final IOrderDetailRepository orderDetailRepository;
+    public RateServiceImpl(IRateRepository repository, ModelMapper modelMapper, IProductRepository productRepository, IUserRepository userRepository, IOrderDetailRepository orderDetailRepository) {
         this.repository = repository;
         this.modelMapper = modelMapper;
         this.productRepository = productRepository;
         this.userRepository = userRepository;
+        this.orderDetailRepository = orderDetailRepository;
     }
-
+    private boolean checkIsOrder(Long productId,Long userId)
+    {
+        List<OrderDetail> list =
+                orderDetailRepository.findAllByProductAndOrder(productId,
+                        userId);
+        if(list.isEmpty()) return false;
+        return true;
+    }
     public List<RateDTO> findAll() {
         return createFromEntities(repository.findAll());
     }
@@ -50,6 +61,8 @@ public class RateServiceImpl implements IBaseService<RateDTO, RateKey>, IModelMa
     }
 
     public RateDTO save(RateDTO rateDTO) {
+        if(!checkIsOrder(rateDTO.getProductId(), rateDTO.getUserId()))
+            throw new NotFoundException("You must buy this product first");
         Optional<Rate> entity = repository.findByKey_Product_ProductidAndKey_User_Id(rateDTO.getProductId(), rateDTO.getUserId());
         if(entity.isPresent())
             throw new EntityPrimaryKeyExistsException(Rate.class,rateDTO.getProductId() + "-" + rateDTO.getUserId());
