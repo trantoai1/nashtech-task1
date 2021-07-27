@@ -158,7 +158,7 @@ export default class CheckOut extends Component {
                     {/* Shippping Address*/}
 
                   </div>
-                  <div className="mb-5 d-flex justify-content-between flex-column flex-lg-row"><a className="btn btn-link text-muted" href="cart" > <i className="fa fa-angle-left me-2"></i>Back </a><button className="btn btn-dark"  onClick={() => this.checkOut()}>Check Out<i className="fa fa-angle-right ms-2"></i></button></div>
+                  <div className="mb-5 d-flex justify-content-between flex-column flex-lg-row"><a className="btn btn-link text-muted" href="cart" > <i className="fa fa-angle-left me-2"></i>Back </a><a className="btn btn-dark"  onClick={() => this.checkOut()}>Check Out<i className="fa fa-angle-right ms-2"></i></a></div>
                 </form>
               </div>
               <div className="col-lg-4">

@@ -31,6 +31,8 @@ export default class FormReview extends Component {
 
                 })
             }
+        },err=>{
+
         });
         this.setState({
             name:user.fullName,
@@ -78,8 +80,17 @@ export default class FormReview extends Component {
                     this.setState({
                         message: `Update review success!`,
                         type:'success',
+                        isShow:true,
                     });
+                    this.props.postReview(res.data,false);
                 }
+                //console.log(res);
+            },err=>{
+                this.setState({
+                    message: err.response.data.message,
+                    type:'danger',
+                    isShow:true,
+                });
             });
         }
         else{
@@ -95,14 +106,22 @@ export default class FormReview extends Component {
                     this.setState({
                         message: `Vote success!`,
                         type:'success',
+                        isShow:true,
                     });
+                    this.props.postReview(res.data,true);
                 }
+            },err=>{
+                this.setState({
+                    message: err.response.data.message,
+                    type:'danger',
+                    isShow:true,
+                });
             })
         }
         await this.setState({
             isShow: !this.setState.isShow,
         })
-        
+        //this.props.postReview(e);
     }
     render() {
         const user = AuthService.getCurrentUser();
@@ -120,9 +139,9 @@ export default class FormReview extends Component {
                                                         </div>
                                                     </div>
                                                     <div className="col-sm-6">
-                                                        <div className="mb-4" onChange={(e)=>this.onChanePoint(e)} value={this.state.point}>
+                                                        <div className="mb-4" >
                                                             <label className="form-label" htmlFor="rating">Your rating *</label>
-                                                            <select className="custom-select focus-shadow-0" name="rating" id="rating">
+                                                            <select className="custom-select focus-shadow-0" name="rating" id="rating" onChange={(e)=>this.onChanePoint(e)} value={this.state.point}>
                                                                 <option value="5">&#9733;&#9733;&#9733;&#9733;&#9733; (5/5)</option>
                                                                 <option value="4">&#9733;&#9733;&#9733;&#9733;&#9734; (4/5)</option>
                                                                 <option value="3">&#9733;&#9733;&#9733;&#9734;&#9734; (3/5)</option>
@@ -140,7 +159,7 @@ export default class FormReview extends Component {
                                                     <label className="form-label" htmlFor="review">Review text *</label>
                                                     <textarea className="form-control" rows="4" name="review"  value={this.state.comment} onChange={(e)=>this.onChangeComment(e)}  id="review" placeholder="Enter your review" required="required"></textarea>
                                                 </div>
-                                                <button className="btn btn-outline-dark" type="submit">Post review</button>
+                                                <button className="btn btn-outline-dark" type="submit" >Post review</button>
                                             </form>
                                             <Message isShow={this.state.isShow} type={this.state.type} message={this.state.message} key={this.state.message}/>
                                         </div>}

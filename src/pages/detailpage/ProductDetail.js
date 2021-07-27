@@ -21,6 +21,7 @@ class ProductDetail extends Component {
             comment: <></>,
             rates: [],
             rateComponent: <></>,
+            rateUpdate:false,
             rate : 0,
         }
         this.star = [1,2,3,4,5];
@@ -58,10 +59,33 @@ class ProductDetail extends Component {
             this.setState({
                 rates:  res.data,
                 rate:   res.data.length===0?0://if no review => point = 0
-                        Math.ceil(res.data.reduce((a,b)=> a.point+b.point)/res.data.length),
+                        Math.ceil(res.data.reduce((a,b)=> a+b.point,0)/res.data.length),
             });
             //console.log(this.state.rate);
         });
+    }
+    getAllRate(rate,isCreate)
+    {
+        //console.log(rate,isCreate);
+        //setTimeout(() => {
+        const oldRates = this.state.rates;
+        if(isCreate)
+            this.setState({
+                rates:  [...this.state.rates,rate],
+                rate:   Math.ceil((oldRates.reduce((a,b)=> a+b.point,0)+rate.point)/(oldRates.length+1)),
+            });
+        else{
+            let newRate = this.state.rates.filter(item => item.userId!==rate.userId);
+            //console.log(newRate);
+            let newPoint = Math.ceil((newRate.reduce((a,b)=> a+b.point,0)+rate.point)/(oldRates.length));
+            //console.log(newPoint)
+            this.setState({
+                rates:  [...newRate,rate],
+                rate:   newPoint,
+            });
+        }
+        this.handleRateClick();
+        //}, 3500);
     }
     async handleFeatureClick(e){
         
@@ -87,6 +111,7 @@ class ProductDetail extends Component {
         })
     }
     async handleRateClick(e){
+        
         await this.setState({
             rateComponent: this.state.rates.length ===0?<></>:
             this.state.rates.map((rate,index)=>(<div key={index} className="review d-flex">
@@ -147,7 +172,7 @@ class ProductDetail extends Component {
                                 <div className="row mb-5">
                                     <div className="col-lg-10 col-xl-9">
                                         {this.state.rateComponent}
-                                        <FormReview productId={this.props.match.params.id}/>
+                                        <FormReview productId={this.props.match.params.id} postReview={(rate,isCreate)=>this.getAllRate(rate,isCreate)}/>
                                     </div>
                                 </div>
                             </div>

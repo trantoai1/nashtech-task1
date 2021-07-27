@@ -368,7 +368,7 @@ class FormProduct extends Component {
                                             multiple
                                             //validations={[required]} 
                                             />
-                <button className="btn btn-success" onClick={()=>this.handleUpload()}>Upload</button>
+                <a className="btn btn-success" onClick={()=>this.handleUpload()}>Upload</a>
                 {this.state.showProgess&&<PulseLoader color='aqua' loading={this.state.showProgess} css={override} size={15}/>}
                                     </div>
                                 </div>

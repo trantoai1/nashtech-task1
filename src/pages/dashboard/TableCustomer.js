@@ -60,7 +60,7 @@ export default class TableCustomer extends Component {
             <>
             
             <Message isShow={this.state.isShow} type={this.state.type} message={this.state.message} key={this.state.message}/>
-            <button onClick={()=>this.props.addNewUser()} className="btn btn-primary">Add new</button>
+            <a onClick={()=>this.props.addNewUser()} className="btn btn-primary">Add new</a>
             <hr/>
             <table className="table table-borderless table-hover table-responsive-md">
                                 <thead className="bg-light">
