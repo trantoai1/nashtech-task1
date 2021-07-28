@@ -45,7 +45,7 @@ dependencies {
     implementation('org.springframework.boot:spring-boot-starter-validation')
     implementation('org.springdoc:springdoc-openapi-ui:1.5.9')
     implementation('com.google.code.gson:gson:2.8.7')
-
+    implementation 'org.springframework.boot:spring-boot-starter-parent:2.5.2'
     //testCompile group: 'junit', name: 'junit', version: '5.1'
 
 
