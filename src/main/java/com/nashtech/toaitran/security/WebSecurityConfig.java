@@ -5,7 +5,10 @@ import com.nashtech.toaitran.security.jwt.JwtAuthEntryPoint;
 import com.nashtech.toaitran.security.jwt.JwtAuthTokenFilter;
 import com.nashtech.toaitran.security.jwt.JwtUtils;
 import com.nashtech.toaitran.security.services.UserDetailsServiceImpl;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -19,6 +22,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
@@ -41,7 +46,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return modelMapper;
     }
 
+    @Value("${spring.datasource.url}")
+    private String dbUrl;
 
+    @Bean
+    public DataSource dataSource() {
+        HikariConfig config = new HikariConfig();
+        config.setJdbcUrl(dbUrl);
+        return new HikariDataSource(config);
+    }
     public WebSecurityConfig(UserDetailsServiceImpl userDetailsService, JwtAuthEntryPoint unauthorizedHandler, JwtUtils jwtUtils) {
         this.userDetailsService = userDetailsService;
         this.unauthorizedHandler = unauthorizedHandler;
