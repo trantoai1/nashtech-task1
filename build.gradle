@@ -1,3 +1,14 @@
+buildscript {
+    ext {
+        springBootVersion = '2.5.2.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
 plugins {
     id 'org.springframework.boot' version '2.5.2'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
@@ -10,13 +21,7 @@ jar {
                'Main-Class': 'com.nashtech.toaitran.ToaitranApplication'
         )
     }
-
-    from {
-        configurations.runtimeClasspath.findAll { it.name.endsWith('jar') }
-                .collect { zipTree(it)}
-    }
 }
-
 group = 'com.nashtech'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
@@ -25,7 +30,6 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
-    extraLibs
 }
 
 repositories {
@@ -33,12 +37,12 @@ repositories {
 }
 
 dependencies {
-    compile 'org.springframework.boot:spring-boot-starter-data-rest'
-    compile 'org.springframework.boot:spring-boot-starter-mail'
-    compile 'org.springframework.boot:spring-boot-starter-security'
-    compile 'org.springframework.boot:spring-boot-starter-web'
-    compile 'org.springframework.boot:spring-boot-starter-data-jpa'
-    compile 'org.jetbrains:annotations:20.1.0'
+    implementation 'org.springframework.boot:spring-boot-starter-data-rest'
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.jetbrains:annotations:20.1.0'
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'org.postgresql:postgresql'
     developmentOnly('org.springframework.boot:spring-boot-devtools:2.5.2')
@@ -46,11 +50,11 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
     testImplementation 'org.springframework.security:spring-security-test'
-    compile('org.modelmapper:modelmapper:2.4.4')
-    compile('io.jsonwebtoken:jjwt:0.9.1')
-    compile('org.springframework.boot:spring-boot-starter-validation')
-    compile('org.springdoc:springdoc-openapi-ui:1.5.9')
-    compile('com.google.code.gson:gson:2.8.7')
+    implementation('org.modelmapper:modelmapper:2.4.4')
+    implementation('io.jsonwebtoken:jjwt:0.9.1')
+    implementation('org.springframework.boot:spring-boot-starter-validation')
+    implementation('org.springdoc:springdoc-openapi-ui:1.5.9')
+    implementation('com.google.code.gson:gson:2.8.7')
 
     //testCompile group: 'junit', name: 'junit', version: '5.1'
 
