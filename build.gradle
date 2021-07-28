@@ -3,7 +3,14 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
 }
-
+jar {
+    manifest {
+        attributes(
+                'Class-Path': configurations.compile.collect { it.getName() }.join(' '),
+                'Main-Class': 'com.nashtech.toaitran.ToaitranApplication'
+        )
+    }
+}
 group = 'com.nashtech'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
