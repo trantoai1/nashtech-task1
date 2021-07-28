@@ -6,7 +6,6 @@ import com.nashtech.toaitran.model.dto.UserDetailDTO;
 import com.nashtech.toaitran.service.impl.UserDetailServiceImpl;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Getter;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -23,7 +22,7 @@ public class UserControllerImpl implements IBaseController<UserDetailDTO, Long, 
     @Getter
     private UserDetailServiceImpl service;
 
-    @ResponseStatus(HttpStatus.ACCEPTED)
+
     @PutMapping("/{id}")
     public UserDetailDTO update(@PathVariable Long id, @RequestBody UserDetailDTO dto) {
         return getService().update(id, dto);

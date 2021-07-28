@@ -1,7 +1,6 @@
 package com.nashtech.toaitran.controller;
 
 import com.nashtech.toaitran.model.dto.FeatureDTO;
-import com.nashtech.toaitran.model.entity.FeatureType;
 import com.nashtech.toaitran.service.impl.FeatureServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,9 +65,6 @@ public class FeatureControllerTest implements IBaseControllerTest<FeatureDTO, Lo
         dto.setFeatureTypeId("ROMSSD");
         dto.setSpecific("GB");
         dto.setFeatureId(1L);
-        FeatureType type = new FeatureType();
-        type.setId("ROMSSD");
-        dto.setFeatureType(type);
         return dto;
     }
 

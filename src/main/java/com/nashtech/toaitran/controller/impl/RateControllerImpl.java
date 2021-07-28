@@ -33,14 +33,14 @@ public class RateControllerImpl {//implements IBaseController<RateDTO, RateKey, 
     public RateDTO get1(@PathVariable Long productId, @PathVariable Long userId) {
         return service.findById(productId, userId);
     }
-    @ResponseStatus(HttpStatus.ACCEPTED)
+
     @PutMapping("/{productId}-{userId}")
     public RateDTO update(@PathVariable Long productId, @PathVariable Long userId,@RequestBody RateDTO dto) {
         dto.setUserId(userId);
         dto.setProductId(productId);
         return service.update(productId, userId, dto);
     }
-    @ResponseStatus(HttpStatus.ACCEPTED)
+
     @DeleteMapping("/{productId}-{userId}")
     public RateDTO delete(@PathVariable Long productId, @PathVariable Long userId) {
         return service.delete(productId, userId);
