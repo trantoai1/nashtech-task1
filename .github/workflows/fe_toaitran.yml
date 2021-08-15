@@ -50,7 +50,7 @@ jobs:
       id: deploy-to-webapp
       uses: azure/webapps-deploy@v2
       with:
-        app-name: 'toaitran'
+        app-name: 'n17dccn155'
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_803dfe63b72d4ad4a7546ec2ab009c74 }}
         package: .
