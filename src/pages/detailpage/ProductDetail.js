@@ -7,6 +7,7 @@ import ProductView from './components/ProductView';
 
 import {get} from '../../api/callAPI';
 import FormReview from './components/FormReview';
+import Recommend from './components/Recommend';
 
 
 class ProductDetail extends Component {
@@ -37,7 +38,7 @@ class ProductDetail extends Component {
                         this.setState({
                             product: res.data
                         });
-                        //console.log(this.state.product);
+                        console.log(res.data);
             });
         get('features',{"productId":this.props.match.params.id})
         .then(res => {
@@ -179,114 +180,7 @@ class ProductDetail extends Component {
                         </div>
                     </div>
                 </section>
-                {/*<section className="my-5">
-                    <div className="container">
-                        <header className="text-center">
-                            <h6 className="text-uppercase mb-5">You might also like</h6>
-                        </header>
-                        <div className="row">
-
-                            <div className="col-lg-2 col-md-4 col-6">
-                                <div className="product">
-                                    <div className="product-image">
-                                        <div className="ribbon ribbon-info">Fresh</div><img className="img-fluid" src="https://d19m59y37dris4.cloudfront.net/sell/2-0/img/product/serrah-galos-494312-unsplash.jpg" alt="product" />
-                                        <div className="product-hover-overlay"><a className="product-hover-overlay-link" href="detail.html"></a>
-                                            <div className="product-hover-overlay-buttons"><a className="btn btn-dark btn-buy" href="detail.html"><i className="fa-search fa"></i><span className="btn-buy-label ms-2">View</span></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="py-2">
-                                        <p className="text-muted text-sm mb-1">Jackets</p>
-                                        <h3 className="h6 text-uppercase mb-1"><a className="text-dark" href="detail.html">White Tee</a></h3><span className="text-muted">$40.00</span>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <div className="col-lg-2 col-md-4 col-6">
-                                <div className="product">
-                                    <div className="product-image"><img className="img-fluid" src="https://d19m59y37dris4.cloudfront.net/sell/2-0/img/product/kyle-loftus-590881-unsplash.jpg" alt="product" />
-                                        <div className="product-hover-overlay"><a className="product-hover-overlay-link" href="detail.html"></a>
-                                            <div className="product-hover-overlay-buttons"><a className="btn btn-dark btn-buy" href="detail.html"><i className="fa-search fa"></i><span className="btn-buy-label ms-2">View</span></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="py-2">
-                                        <p className="text-muted text-sm mb-1">Denim</p>
-                                        <h3 className="h6 text-uppercase mb-1"><a className="text-dark" href="detail.html">Black blouse</a></h3><span className="text-muted">$40.00</span>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <div className="col-lg-2 col-md-4 col-6">
-                                <div className="product">
-                                    <div className="product-image">
-                                        <div className="ribbon ribbon-primary">Sale</div><img className="img-fluid" src="https://d19m59y37dris4.cloudfront.net/sell/2-0/img/product/kyle-loftus-596319-unsplash.jpg" alt="product" />
-                                        <div className="product-hover-overlay"><a className="product-hover-overlay-link" href="detail.html"></a>
-                                            <div className="product-hover-overlay-buttons"><a className="btn btn-dark btn-buy" href="detail.html"><i className="fa-search fa"></i><span className="btn-buy-label ms-2">View</span></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="py-2">
-                                        <p className="text-muted text-sm mb-1">Accessories</p>
-                                        <h3 className="h6 text-uppercase mb-1"><a className="text-dark" href="detail.html">College jacket</a></h3><span className="text-muted">$40.00</span>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <div className="col-lg-2 col-md-4 col-6">
-                                <div className="product">
-                                    <div className="product-image"><img className="img-fluid" src="https://d19m59y37dris4.cloudfront.net/sell/2-0/img/product/ethan-haddox-484912-unsplash.jpg" alt="product" />
-                                        <div className="product-hover-overlay"><a className="product-hover-overlay-link" href="detail.html"></a>
-                                            <div className="product-hover-overlay-buttons"><a className="btn btn-dark btn-buy" href="detail.html"><i className="fa-search fa"></i><span className="btn-buy-label ms-2">View</span></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="py-2">
-                                        <p className="text-muted text-sm mb-1">Denim</p>
-                                        <h3 className="h6 text-uppercase mb-1"><a className="text-dark" href="detail.html">Carrot-fit jeans</a></h3><span className="text-muted">$40.00</span>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <div className="col-lg-2 col-md-4 col-6">
-                                <div className="product">
-                                    <div className="product-image"><img className="img-fluid" src="https://d19m59y37dris4.cloudfront.net/sell/2-0/img/product/serrah-galos-494231-unsplash.jpg" alt="product" />
-                                        <div className="product-hover-overlay"><a className="product-hover-overlay-link" href="detail.html"></a>
-                                            <div className="product-hover-overlay-buttons"><a className="btn btn-dark btn-buy" href="detail.html"><i className="fa-search fa"></i><span className="btn-buy-label ms-2">View</span></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="py-2">
-                                        <p className="text-muted text-sm mb-1">Jackets</p>
-                                        <h3 className="h6 text-uppercase mb-1"><a className="text-dark" href="detail.html">Striped T-Shirt</a></h3><span className="text-muted">$40.00</span>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <div className="col-lg-2 col-md-4 col-6">
-                                <div className="product">
-                                    <div className="product-image"><img className="img-fluid" src="https://d19m59y37dris4.cloudfront.net/sell/2-0/img/product/averie-woodard-319832-unsplash.jpg" alt="product" />
-                                        <div className="product-hover-overlay"><a className="product-hover-overlay-link" href="detail.html"></a>
-                                            <div className="product-hover-overlay-buttons"><a className="btn btn-dark btn-buy" href="detail.html"><i className="fa-search fa"></i><span className="btn-buy-label ms-2">View</span></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="py-2">
-                                        <p className="text-muted text-sm mb-1">Shirts</p>
-                                        <h3 className="h6 text-uppercase mb-1"><a className="text-dark" href="detail.html">Short top</a></h3><span className="text-muted">$40.00</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                    
-        </section>*/}
+                <Recommend productName ={this.state.product.productName} key={this.state.product.productName}/>
             </>
         )
     }

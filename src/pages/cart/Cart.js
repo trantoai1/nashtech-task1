@@ -114,8 +114,8 @@ export default class Cart extends Component {
                                             <div className="cart-item" key={index}>
                                                 <div className="row d-flex align-items-center text-center">
                                                     <div className="col-5">
-                                                        <div className="d-flex align-items-center"><a href="detail.html"><img className="cart-item-img" src={Image} alt="..." /></a>
-                                                            <div className="cart-title text-start"><a className="text-uppercase text-dark" href="detail.html"><strong>{product.fullName}</strong></a>
+                                                        <div className="d-flex align-items-center"><a href={`/products/${product.productId}`}><img className="cart-item-img" src={Image} alt="..." /></a>
+                                                            <div className="cart-title text-start"><a className="text-uppercase text-dark" href={`/products/${product.productId}`}><strong>{product.fullName}</strong></a>
                                                             </div>
                                                         </div>
                                                     </div>

@@ -55,7 +55,7 @@ class ProductList extends Component {
             params["categoryId"] = this.state.data.categoryId;
             if(this.state.data.featureIds.length>0)
                 params["featureIds"] = this.state.data.featureIds.reduce((f,s)=>`${f},${s}`);
-            
+            console.log(params["featureIds"]);
             get('products',params)
             .then(res => {
                 

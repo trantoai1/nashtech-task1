@@ -33,7 +33,8 @@ export default class Shop extends Component {
         await this.setState({
             featureIds: list
         });
-        //console.log(this.state.featureIds);
+        console.log(list);
+       
     }
     openModel(id) {
         //const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
@@ -62,7 +63,7 @@ export default class Shop extends Component {
                         </div>
                     </div>
                 </section>
-                <div className="container">
+                <div className="container-fluid">
                     <div className="row">
 
                         <div className="products-grid col-xl-9 col-lg-8 order-lg-2">
@@ -80,11 +81,11 @@ export default class Shop extends Component {
                                     </select>
                                 </div>
         </header>*/}
-                            <div className="masonry-wrapper mx-n3">
+                            
                                 <div className="row">
                                     <ProductList categoryId={this.state.categoryId} featureIds={this.state.featureIds} key={this.state.featureIds} ref={this.productList} openModel={(id) => this.openModel(id)} />
                                 </div>
-                            </div>
+                           
                             {/*<nav className="d-flex justify-content-center mb-5 mt-3" aria-label="page navigation">
                                 <ul className="pagination">
                                     <li className="page-item"><a className="page-link" href="#" aria-label="Previous"><span aria-hidden="true">Prev</span><span className="sr-only">Previous</span></a></li>
