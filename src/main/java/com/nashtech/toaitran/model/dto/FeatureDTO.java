@@ -19,7 +19,7 @@ public class FeatureDTO {
     private String specific;
     @JsonIgnore
     private FeatureType featureType;
-
+    private Integer point;
     public String getTypeName()
     {
         return featureType.getName();

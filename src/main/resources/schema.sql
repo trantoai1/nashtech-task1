@@ -1,12 +1,3 @@
---
--- PostgreSQL database dump
---
-
--- Dumped from database version 13.2
--- Dumped by pg_dump version 13.2
-
--- Started on 2021-07-28 08:39:03 +07
-
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
@@ -104,7 +95,8 @@ CREATE TABLE public.feature_type (
 CREATE TABLE public.features (
                                  feature_id bigint NOT NULL,
                                  specific character varying(255),
-                                 feature_type_id character varying(255)
+                                 feature_type_id character varying(255),
+                                 point integer
 );
 
 
@@ -465,14 +457,7 @@ ALTER TABLE ONLY public.userdetails ALTER COLUMN id SET DEFAULT nextval('public.
 -- Data for Name: categories; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-
---
--- TOC entry 3409 (class 0 OID 0)
--- Dependencies: 200
--- Name: categories_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
---
-
-SELECT pg_catalog.setval('public.categories_id_seq', 37, true);
+SELECT pg_catalog.setval('public.categories_id_seq', 38, true);
 
 
 --
@@ -481,7 +466,7 @@ SELECT pg_catalog.setval('public.categories_id_seq', 37, true);
 -- Name: features_feature_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.features_feature_id_seq', 40, true);
+SELECT pg_catalog.setval('public.features_feature_id_seq', 94, true);
 
 
 --
@@ -499,7 +484,7 @@ SELECT pg_catalog.setval('public.hibernate_sequence', 1, true);
 -- Name: image_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.image_id_seq', 10, true);
+SELECT pg_catalog.setval('public.image_id_seq', 13, true);
 
 
 --
@@ -508,7 +493,7 @@ SELECT pg_catalog.setval('public.image_id_seq', 10, true);
 -- Name: orders_orderid_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.orders_orderid_seq', 11, true);
+SELECT pg_catalog.setval('public.orders_orderid_seq', 13, true);
 
 
 --
@@ -517,7 +502,7 @@ SELECT pg_catalog.setval('public.orders_orderid_seq', 11, true);
 -- Name: products_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.products_id_seq', 9, true);
+SELECT pg_catalog.setval('public.products_id_seq', 10, true);
 
 
 --
@@ -806,11 +791,4 @@ ALTER TABLE ONLY public.products
 
 ALTER TABLE ONLY public.feature_detail
     ADD CONSTRAINT fks5ra90nnt9jivw55p2ltyjqee FOREIGN KEY (product_id) REFERENCES public.products(id);
-
-
--- Completed on 2021-07-28 08:39:03 +07
-
---
--- PostgreSQL database dump complete
---
 

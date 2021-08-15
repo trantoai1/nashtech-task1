@@ -34,14 +34,14 @@ public class OrderDetailControllerImpl {//implements IBaseController<OrderDetail
 
         return service.findById(productId, orderId);
     }
-
+    @ResponseStatus(HttpStatus.ACCEPTED)
     @PutMapping("/{productId}-{orderId}")
     public OrderDetailDTO update(@PathVariable Long productId, @PathVariable Long orderId, @Valid @RequestBody OrderDetailDTO dto) {
         dto.setProductId(productId);
         dto.setOrderId(orderId);
         return service.update(productId, orderId, dto);
     }
-
+    @ResponseStatus(HttpStatus.ACCEPTED)
     @DeleteMapping("/{productId}-{orderId}")
     public OrderDetailDTO delete(@PathVariable Long productId, @PathVariable Long orderId) {
         return service.delete(productId, orderId);

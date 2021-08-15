@@ -24,7 +24,7 @@ public class Feature {
     private FeatureType featureType;
 
     private String specific;
-
+    private Integer point;
     public String getDetailFeature()
     {
         return specific+featureType.getUnit();
